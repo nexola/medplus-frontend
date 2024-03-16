@@ -247,8 +247,19 @@ select:focus {
   background-size: cover;
 }
 
+#signup--patient .bg--login {
+  background: url(./assets/bg-signup-patient.jpg);
+  background-size: cover;
+  background-position: right;
+}
+
+#signup--doctor label,
+#signup--patient label {
+  font-size: 1.35rem;
+}
+
 /* SIGNUP DOCTOR */
-#signup--doctor h1 {
+h1 {
   width: 100%;
   display: inline;
   text-transform: uppercase;
@@ -263,6 +274,15 @@ select:focus {
 .container--form-signup {
   margin-top: 0;
   border-bottom: 4rem solid #197887;
+}
+
+/* SIGNUP PATIENT */
+#signup--patient h1 {
+  margin-bottom: 3rem;
+}
+
+#signup--patient .container--form-signup {
+  border-bottom: none;
 }
 
 @media (max-width: 1400px) {
