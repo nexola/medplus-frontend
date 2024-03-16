@@ -7,26 +7,36 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
   </head>
-  <body id="login">
+  <body id="signup--doctor">
     <main class="container--login">
-      <form action="" class="container--form-login">
-        <img src="./assets/logo.svg" alt="medplus" id="logo" />
+      <form action="" class="container--form-signup">
+        <h1>Novo médico</h1>
 
+        <div class="container--input">
+          <label for="name">Nome</label>
+          <input type="text" id="name" name="name" />
+        </div>
         <div class="container--input">
           <label for="email">Email</label>
           <input type="email" id="email" name="email" />
+        </div>
+        <div class="container--input">
+          <label for="specialization" class="selectBox">Especialização</label>
+          <div class="selectWrapper">
+            <select name="specialization" id="specialization">
+              <option value="enfermeiro">Enfermeiro</option>
+              <option value="medico">Médico</option>
+            </select>
+          </div>
         </div>
         <div class="container--input">
           <label for="password">Senha</label>
           <input type="password" id="password" name="password" />
         </div>
         <div class="container--btns">
-          <a href="./" class="btn--dark">Entrar</a>
           <div class="container--btn-cadastro">
-            <a href="./" class="btn--light">Cadastrar paciente</a>
-            <a href="./signup-doctor.html" class="btn--light"
-              >Cadastrar médico</a
-            >
+            <a href="./index.html" class="btn--light">Voltar</a>
+            <a href="./signup-doctor.html" class="btn--dark">Cadastrar</a>
           </div>
         </div>
       </form>

@@ -31,7 +31,24 @@ form {
 }
 
 #logo {
-  margin-bottom: 4rem;
+  margin-bottom: 6rem;
+}
+
+.container--login {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.container--form-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  box-sizing: border-box;
+  border-bottom: 4rem solid #197887;
 }
 
 .container--input {
@@ -65,12 +82,21 @@ input {
   border-bottom: 2px solid #197887;
   box-sizing: border-box;
   transition: 0.1s ease-in-out;
+  margin-top: 0.5rem;
 }
 
 input:focus {
   outline: none;
   padding-left: 2rem;
   transition: 0.1s ease-in-out;
+  background: linear-gradient(
+    133deg,
+    rgba(25, 120, 135, 1) 12%,
+    rgba(111, 202, 216, 1) 100%
+  );
+  color: #fff;
+  border-radius: 4px;
+  border-color: #fff;
 }
 
 input:focus label {
@@ -90,20 +116,52 @@ a {
   color: #197887;
 }
 
-.container--login {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  box-sizing: border-box;
-  width: 100%;
+.selectWrapper {
+  border-radius: 4px;
+  display: inline-block;
+  overflow: hidden;
+  background: #cccccc;
+  border: 1px solid #cccccc;
+}
+.selectBox {
+  width: 140px;
+  height: 40px;
+  border: 0px;
+  outline: none;
 }
 
-.container--form-login {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #fff;
+select {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #4cabb9;
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 0;
   box-sizing: border-box;
+  transition: 0.1s ease-in-out;
+  outline: none;
+  text-transform: uppercase;
+}
+
+option {
+  font-size: 1rem;
+  font-weight: bold;
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+  transition: 0.1s ease-in-out;
+  color: #4cabb9;
+}
+
+select:focus {
+  padding-left: 2rem;
+  background: linear-gradient(
+    133deg,
+    rgba(25, 120, 135, 1) 12%,
+    rgba(111, 202, 216, 1) 100%
+  );
+  color: #fff;
 }
 
 .container--btns {
@@ -176,9 +234,35 @@ a {
 }
 
 .bg--login {
-  background: url(./assets/bg-login.png);
   height: 100vh;
+}
+
+#login .bg--login {
+  background: url(./assets/bg-login.png);
   background-size: cover;
+}
+
+#signup--doctor .bg--login {
+  background: url(./assets/bg-signup-doctor.jpg);
+  background-size: cover;
+}
+
+/* SIGNUP DOCTOR */
+#signup--doctor h1 {
+  width: 100%;
+  display: inline;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 2rem;
+  background-color: #4cabb9;
+  color: #fff;
+  font-size: 3rem;
+  margin-bottom: 6rem;
+}
+
+.container--form-signup {
+  margin-top: 0;
+  border-bottom: 4rem solid #197887;
 }
 
 @media (max-width: 1400px) {
