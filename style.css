@@ -1,8 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Devanagari:wght@100;200;300;400;500;600;700&display=swap");
-
-:root {
-  font-family: "IBM Plex Sans Devanagari", sans-serif;
-}
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap");
 
 body,
 h1,
@@ -12,7 +9,103 @@ li,
 form,
 input,
 a,
-img {
+img,
+div,
+html {
   margin: 0;
   padding: 0;
+}
+
+body {
+  background-color: #fff;
+  font-size: 16px;
+  color: #333;
+  font-family: "Inter", sans-serif;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 4rem;
+}
+
+.container--input {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  width: 70%;
+}
+
+label {
+  font-family: "inter", sans-serif;
+  color: #4cabb9;
+  font-size: 1.5rem;
+}
+
+input {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-bottom: 2px solid #197887;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  width: max-content;
+  width: 100%;
+  text-align: center;
+  border-radius: 4px;
+  padding: 1rem;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  color: #197887;
+}
+
+.container--login {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.container--form-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.container--btns {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 70%;
+}
+
+.container--btn-cadastro {
+  display: flex;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.btn--dark {
+  color: #fff;
+  background-color: #197887;
+}
+
+.btn--light {
+  border: 4px solid #197887;
+}
+
+.bg--login {
+  background: url(./assets/bg-login.jpg);
+  height: 100vh;
+  background-size: cover;
 }
