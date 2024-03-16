@@ -258,6 +258,15 @@ select:focus {
   font-size: 1.35rem;
 }
 
+#signup--doctor .bg--login,
+#signup--patient .bg--login {
+  order: 1;
+}
+
+.container--form-signup {
+  order: 2;
+}
+
 /* SIGNUP DOCTOR */
 h1 {
   width: 100%;
@@ -269,6 +278,7 @@ h1 {
   color: #fff;
   font-size: 3rem;
   margin-bottom: 6rem;
+  box-sizing: border-box;
 }
 
 .container--form-signup {
