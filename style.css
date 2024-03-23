@@ -48,7 +48,6 @@ form {
   justify-content: center;
   background-color: #fff;
   box-sizing: border-box;
-  border-bottom: 4rem solid #197887;
 }
 
 .container--input {
@@ -283,7 +282,6 @@ h1 {
 
 .container--form-signup {
   margin-top: 0;
-  border-bottom: 4rem solid #197887;
 }
 
 /* SIGNUP PATIENT */

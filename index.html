@@ -6,6 +6,7 @@
     <title>MedPlus - Login</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
+    <script defer src="script.js"></script>
   </head>
   <body id="login">
     <main class="container--login">
@@ -14,11 +15,16 @@
 
         <div class="container--input">
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" />
+          <input type="email" id="login-email" name="email" class="input" />
         </div>
         <div class="container--input">
           <label for="password">Senha</label>
-          <input type="password" id="password" name="password" />
+          <input
+            type="password"
+            id="login-password"
+            name="password"
+            class="input"
+          />
         </div>
         <div class="container--btns">
           <a href="./" class="btn--dark" id="btn--login">Entrar</a>

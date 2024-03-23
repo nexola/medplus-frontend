@@ -6,24 +6,25 @@
     <title>MedPlus - Novo médico</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
+    <script defer src="script.js"></script>
   </head>
   <body id="signup--doctor">
     <main class="container--login">
-      <form action="" class="container--form-signup">
+      <form action="" class="container--form-signup container--form-doctor">
         <h1>Novo médico</h1>
 
         <div class="container--input">
           <label for="name">Nome</label>
-          <input type="text" id="name" name="name" />
+          <input type="text" id="name" name="name" class="input" />
         </div>
         <div class="container--input">
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" />
+          <input type="email" id="email" name="email" class="input" />
         </div>
         <div class="container--input">
           <label for="specialization" class="selectBox">Especialização</label>
           <div class="selectWrapper">
-            <select name="specialization" id="specialization">
+            <select name="specialization" id="specialization" class="input">
               <option value="enfermeiro">Enfermeiro</option>
               <option value="medico">Médico</option>
             </select>
@@ -31,7 +32,7 @@
         </div>
         <div class="container--input">
           <label for="password">Senha</label>
-          <input type="password" id="password" name="password" />
+          <input type="password" id="password" name="password" class="input" />
         </div>
         <div class="container--btns">
           <div class="container--btn-cadastro">
