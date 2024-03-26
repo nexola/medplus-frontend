@@ -1,4 +1,5 @@
-const url = "https://ubs-zxgf.onrender.com/";
+const url = "https://ubs-zxgf.onrender.com";
+const token = "";
 
 // States
 const loginInput = {
@@ -18,7 +19,7 @@ const signupPatientInput = {
   email: "",
   password: "",
   cpf: "",
-  birthDate: "",
+  birth_date: "",
 };
 
 const optionsPost = {
@@ -39,22 +40,36 @@ const btnSignupDoctor = document.getElementById("btn--doctor");
 const btnSignupPatient = document.getElementById("btn--patient");
 
 // Functions
-async function getJson(url, options = {}, objInput = {}) {
-  options.body && (options.body = JSON.stringify(objInput));
-  const response = await fetch(url, options);
-  return await response.json();
+async function postJson(endpoint, options = {}, objInput = {}) {
+  options.body = JSON.stringify(objInput);
+  const response = await fetch(`${url}/${endpoint}`, options);
+  if (!response.ok) {
+    const message = await response.text();
+    console.log(message);
+    return message;
+  }
+  const json = await response.json();
+  if (
+    (endpoint = "oauth2/token" && response.code >= 200 && response.code < 300)
+  ) {
+    token = json.access_token;
+  }
+
+  console.log(json);
+  return json;
 }
 
-function getInputs(form, objInput, e) {
+function getInputs(form, objInput, endpoint, e) {
   e.preventDefault();
   form.forEach((input) => {
     objInput[input.name] = input.value;
-    if (input.name === "birthDate") {
-      objInput[input.name] = instantFormat(input.value);
+    if (input.name === "birth_date") {
+      objInput["birth_date"] = instantFormat(input.value);
     }
   });
   clearInputs(form);
   console.log(objInput);
+  postJson(endpoint, optionsPost, objInput);
 }
 
 function clearInputs(form) {
@@ -68,13 +83,13 @@ function instantFormat(string) {
 // Event Listeners
 btnLogin?.addEventListener(
   "click",
-  getInputs.bind(null, formLogin, loginInput)
+  getInputs.bind(null, formLogin, loginInput, "oauth2/token")
 );
 btnSignupDoctor?.addEventListener(
   "click",
-  getInputs.bind(null, formDoctor, signupDoctorInput)
+  getInputs.bind(null, formDoctor, signupDoctorInput, "doctors")
 );
 btnSignupPatient?.addEventListener(
   "click",
-  getInputs.bind(null, formPatient, signupPatientInput)
+  getInputs.bind(null, formPatient, signupPatientInput, "patients")
 );
