@@ -29,6 +29,14 @@ const optionsPost = {
   },
 };
 
+const optionsLogin = {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded",
+    Authorization: "Basic bXljbGllbnRpZDpteWNsaWVudHNlY3JldA==",
+  },
+};
+
 // DOM Selectors
 const formLogin = document.querySelectorAll(".container--form-login .input");
 const formDoctor = document.querySelectorAll(".container--form-doctor .input");
@@ -41,7 +49,9 @@ const btnSignupPatient = document.getElementById("btn--patient");
 
 // Functions
 async function postJson(endpoint, options = {}, objInput = {}) {
-  options.body = JSON.stringify(objInput);
+  objInput.name
+    ? (options.body = JSON.stringify(objInput))
+    : (options.body = `grant_type=password&username=${objInput.email}&password=${objInput.password}`);
   const response = await fetch(`${url}/${endpoint}`, options);
   if (!response.ok) {
     const message = await response.text();
@@ -59,7 +69,7 @@ async function postJson(endpoint, options = {}, objInput = {}) {
   return json;
 }
 
-function getInputs(form, objInput, endpoint, e) {
+function getInputs(form, objInput, endpoint, options, e) {
   e.preventDefault();
   form.forEach((input) => {
     objInput[input.name] = input.value;
@@ -69,7 +79,7 @@ function getInputs(form, objInput, endpoint, e) {
   });
   clearInputs(form);
   console.log(objInput);
-  postJson(endpoint, optionsPost, objInput);
+  postJson(endpoint, options, objInput);
 }
 
 function clearInputs(form) {
@@ -83,13 +93,13 @@ function instantFormat(string) {
 // Event Listeners
 btnLogin?.addEventListener(
   "click",
-  getInputs.bind(null, formLogin, loginInput, "oauth2/token")
+  getInputs.bind(null, formLogin, loginInput, "oauth2/token", optionsLogin)
 );
 btnSignupDoctor?.addEventListener(
   "click",
-  getInputs.bind(null, formDoctor, signupDoctorInput, "doctors")
+  getInputs.bind(null, formDoctor, signupDoctorInput, "doctors", optionsPost)
 );
 btnSignupPatient?.addEventListener(
   "click",
-  getInputs.bind(null, formPatient, signupPatientInput, "patients")
+  getInputs.bind(null, formPatient, signupPatientInput, "patients", optionsPost)
 );
