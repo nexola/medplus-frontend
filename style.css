@@ -290,6 +290,17 @@ h1 {
   border-bottom: none;
 }
 
+.err {
+  color: red;
+  text-transform: uppercase;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.inputErr {
+  border-bottom: 2px solid red;
+}
+
 @media (max-width: 1400px) {
   body {
     font-size: 12px;
