@@ -64,10 +64,10 @@ async function postJson(endpoint, options = {}, objInput = {}) {
         displayErrLogin("Usuário ou senha inválidos");
         break;
       case "doctors":
-        displayErrForm("Campos inválidos", containerFormDoctor, error);
+        displayErrForm("Campos inválidos!", containerFormDoctor, error);
         break;
       case "patients":
-        displayErrForm("Campos inválidos", containerFormPatient, error);
+        displayErrForm("Campos inválidos!", containerFormPatient, error);
       default:
         break;
     }
@@ -80,7 +80,9 @@ async function postJson(endpoint, options = {}, objInput = {}) {
     (endpoint = "oauth2/token" && response.code >= 200 && response.code < 300)
   ) {
     token = json.access_token;
+    return token;
   }
+  window.location.href = "https://medplus-fatec.netlify.app/";
 
   console.log(json);
   return json;
@@ -89,12 +91,16 @@ async function postJson(endpoint, options = {}, objInput = {}) {
 function getInputs(form, objInput, endpoint, options, e) {
   e.preventDefault();
   form.forEach((input) => {
+    if (!input.value) {
+      input.classList.add("inputErr");
+      input.placeholder = "Campo obrigatório";
+      return;
+    }
     objInput[input.name] = input.value;
     if (input.name === "birth_date") {
       objInput["birth_date"] = instantFormat(input.value);
     }
   });
-  clearInputs(form);
   console.log(objInput);
   postJson(endpoint, options, objInput);
 }
@@ -120,8 +126,10 @@ function displayErrForm(message, container, error) {
   err.classList.add("err");
   err.textContent = message;
   container.appendChild(err);
-  error.errors.forEach((err) => {
+  console.log(error);
+  error?.errors?.forEach((err) => {
     const field = document.querySelector(`input[name=${err.field}]`);
+    field.value = "";
     field.classList.add("inputErr");
     field.placeholder = err.message;
   });
