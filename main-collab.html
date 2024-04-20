@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Med+ Colaborador</title>
+  </head>
+  <body id="main-collab">
+    <header class="header-main">
+      <h1>Med+ <span>colaborador</span></h1>
+      <nav class="nav-main">
+        <ul>
+          <li><a href="#">Fichas</a></li>
+          <li><a href="#">Perfil</a></li>
+          <li><a href="#">Sair</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="main-collab">
+      <section class="nova-ficha">
+        <fieldset>
+            <legend>Nova ficha</legend>
+            <div class="form-nova-ficha">
+                <div class="input-nova-ficha"></div>
+                    <label for="patient">Paciente</label>
+                    <input type="text" name="patient" id="patient">
+                </div>
+                <div class="input-nova-ficha"></div>
+                    <label for="date">Data</label>
+                    <input type="date" name="date" id="date">
+                </div>
+                <div class="input-nova-ficha"></div>
+                    <label for="hour">Horário</label>
+                    <input type="time" name="hour" id="hour">
+                </div>
+            </div>
+        </fieldset>
+      </section>
+      <section class="fichas-registradas">
+        <h2>Fichas registradas</h2>
+        <div class="search-fichas">
+            <input type="text" name="search" id="search">
+            <a href="./" class="btn-search-fichas">Enter</a>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Paciente</th>
+                        <th>Data</th>
+                        <th>Horário</th>
+                        <th>Editar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>João da Silva</td>
+                        <td>12/12/2020</td>
+                        <td>14:00</td>
+                        <td><a href="#">Editar</a></td>
+                    </tr>
+                    <tr>
+                        <td>Maria da Silva</td>
+                        <td>12/12/2020</td>
+                        <td>14:00</td>
+                        <td><a href="#">Editar</a></td>
+                        <td><a href="#">Excluir</a></td>
+                    </tr>
+                    <tr>
+                        <td>João da Silva</td>
+                        <td>12/12/2020</td>
+                        <td>14:00</td>
+                        <td><a href="#">Editar</a></td>
+                        <td><a href="#">Excluir</a></td>
+                    </tr>
+                    <tr>
+                        <td>Maria da Silva</td>
+                        <td>12/12/2020</td>
+                        <td>14:00</td>
+                        <td><a href="#">Editar</a></td>
+                        <td><a href="#">Excluir</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pages">
+                <a href="./" class="prev-page">Página anterior</a>
+                <a href="#">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="./" class="next-page">Próxima página</a>
+            </div>
+        </div>
+      </section>
+  </body>
+</html>
