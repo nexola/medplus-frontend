@@ -88,7 +88,8 @@ input {
 
 input:focus {
   outline: none;
-  padding-left: 2rem;
+  border-radius: 4px;
+  padding-left: 1rem;
   transition: 0.1s ease-in-out;
   background: linear-gradient(
     133deg,
@@ -96,7 +97,6 @@ input:focus {
     rgba(111, 202, 216, 1) 100%
   );
   color: #fff;
-  border-radius: 4px;
   border-color: #fff;
 }
 
@@ -265,7 +265,8 @@ select:focus {
 }
 
 /* SIGNUP DOCTOR */
-h1 {
+#signup--doctor h1,
+#signup--patient h1 {
   width: 100%;
   display: inline;
   text-transform: uppercase;
@@ -308,8 +309,104 @@ h1 {
   border-bottom: 2px solid red;
 }
 
-@media (max-width: 1400px) {
-  body {
-    font-size: 12px;
-  }
+/* MAIN collab */
+#main-collab h1 {
+  text-transform: capitalize;
+  margin-left: 4rem;
+  color: #fff;
+  font-size: 3rem;
+  box-sizing: border-box;
+  padding: 1rem;
+}
+
+#main-collab span {
+  text-transform: lowercase;
+  font-size: 1.5rem;
+}
+
+#main-collab header {
+  width: 100%;
+  background: linear-gradient(
+    133deg,
+    rgba(111, 202, 216, 1) 12%,
+    rgba(25, 120, 135, 1) 100%
+  );
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.nav-main ul {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 0.2rem;
+  list-style: none;
+  justify-content: end;
+  padding: 2rem;
+  margin-right: 4rem;
+}
+
+.nav-main li a {
+  color: #c4c4c4;
+}
+
+.nav-main li a:hover,
+.nav-main .active-tab {
+  color: #fff;
+  transition: 0.2s ease-in-out;
+}
+
+.main-collab {
+  margin: 2rem 4rem;
+}
+
+.nova-ficha {
+  margin-top: 2rem;
+}
+
+.nova-ficha fieldset {
+  border-radius: 4px;
+  padding: 1rem;
+  border: 2px solid #197887;
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-agendar-consulta {
+  margin-top: 1rem;
+}
+
+.nova-ficha legend {
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  color: #197887;
+}
+
+.data-horario {
+  display: flex;
+  width: 100%;
+  gap: 2rem;
+  align-items: end;
+  margin-top: 1.5rem;
+}
+
+.data-horario div {
+  width: 100%;
+}
+
+.btn-agendar-consulta {
+  text-align: center;
+  background-color: #86d4e0;
+}
+
+.btn-agendar-consulta:hover {
+  background: linear-gradient(
+    133deg,
+    rgba(111, 202, 216, 1) 12%,
+    rgba(25, 120, 135, 1) 100%
+  );
+  color: #fff;
+  transition: 0.2s ease-in-out;
 }
