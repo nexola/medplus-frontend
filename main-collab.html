@@ -13,7 +13,7 @@
         <ul>
           <li><a href="#fichas" class="active-tab">Fichas</a></li>
           <li><a href="#">Perfil</a></li>
-          <li><a href="#">Sair</a></li>
+          <li><a href="./index.html">Sair</a></li>
         </ul>
       </nav>
     </header>
@@ -41,17 +41,19 @@
         </fieldset>
       </section>
       <section class="fichas-registradas">
-        <h2>Fichas registradas</h2>
-        <div class="search-fichas">
+          <h2>Fichas registradas</h2>
+          <div class="search-fichas">
             <input type="text" name="search" id="search">
-            <a href="./" class="btn-search-fichas">Enter</a>
-            <table>
+            <a href="./" class="btn-search-fichas">Pesquisar</a>
+          </div>
+            <table class="tabela-fichas">
                 <thead>
                     <tr>
                         <th>Paciente</th>
                         <th>Data</th>
                         <th>Horário</th>
-                        <th>Editar</th>
+                        <th>Status</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,38 +61,44 @@
                         <td>João da Silva</td>
                         <td>12/12/2020</td>
                         <td>14:00</td>
+                        <td>CONCLUÍDO</td>
                         <td><a href="#">Editar</a></td>
                     </tr>
                     <tr>
                         <td>Maria da Silva</td>
                         <td>12/12/2020</td>
                         <td>14:00</td>
+                        <td>CONCLUÍDO</td>
                         <td><a href="#">Editar</a></td>
                     </tr>
                     <tr>
                         <td>João da Silva</td>
                         <td>12/12/2020</td>
                         <td>14:00</td>
+                        <td>CONCLUÍDO</td>
                         <td><a href="#">Editar</a></td>
                     </tr>
                     <tr>
                         <td>Maria da Silva</td>
                         <td>12/12/2020</td>
                         <td>14:00</td>
+                        <td>CANCELADO</td>
                         <td><a href="#">Editar</a></td>
                     </tr>
                 </tbody>
             </table>
             <div class="pages">
                 <a href="./" class="prev-page">Página anterior</a>
-                <a href="#">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
+                <div class="num-pages">
+                  <a href="#">1</a>
+                  <a href="#">2</a>
+                  <a href="#">3</a>
+                  <a href="#">4</a>
+                  <a href="#">5</a>
+                </div>
+                
                 <a href="./" class="next-page">Próxima página</a>
             </div>
-        </div>
       </section>
   </body>
 </html>

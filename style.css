@@ -3,6 +3,7 @@
 
 body,
 h1,
+h2,
 span,
 ul,
 li,
@@ -359,7 +360,7 @@ select:focus {
 }
 
 .main-collab {
-  margin: 2rem 4rem;
+  margin: 2rem 4rem 0 4rem;
 }
 
 .nova-ficha {
@@ -374,14 +375,24 @@ select:focus {
   flex-direction: column;
 }
 
+.nova-ficha label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  color: #197887;
+}
+
 .btn-agendar-consulta {
   margin-top: 1rem;
 }
 
 .nova-ficha legend {
-  font-size: 1.3rem;
+  font-size: 1rem;
   text-transform: uppercase;
   color: #197887;
+}
+
+.nova-ficha input {
+  padding: 0.6rem;
 }
 
 .data-horario {
@@ -407,6 +418,114 @@ select:focus {
     rgba(111, 202, 216, 1) 12%,
     rgba(25, 120, 135, 1) 100%
   );
+  color: #fff;
+  transition: 0.2s ease-in-out;
+}
+
+.fichas-registradas {
+  margin-top: 2rem;
+}
+
+.fichas-registradas h2 {
+  text-transform: uppercase;
+  color: #197887;
+  font-size: 1rem;
+  margin-left: 1.2rem;
+}
+
+.fichas-registradas input {
+  margin-left: 1.2rem;
+  font-size: 0.9rem;
+  width: 300px;
+}
+
+.btn-search-fichas {
+  padding: 8px 16px;
+  border: 2px solid #197887;
+  margin-left: 1rem;
+  font-size: 0.9rem;
+}
+
+.btn-search-fichas:hover {
+  color: #fff;
+  background-color: #197887;
+  transition: 0.2s ease-in-out;
+}
+
+.btn-search-fichas:hover::after {
+  width: 100%;
+  transition: 0.2s ease-in-out;
+}
+
+.tabela-fichas {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  min-width: 400px;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  width: 100%;
+}
+
+.tabela-fichas thead tr {
+  background-color: #4cabb9;
+  color: #fff;
+  border-radius: 4px 4px 0 0;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.tabela-fichas th,
+.tabela-fichas td {
+  padding: 12px 15px;
+}
+
+.tabela-fichas tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.tabela-fichas tbody tr:nth-of-type(even) {
+  background-color: #eefcfe;
+}
+
+.tabela-fichas tbody tr:last-of-type {
+  border-bottom: 2px solid #4cabb9;
+}
+
+.tabela-fichas tbody tr:hover {
+  background-color: #86d4e0;
+}
+
+.pages {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+}
+
+.num-pages {
+  display: flex;
+  max-width: fit-content;
+  justify-self: center;
+  gap: 1rem;
+}
+
+.prev-page,
+.next-page {
+  background-color: #86d4e0;
+  color: #fff;
+  padding: 8px 16px;
+}
+
+.prev-page:hover,
+.next-page:hover {
+  background-color: #197887;
+  color: #fff;
+  transition: 0.2s ease-in-out;
+}
+
+.num-pages a:hover {
+  background-color: #197887;
   color: #fff;
   transition: 0.2s ease-in-out;
 }
