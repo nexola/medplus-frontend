@@ -1,7 +1,13 @@
 const url = "https://ubs-zxgf.onrender.com";
-const token = "";
+const meuStorage = localStorage;
+const token = meuStorage.getItem("token") ?? "";
 
 // States
+const authentication = {
+  expires_in: meuStorage.getItem("expires_in") ?? "",
+  created_at: meuStorage.getItem("created_at") ?? "",
+};
+
 const loginInput = {
   email: "",
   password: "",
@@ -49,6 +55,7 @@ const containerFormLogin = document.querySelector(".container--form-login");
 const btnLogin = document.getElementById("btn--login");
 const btnSignupDoctor = document.getElementById("btn--doctor");
 const btnSignupPatient = document.getElementById("btn--patient");
+const btnLogout = document.querySelector(".btn-logout");
 
 // Functions
 async function postJson(endpoint, options = {}, objInput = {}) {
@@ -76,16 +83,68 @@ async function postJson(endpoint, options = {}, objInput = {}) {
     return error;
   }
   const json = await response.json();
-  if (
-    (endpoint = "oauth2/token" && response.code >= 200 && response.code < 300)
-  ) {
-    token = json.access_token;
-    return token;
-  }
-  window.location.href = "https://medplus-fatec.netlify.app/";
+
+  // window.location.href = "https://medplus-fatec.netlify.app/";
+  console.log("Usuário criado com sucesso!");
 
   console.log(json);
   return json;
+}
+
+async function login() {
+  optionsLogin.body = `grant_type=password&username=${loginInput.email}&password=${loginInput.password}`;
+  const response = await fetch(`${url}/oauth2/token`, optionsLogin);
+  if (!response.ok) {
+    displayErrLogin("Usuário ou senha inválidos");
+    console.log(error);
+    return error;
+  }
+
+  const json = await response.json();
+  console.log(response);
+  console.log(json);
+  if (response.status >= 200 && response.status < 300) {
+    localStorage.setItem("token", json.access_token);
+    localStorage.setItem("expires_in", json.expires_in);
+    localStorage.setItem("created_at", Date.now());
+    // window.location.href = "https://medplus-fatec.netlify.app/main-collab";
+    if (isValidToken()) {
+      window.location.href = "https://medplus-fatec.netlify.app/main-collab";
+    }
+    console.log("Usuário logado com sucesso!");
+    console.log(authentication);
+    console.log(token);
+    return token;
+  }
+}
+
+function getInputsLogin(e) {
+  e.preventDefault();
+  formLogin.forEach((input) => {
+    if (!input.value) {
+      input.classList.add("inputErr");
+      input.placeholder = "Campo obrigatório";
+      return;
+    }
+    loginInput[input.name] = input.value;
+  });
+  console.log(loginInput);
+  login();
+}
+
+function isValidToken() {
+  if (token) {
+    const now = Date.now();
+    const expires = parseInt(authentication.expires_in) * 1000;
+    const created = parseInt(authentication.created_at);
+    const diff = now - created;
+    console.log(diff);
+    console.log(expires);
+    if (diff < expires) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function getInputs(form, objInput, endpoint, options, e) {
@@ -135,11 +194,21 @@ function displayErrForm(message, container, error) {
   });
 }
 
+function logout() {
+  localStorage.clear();
+  window.location.href = "https://medplus-fatec.netlify.app/";
+}
+
+function redirectToLogin() {
+  if (!isValidToken()) {
+    window.location.href = "https://medplus-fatec.netlify.app/";
+  }
+}
+
+redirectToLogin();
+
 // Event Listeners
-btnLogin?.addEventListener(
-  "click",
-  getInputs.bind(null, formLogin, loginInput, "oauth2/token", optionsLogin)
-);
+btnLogin?.addEventListener("click", getInputsLogin.bind(null));
 btnSignupDoctor?.addEventListener(
   "click",
   getInputs.bind(null, formDoctor, signupDoctorInput, "doctors", optionsPost)
@@ -148,3 +217,4 @@ btnSignupPatient?.addEventListener(
   "click",
   getInputs.bind(null, formPatient, signupPatientInput, "patients", optionsPost)
 );
+btnLogout?.addEventListener("click", logout);
