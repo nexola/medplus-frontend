@@ -311,7 +311,8 @@ select:focus {
 }
 
 /* MAIN collab */
-#main-collab h1 {
+#main-collab h1,
+#profile-collab h1 {
   text-transform: capitalize;
   margin-left: 4rem;
   color: #fff;
@@ -320,12 +321,14 @@ select:focus {
   padding: 1rem;
 }
 
-#main-collab span {
+#main-collab span,
+#profile-collab span {
   text-transform: lowercase;
   font-size: 1.5rem;
 }
 
-#main-collab header {
+#main-collab header,
+#profile-collab header {
   width: 100%;
   background: linear-gradient(
     133deg,
@@ -359,15 +362,17 @@ select:focus {
   transition: 0.2s ease-in-out;
 }
 
-.main-collab {
+.main-collab,
+.editar-dados {
   margin: 2rem 4rem 0 4rem;
 }
 
-.nova-ficha {
+.nova-ficha,
+.editar-dados {
   margin-top: 2rem;
 }
 
-.nova-ficha fieldset {
+fieldset {
   border-radius: 4px;
   padding: 1rem;
   border: 2px solid #197887;
@@ -375,7 +380,8 @@ select:focus {
   flex-direction: column;
 }
 
-.nova-ficha label {
+#main-collab label,
+#profile-collab label {
   font-size: 0.9rem;
   text-transform: uppercase;
   color: #197887;
@@ -385,14 +391,22 @@ select:focus {
   margin-top: 1rem;
 }
 
-.nova-ficha legend {
+#main-collab legend,
+#profile-collab legend {
   font-size: 1rem;
   text-transform: uppercase;
   color: #197887;
 }
 
-.nova-ficha input {
+#main-collab input,
+#profile-collab input {
   padding: 0.6rem;
+}
+
+.form-editar-dados {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
 .data-horario {
@@ -407,12 +421,14 @@ select:focus {
   width: 100%;
 }
 
-.btn-agendar-consulta {
+.btn-agendar-consulta,
+.btn-atualizar-perfil {
   text-align: center;
   background-color: #86d4e0;
 }
 
-.btn-agendar-consulta:hover {
+.btn-agendar-consulta:hover,
+.btn-atualizar-perfil:hover {
   background: linear-gradient(
     133deg,
     rgba(111, 202, 216, 1) 12%,
