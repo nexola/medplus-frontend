@@ -25,8 +25,10 @@
             <legend>Nova ficha</legend>
             <div class="form-nova-ficha">
                 <div class="input-nova-ficha"></div>
+                <div class="input-nova-ficha">
                   <label for="patient">Paciente</label>
                   <input type="text" name="patient" id="patient">
+                </div>
                 </div>
                 <div class="data-horario">
                 <div class="input-nova-ficha">
@@ -34,8 +36,8 @@
                   <input type="date" name="date" id="date">
                 </div>
                 <div class="input-nova-ficha">
-                  <label for="hour">Horário</label>
-                  <input type="time" name="hour" id="hour">
+                  <label for="time">Horário</label>
+                  <input type="time" name="time" id="time">
                 </div>
               </div>
                 <a href="./" class="btn-agendar-consulta">Agendar Consulta</a>
@@ -58,7 +60,7 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="tbody-fichas">
                     <tr>
                         <td>João da Silva</td>
                         <td>12/12/2020</td>
