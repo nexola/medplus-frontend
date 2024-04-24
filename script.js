@@ -267,12 +267,12 @@ async function getFichas() {
     },
   });
   const json = await response.json();
-  console.log(json);
+  console.log(json[0]);
   json.forEach((ficha) => {
-    const time = ficha.date.split("T")[1].split(":");
-    const date = ficha.date.split("T")[0];
+    const time = ficha.date.slice(11, 16);
+    const date = ficha.date.split("T")[0].replace(/-/g, "/");
     const novaFicha = `<tr>
-    <td>${ficha.patient}</td>
+    <td>${ficha.patient.name}</td>
     <td>${date}</td>
     <td>${time}</td>
     <td>${ficha.status}</td>
