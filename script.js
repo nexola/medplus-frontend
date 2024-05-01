@@ -4,8 +4,8 @@ const token = meuStorage.getItem("token");
 
 // States
 const authentication = {
-  expires_in: meuStorage.getItem("expires_in") ?? "",
-  created_at: meuStorage.getItem("created_at") ?? "",
+  expires_in: meuStorage.getItem("expires_in"),
+  created_at: meuStorage.getItem("created_at"),
 };
 
 const loginInput = {
@@ -36,12 +36,14 @@ const fichaStatus = {
 };
 
 const novaFichaInput = {
-  patient: "",
   date: "",
-  time: "",
+  state: "AGENDADA",
+  patient: {
+    cpf: "",
+  },
 };
 
-const optionsPost = {
+const optionsSignup = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -191,6 +193,7 @@ function instantFormat(string) {
 }
 
 function displayErrLogin(message) {
+  document.querySelectorAll(".err").forEach((err) => err.remove());
   const err = document.createElement("p");
   err.classList.add("err");
   err.textContent = message;
@@ -232,15 +235,23 @@ function redirectToLogin() {
 btnLogin?.addEventListener("click", getInputsLogin.bind(null));
 btnSignupDoctor?.addEventListener(
   "click",
-  getInputs.bind(null, formDoctor, signupDoctorInput, "doctors", optionsPost)
+  getInputs.bind(null, formDoctor, signupDoctorInput, "doctors", optionsSignup)
 );
 btnSignupPatient?.addEventListener(
   "click",
-  getInputs.bind(null, formPatient, signupPatientInput, "patients", optionsPost)
+  getInputs.bind(
+    null,
+    formPatient,
+    signupPatientInput,
+    "patients",
+    optionsSignup
+  )
 );
 btnLogout?.addEventListener("click", logout);
 
 function getInputsNovaFicha(e) {
+  let time = "";
+
   e.preventDefault();
   formFichasDoctor.forEach((input) => {
     if (!input.value) {
@@ -248,18 +259,41 @@ function getInputsNovaFicha(e) {
       input.placeholder = "Campo obrigatório";
       return;
     }
+    if (input.name === "cpf") {
+      novaFichaInput.patient.cpf = input.value;
+      return;
+    }
+    if (input.name === "time") {
+      time = input.value;
+      return;
+    }
     novaFichaInput[input.name] = input.value;
   });
   console.log(novaFichaInput);
-  const instant = novaFichaInput.date + "T" + novaFichaInput.time + ":00Z";
+  const instant = novaFichaInput.date + "T" + time + ":00.720Z";
   console.log(instant);
+
+  novaFichaInput.date = instant;
+  postJsonNovaFicha();
+  getFichas();
 }
 
 function postJsonNovaFicha() {
-  console.log(novaFichaInput);
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(novaFichaInput),
+  };
+  fetch(`${url}/appointments`, options)
+    .then((response) => response.json())
+    .then((json) => console.log(json));
 }
 
 async function getFichas() {
+  tabelaFichasDoctor.innerHTML = "";
   const response = await fetch(`${url}/appointments`, {
     method: "GET",
     headers: {
@@ -267,22 +301,22 @@ async function getFichas() {
     },
   });
   const json = await response.json();
-  console.log(json[0]);
-  json.forEach((ficha) => {
+  json.forEach((ficha, i) => {
     const time = ficha.date.slice(11, 16);
     const date = ficha.date.split("T")[0].replace(/-/g, "/");
     const novaFicha = `<tr>
     <td>${ficha.patient.name}</td>
     <td>${date}</td>
     <td>${time}</td>
-    <td>${ficha.status}</td>
-    <td><a href="#">Editar</a></td>
+    <td>${ficha.state}</td>
+    <td><a href="#" id=${`ficha` + i}>Editar</a></td>
     </tr>`;
-    console.log(novaFicha);
     tabelaFichasDoctor.insertAdjacentHTML("beforeend", novaFicha);
   });
 }
 
-getFichas();
+if (window.location.href.includes("main-collab")) {
+  getFichas();
+}
 
 btnNovaFicha?.addEventListener("click", getInputsNovaFicha.bind(null));

@@ -545,3 +545,24 @@ fieldset {
   color: #fff;
   transition: 0.2s ease-in-out;
 }
+
+.spinner {
+  margin: 2rem auto;
+  text-align: center;
+
+  svg {
+    height: 2rem;
+    width: 2rem;
+    animation: rotate 2s infinite linear;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
