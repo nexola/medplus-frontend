@@ -37,7 +37,7 @@ const fichaStatus = {
 
 const novaFichaInput = {
   date: "",
-  state: "AGENDADA",
+  state: "AGENDADO",
   patient: {
     cpf: "",
   },
@@ -250,6 +250,9 @@ btnSignupPatient?.addEventListener(
 btnLogout?.addEventListener("click", logout);
 
 function getInputsNovaFicha(e) {
+  const field = document.querySelector(`input[name="cpf"]`);
+  field.classList.remove("inputErr");
+  field.placeholder = "";
   let time = "";
 
   e.preventDefault();
@@ -275,7 +278,7 @@ function getInputsNovaFicha(e) {
 
   novaFichaInput.date = instant;
   postJsonNovaFicha();
-  getFichas();
+  formFichasDoctor.forEach((input) => (input.value = ""));
 }
 
 function postJsonNovaFicha() {
@@ -288,15 +291,20 @@ function postJsonNovaFicha() {
     body: JSON.stringify(novaFichaInput),
   };
   fetch(`${url}/appointments`, options)
-    .then((response) => response.json())
-    .then((json) => {
-      if (json.status !== 201) {
+    .then((response) => {
+      console.log(response);
+      if (response.status !== 201) {
         const field = document.querySelector(`input[name="cpf"]`);
         field.value = "";
         field.classList.add("inputErr");
         field.placeholder = "CPF inválido ou não cadastrado!";
+      } else {
+        getFichas();
+        alert("Ficha criada com sucesso!");
       }
-    });
+      return response.json();
+    })
+    .then((json) => console.log(json));
 }
 
 async function getFichas(e) {
@@ -312,12 +320,16 @@ async function getFichas(e) {
   json.forEach((ficha, i) => {
     const time = ficha.date.slice(11, 16);
     const date = ficha.date.split("T")[0].replace(/-/g, "/");
-    const novaFicha = `<tr>
-    <td>${ficha.patient.name}</td>
-    <td>${date}</td>
-    <td>${time}</td>
-    <td>${ficha.state}</td>
-    <td><a href="#" id=${`ficha` + i}>Editar</a></td>
+    const novaFicha = `<tr id=${`ficha` + i} class="${ficha.id}">
+    <td class="name">${ficha.patient.name}</td>
+    <td class="date">${dateFormat(date)}</td>
+    <td class="time">${time}</td>
+    <td class="state">${ficha.state}</td>
+    ${
+      ficha.state !== "CANCELADO"
+        ? `<td><a href="#" id=${`btn-` + i}>Editar</a></td>`
+        : ""
+    }
     </tr>`;
     tabelaFichasDoctor.insertAdjacentHTML("beforeend", novaFicha);
   });
@@ -336,6 +348,8 @@ const btnVoltarFichas = document.querySelector(".btn-voltar-fichas");
 function searchFichas(e) {
   e.preventDefault();
   const cpf = inputSearch.value;
+  if (cpf === "") return;
+
   fetch(`${url}/patients/${cpf}`, {
     method: "GET",
     headers: {
@@ -349,12 +363,12 @@ function searchFichas(e) {
       json.appointments.forEach((ficha, i) => {
         const time = ficha.date.slice(11, 16);
         const date = ficha.date.split("T")[0].replace(/-/g, "/");
-        const novaFicha = `<tr>
-        <td>${json.name}</td>
-        <td>${date}</td>
-        <td>${time}</td>
-        <td>${ficha.state}</td>
-        <td><a href="#" id=${`ficha` + i}>Editar</a></td>
+        const novaFicha = `<tr id=${`ficha` + i} class="${ficha.id}">
+        <td class="name">${json.name}</td>
+        <td class="date">${dateFormat(date)}</td>
+        <td class="time">${time}</td>
+        <td class="state">${ficha.state}</td>
+        <td><a href="#" id=${`btn-` + i}>Editar</a></td>
         </tr>`;
         tabelaFichasDoctor.insertAdjacentHTML("beforeend", novaFicha);
       });
@@ -368,3 +382,27 @@ function searchFichas(e) {
 btnSearchFichas?.addEventListener("click", searchFichas.bind(null));
 
 btnVoltarFichas?.addEventListener("click", getFichas.bind(null));
+
+tabelaFichasDoctor.addEventListener("click", (e) => {
+  e.preventDefault();
+  const id = e.target.id;
+  if (!id.includes("btn-")) return;
+  const index = id.slice(4);
+  const ficha = document.querySelector(`#ficha${index}`);
+  console.log(ficha);
+
+  const mrkup = `<tr id=${`ficha`} class="${ficha.id}">
+  <td >${ficha.querySelector(".name").innerHTML}</td>
+  <td class="date">${dateFormat(date)}</td>
+  <td class="time">${time}</td>
+  <td class="state">${ficha.state}</td>
+  <td><a href="#" id=${`btn-`}>Editar</a></td>
+  </tr>`;
+
+  console.log(mrkup);
+});
+
+function dateFormat(date) {
+  const [year, month, day] = date.split("/");
+  return `${day}/${month}/${year}`;
+}
