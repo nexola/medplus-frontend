@@ -258,8 +258,6 @@ function getInputsNovaFicha(e) {
   e.preventDefault();
   formFichasDoctor.forEach((input) => {
     if (!input.value) {
-      input.classList.add("inputErr");
-      input.placeholder = "Campo obrigatório";
       return;
     }
     if (input.name === "cpf") {
@@ -282,6 +280,10 @@ function getInputsNovaFicha(e) {
 }
 
 function postJsonNovaFicha() {
+  const field = document.querySelector(`input[name="cpf"]`);
+  if (field.value === "") {
+    return;
+  }
   const options = {
     method: "POST",
     headers: {
@@ -292,9 +294,9 @@ function postJsonNovaFicha() {
   };
   fetch(`${url}/appointments`, options)
     .then((response) => {
+      const field = document.querySelector(`input[name="cpf"]`);
       console.log(response);
       if (response.status !== 201) {
-        const field = document.querySelector(`input[name="cpf"]`);
         field.value = "";
         field.classList.add("inputErr");
         field.placeholder = "CPF inválido ou não cadastrado!";
@@ -326,7 +328,7 @@ async function getFichas(e) {
     <td class="time">${time}</td>
     <td class="state">${ficha.state}</td>
     ${
-      ficha.state !== "CANCELADO"
+      ficha.state !== "CANCELADO" && ficha.state !== "CONCLUIDO"
         ? `<td><a href="#" id=${`btn-` + i}>Editar</a></td>`
         : ""
     }
@@ -387,22 +389,123 @@ tabelaFichasDoctor.addEventListener("click", (e) => {
   e.preventDefault();
   const id = e.target.id;
   if (!id.includes("btn-")) return;
-  const index = id.slice(4);
-  const ficha = document.querySelector(`#ficha${index}`);
-  console.log(ficha);
+  const btn = e.target;
 
-  const mrkup = `<tr id=${`ficha`} class="${ficha.id}">
-  <td >${ficha.querySelector(".name").innerHTML}</td>
-  <td class="date">${dateFormat(date)}</td>
-  <td class="time">${time}</td>
-  <td class="state">${ficha.state}</td>
-  <td><a href="#" id=${`btn-`}>Editar</a></td>
-  </tr>`;
+  if (btn.textContent === "Editar") {
+    btn.textContent = "Salvar";
 
-  console.log(mrkup);
+    const index = id.slice(4);
+    const ficha = document.querySelector(`#ficha${index}`);
+    console.log(ficha);
+
+    ficha.classList.add("ficha-ativa");
+
+    const date = ficha.querySelector(".date");
+    const time = ficha.querySelector(".time");
+    const state = ficha.querySelector(".state");
+
+    const inputDate = createInput("text", "date", date.textContent);
+    const inputTime = createInput("time", "time", time.textContent);
+    const inputState = createSelectBox("state", state.textContent);
+
+    ficha.insertBefore(inputDate, date);
+    ficha.insertBefore(inputTime, time);
+    ficha.insertBefore(inputState, state);
+    date.remove();
+    time.remove();
+    state.remove();
+  } else if (btn.textContent === "Salvar") {
+    btn.textContent = "Editar";
+
+    const index = id.slice(4);
+    const ficha = document.querySelector(`#ficha${index}`);
+    const idFicha = ficha.classList[0];
+    console.log(idFicha);
+
+    const date = ficha.querySelector(".date");
+    const time = ficha.querySelector(".time");
+    const state = ficha.querySelector(".state");
+
+    const inputDate = ficha.querySelector(".date");
+    const inputTime = ficha.querySelector(".time");
+    const inputState = ficha.querySelector(".state");
+
+    const dateValue = inputDate.querySelector("input").value;
+    const timeValue = inputTime.querySelector("input").value;
+    const stateValue = inputState.querySelector("select").value;
+
+    const options = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        date: inverseDateFormat(dateValue) + "T" + timeValue + ":00.720Z",
+        state: stateValue,
+      }),
+    };
+
+    console.log(options.body);
+
+    fetch(`${url}/appointments/${idFicha}`, options)
+      .then((response) => {
+        console.log(response);
+        if (response.status !== 200) {
+          alert("Erro ao editar ficha!");
+        } else {
+          alert("Ficha alterada com sucesso!");
+        }
+        return response.json();
+      })
+      .then((json) => {
+        console.log(json);
+        getFichas();
+      });
+  }
 });
 
 function dateFormat(date) {
   const [year, month, day] = date.split("/");
   return `${day}/${month}/${year}`;
+}
+
+function inverseDateFormat(date) {
+  const [day, month, year] = date.split("/");
+  return `${year}-${month}-${day}`;
+}
+
+function createInput(type, name, value) {
+  const input = document.createElement("input");
+  const td = document.createElement("td");
+  td.classList.add(name);
+  input.classList.add("input-edit-ficha");
+  input.type = type;
+  input.name = name;
+  input.value = value;
+  td.insertAdjacentElement("beforeend", input);
+  return td;
+}
+
+function createSelectBox(name, value) {
+  const select = document.createElement("select");
+  const td = document.createElement("td");
+  const selectWrapper = document.createElement("div");
+
+  const options = ["AGENDADO", "CONCLUIDO", "CANCELADO"];
+  options.forEach((option) => {
+    const optionElement = document.createElement("option");
+    optionElement.value = option;
+    optionElement.textContent = option;
+    select.appendChild(optionElement);
+  });
+
+  selectWrapper.classList.add("select-wrapper");
+  td.classList.add(name);
+  select.classList.add("input-edit-ficha");
+  select.name = name;
+  select.value = value;
+  selectWrapper.insertAdjacentElement("beforeend", select);
+  td.insertAdjacentElement("beforeend", selectWrapper);
+  return td;
 }
