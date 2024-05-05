@@ -289,10 +289,18 @@ function postJsonNovaFicha() {
   };
   fetch(`${url}/appointments`, options)
     .then((response) => response.json())
-    .then((json) => console.log(json));
+    .then((json) => {
+      if (json.status !== 201) {
+        const field = document.querySelector(`input[name="cpf"]`);
+        field.value = "";
+        field.classList.add("inputErr");
+        field.placeholder = "CPF inválido ou não cadastrado!";
+      }
+    });
 }
 
-async function getFichas() {
+async function getFichas(e) {
+  e?.preventDefault();
   tabelaFichasDoctor.innerHTML = "";
   const response = await fetch(`${url}/appointments`, {
     method: "GET",
@@ -320,3 +328,43 @@ if (window.location.href.includes("main-collab")) {
 }
 
 btnNovaFicha?.addEventListener("click", getInputsNovaFicha.bind(null));
+
+const inputSearch = document.querySelector("#search");
+const btnSearchFichas = document.querySelector(".btn-search-fichas");
+const btnVoltarFichas = document.querySelector(".btn-voltar-fichas");
+
+function searchFichas(e) {
+  e.preventDefault();
+  const cpf = inputSearch.value;
+  fetch(`${url}/patients/${cpf}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((json) => {
+      console.log(json);
+      tabelaFichasDoctor.innerHTML = "";
+      json.appointments.forEach((ficha, i) => {
+        const time = ficha.date.slice(11, 16);
+        const date = ficha.date.split("T")[0].replace(/-/g, "/");
+        const novaFicha = `<tr>
+        <td>${json.name}</td>
+        <td>${date}</td>
+        <td>${time}</td>
+        <td>${ficha.state}</td>
+        <td><a href="#" id=${`ficha` + i}>Editar</a></td>
+        </tr>`;
+        tabelaFichasDoctor.insertAdjacentHTML("beforeend", novaFicha);
+      });
+    });
+
+  inputSearch.value = "";
+
+  btnVoltarFichas.style.display = "inline";
+}
+
+btnSearchFichas?.addEventListener("click", searchFichas.bind(null));
+
+btnVoltarFichas?.addEventListener("click", getFichas.bind(null));

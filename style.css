@@ -455,20 +455,27 @@ fieldset {
   width: 300px;
 }
 
-.btn-search-fichas {
+.btn-voltar-fichas {
+  display: none;
+}
+
+.btn-search-fichas,
+.btn-voltar-fichas {
   padding: 8px 16px;
   border: 2px solid #197887;
   margin-left: 1rem;
   font-size: 0.9rem;
 }
 
-.btn-search-fichas:hover {
+.btn-search-fichas:hover,
+.btn-voltar-fichas:hover {
   color: #fff;
   background-color: #197887;
   transition: 0.2s ease-in-out;
 }
 
-.btn-search-fichas:hover::after {
+.btn-search-fichas:hover::after,
+.btn-voltar-fichas:hover::after {
   width: 100%;
   transition: 0.2s ease-in-out;
 }
