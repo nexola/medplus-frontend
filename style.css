@@ -148,7 +148,7 @@ select {
 
 option {
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 300;
   width: 100%;
   padding: 1rem;
   box-sizing: border-box;
@@ -311,10 +311,35 @@ select:focus {
 }
 
 /* MAIN collab */
+
+.main-collab,
+.editar-dados {
+  max-width: 1200px;
+  margin: 0 auto !important;
+  padding: 0 1.3rem;
+}
+
+#main-collab header,
+#profile-collab header {
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto !important;
+  padding: 0 1.3rem;
+}
+
+#main-collab .bg-header,
+#profile-collab .bg-header {
+  background: linear-gradient(
+    133deg,
+    rgba(111, 202, 216, 1) 12%,
+    rgba(25, 120, 135, 1) 100%
+  );
+}
+
 #main-collab h1,
 #profile-collab h1 {
   text-transform: capitalize;
-  margin-left: 4rem;
   color: #fff;
   font-size: 3rem;
   box-sizing: border-box;
@@ -329,12 +354,6 @@ select:focus {
 
 #main-collab header,
 #profile-collab header {
-  width: 100%;
-  background: linear-gradient(
-    133deg,
-    rgba(111, 202, 216, 1) 12%,
-    rgba(25, 120, 135, 1) 100%
-  );
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: baseline;
@@ -349,7 +368,6 @@ select:focus {
   list-style: none;
   justify-content: end;
   padding: 2rem;
-  margin-right: 4rem;
 }
 
 .nav-main li a {
@@ -369,7 +387,7 @@ select:focus {
 
 .nova-ficha,
 .editar-dados {
-  margin-top: 2rem;
+  margin-top: 2rem !important;
 }
 
 fieldset {
@@ -455,20 +473,27 @@ fieldset {
   width: 300px;
 }
 
-.btn-search-fichas {
+.btn-voltar-fichas {
+  display: none;
+}
+
+.btn-search-fichas,
+.btn-voltar-fichas {
   padding: 8px 16px;
   border: 2px solid #197887;
   margin-left: 1rem;
   font-size: 0.9rem;
 }
 
-.btn-search-fichas:hover {
+.btn-search-fichas:hover,
+.btn-voltar-fichas:hover {
   color: #fff;
   background-color: #197887;
   transition: 0.2s ease-in-out;
 }
 
-.btn-search-fichas:hover::after {
+.btn-search-fichas:hover::after,
+.btn-voltar-fichas:hover::after {
   width: 100%;
   transition: 0.2s ease-in-out;
 }
@@ -544,4 +569,29 @@ fieldset {
   background-color: #197887;
   color: #fff;
   transition: 0.2s ease-in-out;
+}
+
+.input-edit-ficha {
+  padding: 0.5rem !important;
+  margin: 0.3rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  border: 1px solid #197887;
+  max-width: 130px;
+  box-sizing: border-box;
+  display: inline-block;
+  margin-left: 10px !important;
+}
+
+.input-edit-ficha:focus {
+  padding: 1rem;
+  border-radius: 0;
+}
+
+.ficha-ativa {
+  background-color: #86d4e0 !important;
+}
+
+.ficha-ativa td:not(:first-child) {
+  padding: 0;
 }
