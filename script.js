@@ -58,6 +58,12 @@ const optionsLogin = {
   },
 };
 
+const stateDoctor = {
+  name: "",
+  email: "",
+  specialization: "",
+};
+
 // DOM Selectors
 const formLogin = document.querySelectorAll(".container--form-login .input");
 const formDoctor = document.querySelectorAll(".container--form-doctor .input");
@@ -77,6 +83,29 @@ const btnLogout = document.querySelector(".btn-logout");
 const btnNovaFicha = document.querySelector(".btn-agendar-consulta");
 const btnSearchFichas = document.querySelector(".btn-search-fichas");
 const btnVoltarFichas = document.querySelector(".btn-voltar-fichas");
+const formProfileDoctor = document.querySelectorAll(
+  "#profile-collab .input-editar-dados input"
+);
+
+async function getProfileDoctor(e) {
+  const response = await fetch(`${url}/users/current`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const json = await response.json();
+  console.log(json);
+
+  stateDoctor.name = json.name;
+  stateDoctor.email = json.email;
+  stateDoctor.specialization = json.specialization;
+
+  formProfileDoctor[0].value = stateDoctor.name;
+  formProfileDoctor[1].value = stateDoctor.email;
+  document.getElementById("specialization-profile").value =
+    stateDoctor.specialization;
+}
 
 // Functions
 async function postJson(endpoint, options = {}, objInput = {}) {
@@ -105,10 +134,6 @@ async function postJson(endpoint, options = {}, objInput = {}) {
   }
   const json = await response.json();
 
-  // window.location.href = "https://medplus-fatec.netlify.app/";
-  console.log("Usuário criado com sucesso!");
-
-  console.log(json);
   return json;
 }
 
@@ -338,6 +363,11 @@ async function getFichas(e) {
 if (window.location.href.includes("main-collab")) {
   redirectToLogin();
   getFichas();
+}
+
+if (window.location.href.includes("profile-collab")) {
+  redirectToLogin();
+  getProfileDoctor();
 }
 
 btnNovaFicha?.addEventListener("click", getInputsNovaFicha.bind(null));
