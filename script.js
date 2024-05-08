@@ -76,6 +76,9 @@ const containerFormDoctor = document.querySelector(".container--form-doctor");
 const containerFormPatient = document.querySelector(".container--form-patient");
 const containerFormLogin = document.querySelector(".container--form-login");
 const tabelaFichasDoctor = document.querySelector(".tbody-fichas");
+const inputPasswordDoctor = document.querySelector(
+  ".input-editar-dados #password"
+);
 const btnLogin = document.getElementById("btn--login");
 const btnSignupDoctor = document.getElementById("btn--doctor");
 const btnSignupPatient = document.getElementById("btn--patient");
@@ -83,10 +86,17 @@ const btnLogout = document.querySelector(".btn-logout");
 const btnNovaFicha = document.querySelector(".btn-agendar-consulta");
 const btnSearchFichas = document.querySelector(".btn-search-fichas");
 const btnVoltarFichas = document.querySelector(".btn-voltar-fichas");
+const btnEditPasswordDoctor = document.querySelector(
+  ".btn-edit-password-doctor"
+);
+const btnAtualizarPerfilDoctor = document.querySelector(
+  ".btn-atualizar-perfil"
+);
 const formProfileDoctor = document.querySelectorAll(
   "#profile-collab .input-editar-dados input"
 );
 
+// Functions
 async function getProfileDoctor(e) {
   const response = await fetch(`${url}/users/current`, {
     method: "GET",
@@ -107,7 +117,76 @@ async function getProfileDoctor(e) {
     stateDoctor.specialization;
 }
 
-// Functions
+async function putProfileDoctor(e) {
+  e.preventDefault();
+  formProfileDoctor.forEach((input) => {
+    if (!input.value) {
+      stateDoctor[input.name] = null;
+      return;
+    }
+    stateDoctor[input.name] = input.value;
+  });
+  stateDoctor["specialization"] = document.getElementById(
+    "specialization-profile"
+  ).value;
+
+  const response = await fetch(`${url}/doctors`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(stateDoctor),
+  });
+  if (response.ok) {
+    requestBtnResponseStyle(
+      true,
+      btnAtualizarPerfilDoctor,
+      "Perfil atualizado com sucesso!",
+      putProfileDoctor
+    );
+  } else {
+    requestBtnResponseStyle(
+      false,
+      btnAtualizarPerfilDoctor,
+      "Algo deu errado, tente novamente!",
+      putProfileDoctor
+    );
+  }
+  const json = await response.json();
+  console.log(json);
+}
+
+function requestBtnResponseStyle(success, btn, msg, fn, e) {
+  const stylesBtn = getStylesBtn(btn);
+  success
+    ? (btn.style.background =
+        "linear-gradient(90deg, rgba(147,224,134,1) 0%, rgba(49,216,22,1) 100%)")
+    : (btn.style.background =
+        "linear-gradient(90deg, rgba(243,139,132,1) 0%, rgba(249,68,56,1) 100%)");
+  btn.innerHTML = msg;
+  btn.style.color = "#FFFFFF";
+  btn.removeEventListener("click", fn);
+  btn.style.cursor = "alias";
+  setTimeout(() => {
+    btn.style.background = stylesBtn.background;
+    btn.innerHTML = stylesBtn.innerHTML;
+    btn.style.color = stylesBtn.color;
+    btn.addEventListener("click", fn);
+    btn.style.cursor = "pointer";
+  }, 3500);
+}
+
+function getStylesBtn(btn) {
+  const styles = {
+    background: btn.style.background,
+    innerHTML: btn.innerHTML,
+    color: btn.style.color,
+  };
+
+  return styles;
+}
+
 async function postJson(endpoint, options = {}, objInput = {}) {
   objInput.name
     ? (options.body = JSON.stringify(objInput))
@@ -128,12 +207,12 @@ async function postJson(endpoint, options = {}, objInput = {}) {
       default:
         break;
     }
-
     console.log(error);
-    return error;
+    return;
   }
-  const json = await response.json();
 
+  window.location.href = "https://medplus-fatec.netlify.app/";
+  const json = await response.json();
   return json;
 }
 
@@ -319,12 +398,23 @@ function postJsonNovaFicha() {
       const field = document.querySelector(`input[name="cpf"]`);
       console.log(response);
       if (response.status !== 201) {
+        requestBtnResponseStyle(
+          false,
+          btnNovaFicha,
+          "Erro ao criar ficha, tente novamente!",
+          postJsonNovaFicha
+        );
         field.value = "";
         field.classList.add("inputErr");
         field.placeholder = "CPF inválido ou não cadastrado!";
       } else {
         getFichas();
-        alert("Ficha criada com sucesso!");
+        requestBtnResponseStyle(
+          true,
+          btnNovaFicha,
+          "Ficha criada com sucesso!",
+          postJsonNovaFicha
+        );
       }
       return response.json();
     })
@@ -490,6 +580,10 @@ tabelaFichasDoctor?.addEventListener("click", (e) => {
   }
 });
 
+btnEditPasswordDoctor?.addEventListener("click", editPassword);
+
+btnAtualizarPerfilDoctor?.addEventListener("click", putProfileDoctor);
+
 function dateFormat(date) {
   const [year, month, day] = date.split("/");
   return `${day}/${month}/${year}`;
@@ -533,4 +627,16 @@ function createSelectBox(name, value) {
   selectWrapper.insertAdjacentElement("beforeend", select);
   td.insertAdjacentElement("beforeend", selectWrapper);
   return td;
+}
+
+function editPassword() {
+  inputPasswordDoctor.toggleAttribute("readOnly");
+  if (inputPasswordDoctor.hasAttribute("readOnly")) {
+    inputPasswordDoctor.blur();
+    inputPasswordDoctor.disabled = true;
+  } else {
+    inputPasswordDoctor.disabled = false;
+    inputPasswordDoctor.value = "";
+    inputPasswordDoctor.focus();
+  }
 }
