@@ -22,6 +22,7 @@ body {
   font-size: 16px;
   color: #333;
   font-family: "Inter", sans-serif;
+  position: relative;
 }
 
 form {
@@ -236,6 +237,55 @@ select:focus {
 
 .bg--login {
   height: 100vh;
+}
+
+.forget-pass {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  text-decoration: underline;
+  max-width: fit-content;
+}
+
+.forget-pass:hover {
+  color: #4cabb9;
+}
+
+#forget-pass {
+  display: grid;
+}
+
+#forget-pass h1 {
+  color: #fff;
+  padding: 2rem;
+  text-transform: uppercase;
+  background: linear-gradient(
+    133deg,
+    rgba(111, 202, 216, 1) 12%,
+    rgba(25, 120, 135, 1) 100%
+  );
+  text-align: center;
+}
+
+#forget-pass input {
+  width: 80vh;
+}
+
+#forget-pass p {
+  color: rgb(141, 140, 140);
+  font-size: 0.8rem;
+}
+
+#forget-pass .btn-forget-pass {
+  background-color: #197887;
+  max-width: fit-content;
+  padding: 12px 16px;
+  color: #fff;
+  transition: 0.1s ease-in-out;
+}
+
+#forget-pass .btn-forget-pass:hover {
+  background-color: #37a8b9;
+  transition: 0.1s ease-in-out;
 }
 
 #login .bg--login {
