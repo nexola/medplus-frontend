@@ -1,6 +1,6 @@
 const url = "https://ubs-zxgf.onrender.com";
-const meuStorage = localStorage;
-const token = meuStorage.getItem("token");
+let meuStorage = localStorage;
+let token = meuStorage.getItem("token");
 
 // States
 const authentication = {
@@ -64,6 +64,13 @@ const stateDoctor = {
   specialization: "",
 };
 
+const statePatient = {
+  name: "",
+  email: "",
+  cpf: "",
+  birth_date: "",
+};
+
 // DOM Selectors
 const formLogin = document.querySelectorAll(".container--form-login .input");
 const formDoctor = document.querySelectorAll(".container--form-doctor .input");
@@ -90,10 +97,16 @@ const btnEditPasswordDoctor = document.querySelector(
   ".btn-edit-password-doctor"
 );
 const btnAtualizarPerfilDoctor = document.querySelector(
-  ".btn-atualizar-perfil"
+  ".btn-atualizar-perfil-collab"
+);
+const btnAtualizarPerfilPatient = document.querySelector(
+  ".btn-atualizar-perfil-patient"
 );
 const formProfileDoctor = document.querySelectorAll(
   "#profile-collab .input-editar-dados input"
+);
+const formProfilePatient = document.querySelectorAll(
+  "#profile-collab .input-editar-dados-patient input"
 );
 
 // Functions
@@ -151,6 +164,68 @@ async function putProfileDoctor(e) {
       btnAtualizarPerfilDoctor,
       "Algo deu errado, tente novamente!",
       putProfileDoctor
+    );
+    setTimeout(() => {
+      logout();
+    }, 3500);
+  }
+  const json = await response.json();
+  console.log(json);
+}
+
+async function getProfilePatient(e) {
+  const response = await fetch(`${url}/users/current`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const json = await response.json();
+  console.log(json);
+
+  statePatient.name = json.name;
+  statePatient.email = json.email;
+  statePatient.cpf = json.cpf;
+  statePatient.birth_date = json.birth_date;
+
+  formProfilePatient[0].value = statePatient.name;
+  formProfilePatient[1].value = statePatient.email;
+}
+
+async function putProfilePatient(e) {
+  e.preventDefault();
+  formProfilePatient.forEach((input) => {
+    if (!input.value) {
+      statePatient[input.name] = null;
+      return;
+    }
+    statePatient[input.name] = input.value;
+  });
+
+  const response = await fetch(`${url}/patients`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(statePatient),
+  });
+  if (response.ok) {
+    requestBtnResponseStyle(
+      true,
+      btnAtualizarPerfilPatient,
+      "Perfil atualizado com sucesso!",
+      putProfilePatient
+    );
+    setTimeout(() => {
+      logout();
+    }, 3500);
+  } else {
+    requestBtnResponseStyle(
+      false,
+      btnAtualizarPerfilPatient,
+      "Algo deu errado, tente novamente!",
+      putProfilePatient
     );
   }
   const json = await response.json();
@@ -239,7 +314,6 @@ async function login() {
     console.log(error);
     return error;
   }
-
   const json = await response.json();
   console.log(response);
   console.log(json);
@@ -249,10 +323,28 @@ async function login() {
     localStorage.setItem("created_at", Date.now());
     authentication.expires_in = json.expires_in;
     authentication.created_at = Date.now();
-    window.location.href = "https://medplus-fatec.netlify.app/main-collab";
+
+    const responseUser = await fetch(`${url}/users/current`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${json.access_token}`,
+      },
+    });
+    const jsonUser = await responseUser.json();
+    console.log(jsonUser);
+
+    if (jsonUser.specialization) {
+      window.location.href = "https://medplus-fatec.netlify.app/main-collab";
+      token = json.access_token;
+    }
+
+    if (!jsonUser.specialization) {
+      window.location.href = "https://medplus-fatec.netlify.app/main-patient";
+      token = json.access_token;
+    }
+
     console.log("Usuário logado com sucesso!");
     console.log(authentication);
-    token = json.access_token;
   }
 }
 
@@ -349,6 +441,7 @@ btnSignupPatient?.addEventListener(
   )
 );
 btnLogout?.addEventListener("click", logout);
+btnNovaFicha?.addEventListener("click", getInputsNovaFicha.bind(null));
 
 function getInputsNovaFicha(e) {
   const field = document.querySelector(`input[name="cpf"]`);
@@ -422,7 +515,7 @@ function postJsonNovaFicha() {
 }
 
 async function getFichas(e) {
-  btnVoltarFichas.style.display = "none";
+  if (btnVoltarFichas) btnVoltarFichas.style.display = "none";
   e?.preventDefault();
   tabelaFichasDoctor.innerHTML = "";
   const response = await fetch(`${url}/appointments`, {
@@ -460,7 +553,15 @@ if (window.location.href.includes("profile-collab")) {
   getProfileDoctor();
 }
 
-btnNovaFicha?.addEventListener("click", getInputsNovaFicha.bind(null));
+if (window.location.href.includes("main-patient")) {
+  redirectToLogin();
+  getFichas();
+}
+
+if (window.location.href.includes("profile-patient")) {
+  redirectToLogin();
+  getProfilePatient();
+}
 
 function searchFichas(e) {
   e.preventDefault();
@@ -583,6 +684,7 @@ tabelaFichasDoctor?.addEventListener("click", (e) => {
 btnEditPasswordDoctor?.addEventListener("click", editPassword);
 
 btnAtualizarPerfilDoctor?.addEventListener("click", putProfileDoctor);
+btnAtualizarPerfilPatient?.addEventListener("click", putProfilePatient);
 
 function dateFormat(date) {
   const [year, month, day] = date.split("/");

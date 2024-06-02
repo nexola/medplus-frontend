@@ -11,10 +11,10 @@
   <body id="profile-collab">
     <div class="bg-header">
       <header class="header-main">
-        <h1>Med+<span>colaborador</span></h1>
+        <h1>Med+<span>paciente</span></h1>
         <nav class="nav-main">
           <ul>
-            <li><a href="./main-collab.html">Fichas</a></li>
+            <li><a href="./main-patient.html">Fichas</a></li>
             <li><a href="" class="active-tab">Perfil</a></li>
             <li><a href="./index.html">Sair</a></li>
           </ul>
@@ -25,11 +25,11 @@
       <fieldset>
         <legend>Editar dados</legend>
         <div class="form-editar-dados">
-          <div class="input-editar-dados">
+          <div class="input-editar-dados input-editar-dados-patient">
             <label for="name">Nome</label>
             <input type="text" name="name" id="name" />
           </div>
-          <div class="input-editar-dados">
+          <div class="input-editar-dados input-editar-dados-patient">
             <label for="email">Email</label>
             <input type="email" name="email" id="email" />
           </div>
@@ -44,19 +44,9 @@
             />
             <span class="after-input btn-edit-password-doctor"></span>
           </div>
-          <div class="input-editar-dados">
-            <select
-              name="specialization"
-              id="specialization-profile"
-              class="input"
-            >
-              <option value="MEDICO">MÉDICO</option>
-              <option value="ENFERMEIRO">ENFERMEIRO</option>
-            </select>
-          </div>
           <a
             href="javascript: void(0)"
-            class="btn-atualizar-perfil btn-atualizar-perfil-collab"
+            class="btn-atualizar-perfil-patient btn-atualizar-perfil"
             >Atualizar perfil</a
           >
         </div>
