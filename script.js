@@ -173,15 +173,18 @@ async function putProfileDoctor(e) {
   console.log(json);
 }
 
-async function getProfilePatient(e) {
+async function jsonPatient() {
   const response = await fetch(`${url}/users/current`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  const json = await response.json();
-  console.log(json);
+  return await response.json();
+}
+
+async function getProfilePatient(e) {
+  const json = await jsonPatient();
 
   statePatient.name = json.name;
   statePatient.email = json.email;
@@ -230,6 +233,31 @@ async function putProfilePatient(e) {
   }
   const json = await response.json();
   console.log(json);
+}
+
+async function getFichasPatient() {
+  const jsonP = await jsonPatient();
+  const cpf = jsonP.cpf;
+  const response = await fetch(`${url}/patients/${cpf}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const json = await response.json();
+  tabelaFichasDoctor.innerHTML = "";
+  json.appointments.forEach((ficha, i) => {
+    const time = ficha.date.slice(11, 16);
+    const date = ficha.date.split("T")[0].replace(/-/g, "/");
+    const novaFicha = `<tr id=${`ficha` + i} class="${ficha.id}">
+        <td class="name">${json.name}</td>
+        <td class="date">${dateFormat(date)}</td>
+        <td class="time">${time}</td>
+        <td class="state">${ficha.state}</td>
+        </tr>`;
+    tabelaFichasDoctor.insertAdjacentHTML("beforeend", novaFicha);
+  });
+  // }
 }
 
 function requestBtnResponseStyle(success, btn, msg, fn, e) {
@@ -555,7 +583,7 @@ if (window.location.href.includes("profile-collab")) {
 
 if (window.location.href.includes("main-patient")) {
   redirectToLogin();
-  getFichas();
+  getFichasPatient();
 }
 
 if (window.location.href.includes("profile-patient")) {
