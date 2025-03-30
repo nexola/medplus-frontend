@@ -254,6 +254,7 @@ async function getFichasPatient() {
         <td class="date">${dateFormat(date)}</td>
         <td class="time">${time}</td>
         <td class="state">${ficha.state}</td>
+        <td class="type">${ficha.type}</td>
         </tr>`;
     tabelaFichasDoctor.insertAdjacentHTML("beforeend", novaFicha);
   });
@@ -561,6 +562,7 @@ async function getFichas(e) {
     <td class="date">${dateFormat(date)}</td>
     <td class="time">${time}</td>
     <td class="state">${ficha.state}</td>
+    <td class="type">${ficha.type ? ficha.type : "Geral"}</td>
     ${
       ficha.state !== "CANCELADO" && ficha.state !== "CONCLUIDO"
         ? `<td><a href="#" id=${`btn-` + i}>Editar</a></td>`
