@@ -34,7 +34,7 @@
             <div class="form-nova-ficha" >
                 <div class="input-nova-ficha" style="margin: 12px 0;">
                   <label for="tipoFicha">Tipo de Ficha</label>
-                  <select id="tipoFicha" name="tipoFicha" onchange="mostrarSubtipo()">
+                  <select id="tipoFicha" name="type" onchange="mostrarSubtipo()">
                     <option value="">Selecione</option>
                     <option value="consulta">Consulta</option>
                     <option value="exame">Exame</option>
@@ -43,7 +43,7 @@
                 </div>
                 <div class="input-nova-ficha" id="subtipoFichaContainer" style="display: none; margin: 12px 0;">
                   <label for="subtipoFicha">Tipo</label>
-                  <select id="subtipoFicha" name="subtipoFicha">
+                  <select id="subtipoFicha" name="subType">
                   </select>
                 </div>
                 <div class="input-nova-ficha">
@@ -60,7 +60,7 @@
                   <input type="time" name="time" id="time">
                 </div>
               </div>
-                
+
             </div>
             <a href="./" class="btn-agendar-consulta">Agendar Consulta</a>
         </fieldset>
@@ -96,7 +96,7 @@
           const tipoFicha = document.getElementById("tipoFicha").value;
           const subtipoFichaContainer = document.getElementById("subtipoFichaContainer");
           const subtipoFicha = document.getElementById("subtipoFicha");
-          
+
           subtipoFicha.innerHTML = "";
           if (tipoFicha === "consulta") {
             subtipoFichaContainer.style.display = "block";

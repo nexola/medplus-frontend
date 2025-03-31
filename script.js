@@ -38,6 +38,7 @@ const fichaStatus = {
 const novaFichaInput = {
   date: "",
   state: "AGENDADO",
+  type: "",
   patient: {
     cpf: "",
   },
@@ -78,7 +79,7 @@ const formPatient = document.querySelectorAll(
   ".container--form-patient .input"
 );
 const inputSearch = document.querySelector("#search");
-const formFichasDoctor = document.querySelectorAll(".input-nova-ficha input");
+const formFichasDoctor = document.querySelectorAll(".input-nova-ficha input, .input-nova-ficha select");
 const containerFormDoctor = document.querySelector(".container--form-doctor");
 const containerFormPatient = document.querySelector(".container--form-patient");
 const containerFormLogin = document.querySelector(".container--form-login");
@@ -491,6 +492,14 @@ function getInputsNovaFicha(e) {
       time = input.value;
       return;
     }
+    if(input.name === 'type'){
+      novaFichaInput.type = input.value.replace(input.value.charAt(0), input.value.charAt(0).toUpperCase())
+      return;
+    }
+    if(input.name === 'subType'){
+      novaFichaInput.type += ` - ${input.value.replace(input.value.charAt(0), input.value.charAt(0).toUpperCase())}`
+      return
+    }
     novaFichaInput[input.name] = input.value;
   });
   console.log(novaFichaInput);
@@ -554,6 +563,7 @@ async function getFichas(e) {
     },
   });
   const json = await response.json();
+  console.log(json)
   json.forEach((ficha, i) => {
     const time = ficha.date.slice(11, 16);
     const date = ficha.date.split("T")[0].replace(/-/g, "/");
