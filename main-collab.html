@@ -86,9 +86,15 @@
                 <tbody class="tbody-fichas">
                 </tbody>
             </table>
-            <h2 style="text-align: center;">Gráfico de fichas</h2>
-            <div style="display:flex !important; justify-content:center !important; margin: 40px 0 !important;">
-            <canvas id="graficoPizza" style="max-height: 400px !important;"></canvas>
+            <h2 style="text-align: center;">Gráficos de fichas</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 40px 0;">
+              <div style="flex: 1; min-width: 400px; text-align: center;">
+                <canvas id="statusChart" style="max-height: 400px;"></canvas>
+              </div>
+              <div style="flex: 1; min-width: 400px; text-align: center;">
+                <canvas id="typeChart" style="max-height: 400px;"></canvas>
+              </div>
+            </div>
           </div>
       </section>
       <script>
@@ -122,25 +128,89 @@
         }
       </script>
       <script>
-        const ctx = document.getElementById('graficoPizza').getContext('2d');
-        const graficoPizza = new Chart(ctx, {
+        const myURL = "https://ubs-zxgf.onrender.com";
+        let myToken = localStorage.getItem("token");
+        const options = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${myToken}`,
+          }
+        };
+
+        fetch(`${myURL}/appointments`, options)
+          .then((response) => response.json())
+          .then((appointments) => {
+            // Processar dados para o gráfico
+            const statusCount = {
+              AGENDADO: 0,
+              CANCELADO: 0,
+              REALIZADO: 0
+            };
+
+            const tipoCount = {
+              'Consulta': 0,
+              'Exame': 0,
+              'Retorno': 0,
+              'Outros': 0
+            };
+            console.log({appointments})
+
+            appointments.forEach(appointment => {
+              // Contar status
+              statusCount[appointment.state] = (statusCount[appointment.state] || 0) + 1;
+
+              // Contar tipos (considerando valores nulos como 'Outros')
+              if(appointment.type) {
+                const mainType = appointment.type.split(' - ')[0];
+                tipoCount[mainType] = (tipoCount[mainType] || 0) + 1;
+              } else {
+                tipoCount.Outros += 1;
+              }
+            });
+
+            // Configurar gráfico de pizza para status
+            criarGrafico('statusChart', 'Distribuição de Status', statusCount);
+
+            // Configurar gráfico de pizza para tipos
+            criarGrafico('typeChart', 'Distribuição de Tipos', tipoCount);
+          })
+          .catch((error) => {
+            console.error('Falha na requisição:', error);
+            // Opcional: exibir mensagem para o usuário
+            alert('Não foi possível carregar os dados para os gráficos');
+          });
+        function criarGrafico(canvasId, titulo, dados) {
+          const ctx = document.getElementById(canvasId).getContext('2d');
+
+          // Destruir gráfico anterior se existir
+
+          window[canvasId] = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: ['Ficha A', 'Ficha B', 'Ficha C', 'Ficha D'],
-                datasets: [{
-                    data: [30, 20, 25, 25],
-                    backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0'],
-                }]
+              labels: Object.keys(dados),
+              datasets: [{
+                data: Object.values(dados),
+                backgroundColor: [
+                  '#ff6384', '#36a2eb', '#ffce56', '#4bc0c0',
+                  '#9966ff', '#ff9f40', '#8c9eff', '#69f0ae'
+                ],
+                hoverOffset: 4
+              }]
             },
             options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                    }
+              responsive: true,
+              plugins: {
+                legend: { position: 'bottom' },
+                title: {
+                  display: true,
+                  text: titulo,
+                  padding: 20
                 }
+              }
             }
-        });
-    </script>
+          });
+        }
+      </script>
   </body>
 </html>
