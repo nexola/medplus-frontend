@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Med+ | Unidades</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
+    <!-- Bootstrap 5.3 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <style>
+      :root {
+        --med-primary: #3182ce;
+        --med-dark: #2c5282;
+        --med-light: #f5f9ff;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #212529;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        color: var(--med-primary);
+      }
+
+      .navbar-brand span {
+        color: var(--med-dark);
+      }
+
+      .sidebar {
+        background-color: white;
+        min-height: calc(100vh - 56px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .sidebar .nav-link {
+        color: #495057;
+        border-radius: 5px;
+        margin-bottom: 5px;
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        background-color: var(--med-light);
+        color: var(--med-primary);
+      }
+
+      .sidebar .nav-link i {
+        margin-right: 10px;
+      }
+
+      .card {
+        border: none;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+      }
+
+      .table th {
+        background-color: var(--med-light);
+        color: var(--med-dark);
+        border-top: none;
+      }
+
+      .btn-primary {
+        background-color: var(--med-primary);
+        border-color: var(--med-primary);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--med-dark);
+        border-color: var(--med-dark);
+      }
+
+      .badge-colaboradores {
+        background-color: #e6f7ff;
+        color: var(--med-primary);
+        font-weight: normal;
+      }
+
+      .action-btn {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-heart-pulse"></i> Med<span>+</span>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bi bi-person-circle"></i> Admin
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="bi bi-box-arrow-right"></i> Sair</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div
+          class="col-md-3 col-lg-2 d-md-block sidebar bg-white collapse"
+          id="sidebarMenu"
+        >
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link active" href="#">
+                  <i class="bi bi-hospital"></i> Unidades
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+          >
+            <h1 class="h2"><i class="bi bi-hospital"></i> Unidades</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <button
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#createUnitModal"
+              >
+                <i class="bi bi-plus-lg"></i> Adicionar Unidade
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>Email</th>
+                      <th>Endereço</th>
+                      <th>Colaboradores</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Unidade Centro</td>
+                      <td>centro@medplus.com</td>
+                      <td>Rua Principal, 123 - Centro</td>
+                      <td><span class="badge badge-colaboradores">15</span></td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary action-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editUnitModal"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-danger action-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteUnitModal"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Unidade Zona Sul</td>
+                      <td>zonasul@medplus.com</td>
+                      <td>Av. Beira Mar, 456 - Zona Sul</td>
+                      <td><span class="badge badge-colaboradores">8</span></td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary action-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editUnitModal"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-danger action-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteUnitModal"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Unidade Norte</td>
+                      <td>norte@medplus.com</td>
+                      <td>Rua das Flores, 789 - Norte</td>
+                      <td><span class="badge badge-colaboradores">12</span></td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary action-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editUnitModal"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-danger action-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteUnitModal"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Unidade Oeste</td>
+                      <td>oeste@medplus.com</td>
+                      <td>Av. Industrial, 321 - Oeste</td>
+                      <td><span class="badge badge-colaboradores">5</span></td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary action-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editUnitModal"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-danger action-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteUnitModal"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Create Unit Modal -->
+    <div
+      class="modal fade"
+      id="createUnitModal"
+      tabindex="-1"
+      aria-labelledby="createUnitModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createUnitModalLabel">
+              <i class="bi bi-hospital"></i> Nova Unidade
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="createUnitForm">
+              <div class="mb-3">
+                <label for="unitName" class="form-label">Nome da Unidade</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="unitName"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="unitEmail" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="unitEmail"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="unitAddress" class="form-label">Endereço</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="unitAddress"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="unitColaboradores" class="form-label"
+                  >Número de Colaboradores</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="unitColaboradores"
+                  min="0"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="submit" form="createUnitForm" class="btn btn-primary">
+              Criar Unidade
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Unit Modal -->
+    <div
+      class="modal fade"
+      id="editUnitModal"
+      tabindex="-1"
+      aria-labelledby="editUnitModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editUnitModalLabel">
+              <i class="bi bi-pencil"></i> Editar Unidade
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editUnitForm">
+              <div class="mb-3">
+                <label for="editUnitName" class="form-label"
+                  >Nome da Unidade</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editUnitName"
+                  value="Unidade Centro"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editUnitEmail" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="editUnitEmail"
+                  value="centro@medplus.com"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editUnitAddress" class="form-label">Endereço</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editUnitAddress"
+                  value="Rua Principal, 123 - Centro"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editUnitColaboradores" class="form-label"
+                  >Número de Colaboradores</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="editUnitColaboradores"
+                  value="15"
+                  min="0"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="submit" form="editUnitForm" class="btn btn-primary">
+              Salvar Alterações
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Unit Modal -->
+    <div
+      class="modal fade"
+      id="deleteUnitModal"
+      tabindex="-1"
+      aria-labelledby="deleteUnitModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-danger" id="deleteUnitModalLabel">
+              <i class="bi bi-exclamation-triangle"></i> Confirmar Exclusão
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Tem certeza que deseja excluir a unidade
+              <strong>"Unidade Centro"</strong>?
+            </p>
+            <p class="text-danger">
+              Esta ação não pode ser desfeita e todos os dados relacionados
+              serão perdidos.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-danger">
+              Confirmar Exclusão
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Enable tooltips
+      document.addEventListener("DOMContentLoaded", function () {
+        var tooltipTriggerList = [].slice.call(
+          document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        );
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        // Example of form handling (would be replaced with actual form submission logic)
+        document
+          .getElementById("createUnitForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            // Here you would handle the form submission via AJAX or similar
+            alert("Unidade criada com sucesso!");
+            var createModal = bootstrap.Modal.getInstance(
+              document.getElementById("createUnitModal")
+            );
+            createModal.hide();
+            // Refresh the page or update the table
+          });
+
+        document
+          .getElementById("editUnitForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            // Here you would handle the form submission via AJAX or similar
+            alert("Alterações salvas com sucesso!");
+            var editModal = bootstrap.Modal.getInstance(
+              document.getElementById("editUnitModal")
+            );
+            editModal.hide();
+            // Refresh the page or update the table
+          });
+      });
+    </script>
+  </body>
+</html>

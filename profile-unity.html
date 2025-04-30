@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Med+ | Perfil da Unidade</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
+    <!-- Bootstrap 5.3 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <style>
+      :root {
+        --med-primary: #3182ce;
+        --med-dark: #2c5282;
+        --med-light: #f5f9ff;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #212529;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        color: var(--med-primary);
+      }
+
+      .navbar-brand span {
+        color: var(--med-dark);
+      }
+
+      .sidebar {
+        background-color: white;
+        min-height: calc(100vh - 56px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .sidebar .nav-link {
+        color: #495057;
+        border-radius: 5px;
+        margin-bottom: 5px;
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        background-color: var(--med-light);
+        color: var(--med-primary);
+      }
+
+      .sidebar .nav-link i {
+        margin-right: 10px;
+      }
+
+      .card {
+        border: none;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+      }
+
+      .profile-header {
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .unit-logo {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 3px solid white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-primary {
+        background-color: var(--med-primary);
+        border-color: var(--med-primary);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--med-dark);
+        border-color: var(--med-dark);
+      }
+
+      .info-card {
+        transition: transform 0.2s;
+      }
+
+      .info-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .info-icon {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: var(--med-primary);
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .contact-icon {
+        width: 30px;
+        color: var(--med-primary);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-heart-pulse"></i> Med<span>+</span> Unidade Centro
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bi bi-person-circle"></i> Admin Unidade
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="bi bi-person"></i> Perfil</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="bi bi-box-arrow-right"></i> Sair</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block sidebar bg-white">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="main-unity.html">
+                  <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="doctors.html">
+                  <i class="bi bi-person-badge"></i> Médicos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="collabs.html">
+                  <i class="bi bi-people"></i> Colaboradores
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="unity-records.html">
+                  <i class="bi bi-files"></i> Fichas
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="unity-patients.html">
+                  <i class="bi bi-people"></i> Pacientes
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+          <!-- Unit Profile Header -->
+          <div class="profile-header">
+            <div class="row align-items-center">
+              <div class="col-md-2 text-center">
+                <img
+                  src="./assets/unit-logo.jpg"
+                  alt="Logo Unidade"
+                  class="unit-logo mb-3"
+                />
+                <button class="btn btn-sm btn-outline-primary w-100">
+                  <i class="bi bi-camera"></i> Alterar
+                </button>
+              </div>
+              <div class="col-md-7">
+                <h2>Unidade Médica Centro</h2>
+                <p class="text-muted mb-2">
+                  <i class="bi bi-geo-alt"></i> Rua Principal, 123 - Centro, São
+                  Paulo - SP
+                </p>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                  <span class="badge bg-primary">Cardiologia</span>
+                  <span class="badge bg-success">Pediatria</span>
+                  <span class="badge bg-warning">Ortopedia</span>
+                  <span class="badge bg-info">Clínico Geral</span>
+                </div>
+                <p class="mb-0">
+                  Unidade principal do sistema Med+, atendendo desde 2010 com
+                  excelência em serviços médicos.
+                </p>
+              </div>
+              <div class="col-md-3 text-end">
+                <button
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editUnitModal"
+                >
+                  <i class="bi bi-pencil"></i> Editar Perfil
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Unit Stats -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card info-card h-100">
+                <div class="card-body text-center">
+                  <div class="info-icon">
+                    <i class="bi bi-person-badge"></i>
+                  </div>
+                  <h5 class="card-title">Médicos</h5>
+                  <p class="card-text display-6">12</p>
+                  <a
+                    href="listagem-medicos.html"
+                    class="btn btn-sm btn-outline-primary"
+                    >Ver todos</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card info-card h-100">
+                <div class="card-body text-center">
+                  <div class="info-icon"><i class="bi bi-people"></i></div>
+                  <h5 class="card-title">Colaboradores</h5>
+                  <p class="card-text display-6">24</p>
+                  <a
+                    href="listagem-colaboradores.html"
+                    class="btn btn-sm btn-outline-primary"
+                    >Ver todos</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card info-card h-100">
+                <div class="card-body text-center">
+                  <div class="info-icon">
+                    <i class="bi bi-calendar-check"></i>
+                  </div>
+                  <h5 class="card-title">Consultas/Mês</h5>
+                  <p class="card-text display-6">356</p>
+                  <a href="#" class="btn btn-sm btn-outline-primary"
+                    >Ver relatório</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card info-card h-100">
+                <div class="card-body text-center">
+                  <div class="info-icon"><i class="bi bi-star"></i></div>
+                  <h5 class="card-title">Avaliação</h5>
+                  <p class="card-text display-6">4.8/5</p>
+                  <a href="#" class="btn btn-sm btn-outline-primary"
+                    >Ver feedback</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Unit Details -->
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card mb-4">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">
+                    <i class="bi bi-info-circle"></i> Sobre a Unidade
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <p>
+                    A Unidade Médica Centro é a principal unidade do sistema
+                    Med+, localizada no coração da cidade. Fundada em 2010,
+                    nossa unidade oferece atendimento especializado em diversas
+                    áreas médicas, contando com profissionais altamente
+                    qualificados e tecnologia de ponta.
+                  </p>
+
+                  <h6 class="mt-4">
+                    <i class="bi bi-check-circle"></i> Nossos Diferenciais
+                  </h6>
+                  <ul>
+                    <li>Atendimento 24 horas em urgências</li>
+                    <li>Centro de diagnósticos completo</li>
+                    <li>Equipe multidisciplinar</li>
+                    <li>Convênios com todas as principais operadoras</li>
+                    <li>Infraestrutura moderna e acessível</li>
+                  </ul>
+
+                  <h6 class="mt-4">
+                    <i class="bi bi-clock-history"></i> Horário de Funcionamento
+                  </h6>
+                  <div class="table-responsive">
+                    <table class="table table-sm">
+                      <tbody>
+                        <tr>
+                          <td>Segunda a Sexta</td>
+                          <td>07:00 - 22:00</td>
+                        </tr>
+                        <tr>
+                          <td>Sábado</td>
+                          <td>08:00 - 18:00</td>
+                        </tr>
+                        <tr>
+                          <td>Domingo</td>
+                          <td>08:00 - 12:00 (apenas urgências)</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card mb-4">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0"><i class="bi bi-telephone"></i> Contato</h5>
+                </div>
+                <div class="card-body">
+                  <div class="contact-item">
+                    <div class="contact-icon">
+                      <i class="bi bi-telephone"></i>
+                    </div>
+                    <div>(11) 1234-5678</div>
+                  </div>
+                  <div class="contact-item">
+                    <div class="contact-icon">
+                      <i class="bi bi-whatsapp"></i>
+                    </div>
+                    <div>(11) 98765-4321</div>
+                  </div>
+                  <div class="contact-item">
+                    <div class="contact-icon">
+                      <i class="bi bi-envelope"></i>
+                    </div>
+                    <div>centro@medplus.com</div>
+                  </div>
+                  <div class="contact-item">
+                    <div class="contact-icon"><i class="bi bi-globe"></i></div>
+                    <div>www.medplus.com/centro</div>
+                  </div>
+                  <hr />
+                  <h6><i class="bi bi-share"></i> Redes Sociais</h6>
+                  <div class="d-flex gap-3 mt-3">
+                    <a href="#" class="text-primary"
+                      ><i class="bi bi-facebook" style="font-size: 1.5rem"></i
+                    ></a>
+                    <a href="#" class="text-info"
+                      ><i class="bi bi-twitter" style="font-size: 1.5rem"></i
+                    ></a>
+                    <a href="#" class="text-danger"
+                      ><i class="bi bi-instagram" style="font-size: 1.5rem"></i
+                    ></a>
+                    <a href="#" class="text-primary"
+                      ><i class="bi bi-linkedin" style="font-size: 1.5rem"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0"><i class="bi bi-map"></i> Localização</h5>
+                </div>
+                <div class="card-body p-0">
+                  <div
+                    style="
+                      height: 250px;
+                      background-color: #eee;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <i
+                      class="bi bi-map"
+                      style="font-size: 3rem; color: #ccc"
+                    ></i>
+                  </div>
+                  <div class="p-3">
+                    <button class="btn btn-outline-primary w-100">
+                      <i class="bi bi-geo-alt"></i> Ver no mapa
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Edit Unit Modal -->
+    <div
+      class="modal fade"
+      id="editUnitModal"
+      tabindex="-1"
+      aria-labelledby="editUnitModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editUnitModalLabel">
+              <i class="bi bi-hospital"></i> Editar Perfil da Unidade
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editUnitForm">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="unitName" class="form-label"
+                      >Nome da Unidade</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="unitName"
+                      value="Unidade Médica Centro"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="unitEmail" class="form-label">Email</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="unitEmail"
+                      value="centro@medplus.com"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="unitPhone" class="form-label">Telefone</label>
+                    <input
+                      type="tel"
+                      class="form-control"
+                      id="unitPhone"
+                      value="(11) 1234-5678"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="unitWhatsApp" class="form-label"
+                      >WhatsApp</label
+                    >
+                    <input
+                      type="tel"
+                      class="form-control"
+                      id="unitWhatsApp"
+                      value="(11) 98765-4321"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="unitWebsite" class="form-label">Website</label>
+                    <input
+                      type="url"
+                      class="form-control"
+                      id="unitWebsite"
+                      value="www.medplus.com/centro"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="unitAddress" class="form-label"
+                  >Endereço Completo</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="unitAddress"
+                  value="Rua Principal, 123 - Centro, São Paulo - SP"
+                  required
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Especialidades Oferecidas</label>
+                <div class="d-flex flex-wrap gap-2">
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="cardioCheck"
+                      checked
+                    />
+                    <label class="form-check-label" for="cardioCheck"
+                      >Cardiologia</label
+                    >
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="pedCheck"
+                      checked
+                    />
+                    <label class="form-check-label" for="pedCheck"
+                      >Pediatria</label
+                    >
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="orthoCheck"
+                      checked
+                    />
+                    <label class="form-check-label" for="orthoCheck"
+                      >Ortopedia</label
+                    >
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="dermaCheck"
+                    />
+                    <label class="form-check-label" for="dermaCheck"
+                      >Dermatologia</label
+                    >
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="clinicCheck"
+                      checked
+                    />
+                    <label class="form-check-label" for="clinicCheck"
+                      >Clínico Geral</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="unitDescription" class="form-label"
+                  >Descrição da Unidade</label
+                >
+                <textarea class="form-control" id="unitDescription" rows="4">
+A Unidade Médica Centro é a principal unidade do sistema Med+, localizada no coração da cidade. Fundada em 2010, nossa unidade oferece atendimento especializado em diversas áreas médicas, contando com profissionais altamente qualificados e tecnologia de ponta.</textarea
+                >
+              </div>
+
+              <div class="mb-3">
+                <label for="unitHours" class="form-label"
+                  >Horário de Funcionamento</label
+                >
+                <div class="table-responsive">
+                  <table class="table table-sm">
+                    <thead>
+                      <tr>
+                        <th>Dia</th>
+                        <th>Abre</th>
+                        <th>Fecha</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Segunda a Sexta</td>
+                        <td>
+                          <input
+                            type="time"
+                            class="form-control form-control-sm"
+                            value="07:00"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            class="form-control form-control-sm"
+                            value="22:00"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Sábado</td>
+                        <td>
+                          <input
+                            type="time"
+                            class="form-control form-control-sm"
+                            value="08:00"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            class="form-control form-control-sm"
+                            value="18:00"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Domingo</td>
+                        <td>
+                          <input
+                            type="time"
+                            class="form-control form-control-sm"
+                            value="08:00"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            class="form-control form-control-sm"
+                            value="12:00"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="submit" form="editUnitForm" class="btn btn-primary">
+              Salvar Alterações
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Form submission handler
+        document
+          .getElementById("editUnitForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Perfil da unidade atualizado com sucesso!");
+            var modal = bootstrap.Modal.getInstance(
+              document.getElementById("editUnitModal")
+            );
+            modal.hide();
+          });
+      });
+    </script>
+  </body>
+</html>

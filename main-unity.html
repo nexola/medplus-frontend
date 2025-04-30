@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Med+ | Dashboard da Unidade</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
+    <!-- Bootstrap 5.3 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      :root {
+        --med-primary: #3182ce;
+        --med-dark: #2c5282;
+        --med-light: #f5f9ff;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #212529;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        color: var(--med-primary);
+      }
+
+      .navbar-brand span {
+        color: var(--med-dark);
+      }
+
+      .sidebar {
+        background-color: white;
+        min-height: calc(100vh - 56px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .sidebar .nav-link {
+        color: #495057;
+        border-radius: 5px;
+        margin-bottom: 5px;
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        background-color: var(--med-light);
+        color: var(--med-primary);
+      }
+
+      .sidebar .nav-link i {
+        margin-right: 10px;
+      }
+
+      .card {
+        border: none;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+        transition: transform 0.2s;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+      }
+
+      .card-icon {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .stat-card .card-title {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-card .card-value {
+        font-size: 1.8rem;
+        font-weight: 700;
+      }
+
+      .btn-primary {
+        background-color: var(--med-primary);
+        border-color: var(--med-primary);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--med-dark);
+        border-color: var(--med-dark);
+      }
+
+      .action-btn {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .tab-content {
+        padding: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-heart-pulse"></i> Med<span>+</span> Unidade Centro
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bi bi-person-circle"></i> Admin Unidade
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="./profile-unity.html"
+                    ><i class="bi bi-person"></i> Perfil</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="bi bi-box-arrow-right"></i> Sair</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block sidebar bg-white">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link active" href="#">
+                  <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href="#"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#medicosCollapse"
+                >
+                  <i class="bi bi-person-badge"></i> Médicos
+                </a>
+                <div class="collapse" id="medicosCollapse">
+                  <ul class="nav flex-column ps-4">
+                    <li class="nav-item">
+                      <a class="nav-link" href="./doctors.html">Listar</a>
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        href="#"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addMedicoModal"
+                        >Adicionar</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href="#"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#colaboradoresCollapse"
+                >
+                  <i class="bi bi-people"></i> Colaboradores
+                </a>
+                <div class="collapse" id="colaboradoresCollapse">
+                  <ul class="nav flex-column ps-4">
+                    <li class="nav-item">
+                      <a class="nav-link" href="./collabs.html">Listar</a>
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        href="#"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addColaboradorModal"
+                        >Adicionar</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="unity-records.html">
+                  <i class="bi bi-files"></i> Fichas
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="unity-patients.html">
+                  <i class="bi bi-people"></i> Pacientes
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+          >
+            <h1 class="h2">
+              <i class="bi bi-speedometer2"></i> Dashboard da Unidade
+            </h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <div class="btn-group me-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary">
+                  Hoje
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">
+                  Semana
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">
+                  Mês
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats Cards -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card stat-card text-white bg-primary">
+                <div class="card-body">
+                  <div class="card-icon">
+                    <i class="bi bi-person-badge"></i>
+                  </div>
+                  <h5 class="card-title">Médicos</h5>
+                  <p class="card-value">12</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stat-card text-white bg-success">
+                <div class="card-body">
+                  <div class="card-icon"><i class="bi bi-people"></i></div>
+                  <h5 class="card-title">Colaboradores</h5>
+                  <p class="card-value">24</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stat-card text-white bg-warning">
+                <div class="card-body">
+                  <div class="card-icon"><i class="bi bi-files"></i></div>
+                  <h5 class="card-title">Fichas Ativas</h5>
+                  <p class="card-value">18</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stat-card text-white bg-info">
+                <div class="card-body">
+                  <div class="card-icon">
+                    <i class="bi bi-person-heart"></i>
+                  </div>
+                  <h5 class="card-title">Pacientes</h5>
+                  <p class="card-value">156</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Row -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h5 class="card-title">Consultas por Especialidade</h5>
+                  <canvas id="specialtyChart" height="250"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h5 class="card-title">Fichas por Status</h5>
+                  <canvas id="statusChart" height="250"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Médicos e Colaboradores Tabs -->
+          <div class="card">
+            <div class="card-header bg-white">
+              <ul
+                class="nav nav-tabs card-header-tabs"
+                id="staffTabs"
+                role="tablist"
+              >
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link active"
+                    id="medicos-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#medicos"
+                    type="button"
+                  >
+                    Médicos
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="colaboradores-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#colaboradores"
+                    type="button"
+                  >
+                    Colaboradores
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <div class="tab-content" id="staffTabsContent">
+                <!-- Médicos Tab -->
+                <div
+                  class="tab-pane fade show active"
+                  id="medicos"
+                  role="tabpanel"
+                >
+                  <div class="d-flex justify-content-between mb-3">
+                    <h5 class="mb-0">Lista de Médicos</h5>
+                    <button
+                      class="btn btn-sm btn-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#addMedicoModal"
+                    >
+                      <i class="bi bi-plus-lg"></i> Adicionar Médico
+                    </button>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Nome</th>
+                          <th>CRM</th>
+                          <th>Especialidade</th>
+                          <th>Email</th>
+                          <th>Ações</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Dr. Carlos Andrade</td>
+                          <td>SP-123456</td>
+                          <td>Cardiologia</td>
+                          <td>carlos.andrade@medplus.com</td>
+                          <td>
+                            <button
+                              class="btn btn-sm btn-outline-primary action-btn"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editMedicoModal"
+                            >
+                              <i class="bi bi-pencil"></i>
+                            </button>
+                            <button
+                              class="btn btn-sm btn-outline-danger action-btn"
+                              data-bs-toggle="modal"
+                              data-bs-target="#deleteMedicoModal"
+                            >
+                              <i class="bi bi-trash"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Dra. Ana Beatriz</td>
+                          <td>RJ-654321</td>
+                          <td>Pediatria</td>
+                          <td>ana.beatriz@medplus.com</td>
+                          <td>
+                            <button
+                              class="btn btn-sm btn-outline-primary action-btn"
+                            >
+                              <i class="bi bi-pencil"></i>
+                            </button>
+                            <button
+                              class="btn btn-sm btn-outline-danger action-btn"
+                            >
+                              <i class="bi bi-trash"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Colaboradores Tab -->
+                <div class="tab-pane fade" id="colaboradores" role="tabpanel">
+                  <div class="d-flex justify-content-between mb-3">
+                    <h5 class="mb-0">Lista de Colaboradores</h5>
+                    <button
+                      class="btn btn-sm btn-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#addColaboradorModal"
+                    >
+                      <i class="bi bi-plus-lg"></i> Adicionar Colaborador
+                    </button>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Nome</th>
+                          <th>Tipo</th>
+                          <th>Email</th>
+                          <th>Ações</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Maria Oliveira</td>
+                          <td>
+                            <span class="badge bg-primary">Atendente</span>
+                          </td>
+                          <td>maria.oliveira@medplus.com</td>
+                          <td>
+                            <button
+                              class="btn btn-sm btn-outline-primary action-btn"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editColaboradorModal"
+                            >
+                              <i class="bi bi-pencil"></i>
+                            </button>
+                            <button
+                              class="btn btn-sm btn-outline-danger action-btn"
+                              data-bs-toggle="modal"
+                              data-bs-target="#deleteColaboradorModal"
+                            >
+                              <i class="bi bi-trash"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>João Silva</td>
+                          <td>
+                            <span class="badge bg-success">Recepcionista</span>
+                          </td>
+                          <td>joao.silva@medplus.com</td>
+                          <td>
+                            <button
+                              class="btn btn-sm btn-outline-primary action-btn"
+                            >
+                              <i class="bi bi-pencil"></i>
+                            </button>
+                            <button
+                              class="btn btn-sm btn-outline-danger action-btn"
+                            >
+                              <i class="bi bi-trash"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Add Médico Modal -->
+    <div
+      class="modal fade"
+      id="addMedicoModal"
+      tabindex="-1"
+      aria-labelledby="addMedicoModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addMedicoModalLabel">
+              <i class="bi bi-person-badge"></i> Adicionar Médico
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="addMedicoForm">
+              <div class="mb-3">
+                <label for="medicoNome" class="form-label">Nome Completo</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="medicoNome"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="medicoCRM" class="form-label">CRM</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="medicoCRM"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="medicoEspecialidade" class="form-label"
+                  >Especialidade</label
+                >
+                <select class="form-select" id="medicoEspecialidade" required>
+                  <option value="">Selecione...</option>
+                  <option value="cardiologia">Cardiologia</option>
+                  <option value="pediatria">Pediatria</option>
+                  <option value="ortopedia">Ortopedia</option>
+                  <option value="dermatologia">Dermatologia</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="medicoEmail" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="medicoEmail"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="submit" form="addMedicoForm" class="btn btn-primary">
+              Cadastrar Médico
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Médico Modal -->
+    <div
+      class="modal fade"
+      id="editMedicoModal"
+      tabindex="-1"
+      aria-labelledby="editMedicoModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editMedicoModalLabel">
+              <i class="bi bi-person-badge"></i> Editar Médico
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editMedicoForm">
+              <div class="mb-3">
+                <label for="editMedicoNome" class="form-label"
+                  >Nome Completo</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editMedicoNome"
+                  value="Dr. Carlos Andrade"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editMedicoCRM" class="form-label">CRM</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editMedicoCRM"
+                  value="SP-123456"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editMedicoEspecialidade" class="form-label"
+                  >Especialidade</label
+                >
+                <select
+                  class="form-select"
+                  id="editMedicoEspecialidade"
+                  required
+                >
+                  <option value="cardiologia" selected>Cardiologia</option>
+                  <option value="pediatria">Pediatria</option>
+                  <option value="ortopedia">Ortopedia</option>
+                  <option value="dermatologia">Dermatologia</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="editMedicoEmail" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="editMedicoEmail"
+                  value="carlos.andrade@medplus.com"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="submit" form="editMedicoForm" class="btn btn-primary">
+              Salvar Alterações
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Médico Modal -->
+    <div
+      class="modal fade"
+      id="deleteMedicoModal"
+      tabindex="-1"
+      aria-labelledby="deleteMedicoModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-danger" id="deleteMedicoModalLabel">
+              <i class="bi bi-exclamation-triangle"></i> Confirmar Exclusão
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Tem certeza que deseja excluir o médico
+              <strong>"Dr. Carlos Andrade"</strong>?
+            </p>
+            <p class="text-danger">
+              Esta ação não pode ser desfeita e todos os dados relacionados
+              serão perdidos.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-danger">
+              Confirmar Exclusão
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Colaborador Modal -->
+    <div
+      class="modal fade"
+      id="addColaboradorModal"
+      tabindex="-1"
+      aria-labelledby="addColaboradorModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addColaboradorModalLabel">
+              <i class="bi bi-person-plus"></i> Adicionar Colaborador
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="addColaboradorForm">
+              <div class="mb-3">
+                <label for="colaboradorNome" class="form-label"
+                  >Nome Completo</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="colaboradorNome"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="colaboradorTipo" class="form-label"
+                  >Tipo de Colaborador</label
+                >
+                <select class="form-select" id="colaboradorTipo" required>
+                  <option value="">Selecione...</option>
+                  <option value="atendente">Atendente</option>
+                  <option value="recepcionista">Recepcionista</option>
+                  <option value="enfermeiro">Enfermeiro</option>
+                  <option value="administrativo">Administrativo</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="colaboradorEmail" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="colaboradorEmail"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              form="addColaboradorForm"
+              class="btn btn-primary"
+            >
+              Cadastrar Colaborador
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Colaborador Modal -->
+    <div
+      class="modal fade"
+      id="editColaboradorModal"
+      tabindex="-1"
+      aria-labelledby="editColaboradorModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editColaboradorModalLabel">
+              <i class="bi bi-person-gear"></i> Editar Colaborador
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editColaboradorForm">
+              <div class="mb-3">
+                <label for="editColaboradorNome" class="form-label"
+                  >Nome Completo</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editColaboradorNome"
+                  value="Maria Oliveira"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editColaboradorTipo" class="form-label"
+                  >Tipo de Colaborador</label
+                >
+                <select class="form-select" id="editColaboradorTipo" required>
+                  <option value="atendente" selected>Atendente</option>
+                  <option value="recepcionista">Recepcionista</option>
+                  <option value="enfermeiro">Enfermeiro</option>
+                  <option value="administrativo">Administrativo</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="editColaboradorEmail" class="form-label"
+                  >Email</label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="editColaboradorEmail"
+                  value="maria.oliveira@medplus.com"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              form="editColaboradorForm"
+              class="btn btn-primary"
+            >
+              Salvar Alterações
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Colaborador Modal -->
+    <div
+      class="modal fade"
+      id="deleteColaboradorModal"
+      tabindex="-1"
+      aria-labelledby="deleteColaboradorModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title text-danger"
+              id="deleteColaboradorModalLabel"
+            >
+              <i class="bi bi-exclamation-triangle"></i> Confirmar Exclusão
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Tem certeza que deseja excluir o colaborador
+              <strong>"Maria Oliveira"</strong>?
+            </p>
+            <p class="text-danger">
+              Esta ação não pode ser desfeita e todos os dados relacionados
+              serão perdidos.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-danger">
+              Confirmar Exclusão
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize charts
+        const specialtyCtx = document
+          .getElementById("specialtyChart")
+          .getContext("2d");
+        const specialtyChart = new Chart(specialtyCtx, {
+          type: "bar",
+          data: {
+            labels: [
+              "Cardiologia",
+              "Pediatria",
+              "Ortopedia",
+              "Dermatologia",
+              "Clínico Geral",
+            ],
+            datasets: [
+              {
+                label: "Consultas por Especialidade",
+                data: [12, 19, 8, 5, 10],
+                backgroundColor: [
+                  "rgba(75, 192, 192, 0.6)",
+                  "rgba(54, 162, 235, 0.6)",
+                  "rgba(255, 206, 86, 0.6)",
+                  "rgba(153, 102, 255, 0.6)",
+                  "rgba(255, 159, 64, 0.6)",
+                ],
+                borderColor: [
+                  "rgba(75, 192, 192, 1)",
+                  "rgba(54, 162, 235, 1)",
+                  "rgba(255, 206, 86, 1)",
+                  "rgba(153, 102, 255, 1)",
+                  "rgba(255, 159, 64, 1)",
+                ],
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+
+        const statusCtx = document
+          .getElementById("statusChart")
+          .getContext("2d");
+        const statusChart = new Chart(statusCtx, {
+          type: "doughnut",
+          data: {
+            labels: ["Agendadas", "Concluídas", "Canceladas", "Em Andamento"],
+            datasets: [
+              {
+                data: [15, 30, 5, 8],
+                backgroundColor: [
+                  "rgba(54, 162, 235, 0.6)",
+                  "rgba(75, 192, 192, 0.6)",
+                  "rgba(255, 99, 132, 0.6)",
+                  "rgba(255, 206, 86, 0.6)",
+                ],
+                borderColor: [
+                  "rgba(54, 162, 235, 1)",
+                  "rgba(75, 192, 192, 1)",
+                  "rgba(255, 99, 132, 1)",
+                  "rgba(255, 206, 86, 1)",
+                ],
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: "bottom",
+              },
+            },
+          },
+        });
+
+        // Form submission handlers
+        document
+          .getElementById("addMedicoForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Médico cadastrado com sucesso!");
+            var modal = bootstrap.Modal.getInstance(
+              document.getElementById("addMedicoModal")
+            );
+            modal.hide();
+          });
+
+        document
+          .getElementById("editMedicoForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Alterações salvas com sucesso!");
+            var modal = bootstrap.Modal.getInstance(
+              document.getElementById("editMedicoModal")
+            );
+            modal.hide();
+          });
+
+        document
+          .getElementById("addColaboradorForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Colaborador cadastrado com sucesso!");
+            var modal = bootstrap.Modal.getInstance(
+              document.getElementById("addColaboradorModal")
+            );
+            modal.hide();
+          });
+
+        document
+          .getElementById("editColaboradorForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Alterações salvas com sucesso!");
+            var modal = bootstrap.Modal.getInstance(
+              document.getElementById("editColaboradorModal")
+            );
+            modal.hide();
+          });
+      });
+    </script>
+  </body>
+</html>

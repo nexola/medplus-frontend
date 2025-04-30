@@ -1,146 +1,772 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css">
+    <title>Med+ | Dashboard collaborador</title>
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
-    <title>Med+ Colaborador</title>
-    <script defer src="script.js"></script>
+    <!-- Bootstrap 5.3 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        canvas {
-            max-width: 400px;
-        }
+      :root {
+        --med-primary: #3182ce;
+        --med-dark: #2c5282;
+        --med-light: #f5f9ff;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #212529;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        color: var(--med-primary);
+      }
+
+      .navbar-brand span {
+        color: var(--med-dark);
+      }
+
+      .sidebar {
+        background-color: white;
+        min-height: calc(100vh - 56px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .sidebar .nav-link {
+        color: #495057;
+        border-radius: 5px;
+        margin-bottom: 5px;
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        background-color: var(--med-light);
+        color: var(--med-primary);
+      }
+
+      .sidebar .nav-link i {
+        margin-right: 10px;
+      }
+
+      .card {
+        border: none;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+        transition: transform 0.2s;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+      }
+
+      .card-icon {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .stat-card .card-title {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-card .card-value {
+        font-size: 1.8rem;
+        font-weight: 700;
+      }
+
+      .btn-primary {
+        background-color: var(--med-primary);
+        border-color: var(--med-primary);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--med-dark);
+        border-color: var(--med-dark);
+      }
+
+      .action-btn {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .badge-collab {
+        background-color: #6f42c1;
+      }
+
+      .appointment-badge {
+        font-size: 0.75rem;
+      }
+
+      .appointment-card {
+        border-left: 4px solid var(--med-primary);
+      }
+
+      .appointment-card.urgent {
+        border-left-color: #dc3545;
+      }
+
+      .appointment-card.completed {
+        border-left-color: #28a745;
+      }
     </style>
-</head>
-<body id="main-collab">
-    <div class="bg-header">
-    <header class="header-main">
-      <h1>Med+<span>colaborador</span></h1>
-      <nav class="nav-main">
-        <ul>
-          <li><a href="#fichas" class="active-tab">Fichas</a></li>
-          <li><a href="./profile-collab.html">Perfil</a></li>
-          <li><a href="./index.html" class="btn-logout">Sair</a></li>
-        </ul>
-      </nav>
-    </header>
-  </div>
-    <main class="main-collab">
-      <section class="nova-ficha">
-        <fieldset>
-            <legend>Nova ficha</legend>
-            <div class="form-nova-ficha" >
-                <div class="input-nova-ficha" style="margin: 12px 0;">
-                  <label for="tipoFicha">Tipo de Ficha</label>
-                  <select id="tipoFicha" name="tipoFicha" onchange="mostrarSubtipo()">
-                    <option value="">Selecione</option>
-                    <option value="consulta">Consulta</option>
-                    <option value="exame">Exame</option>
-                    <option value="retorno">Retorno</option>
-                  </select>
-                </div>
-                <div class="input-nova-ficha" id="subtipoFichaContainer" style="display: none; margin: 12px 0;">
-                  <label for="subtipoFicha">Tipo</label>
-                  <select id="subtipoFicha" name="subtipoFicha">
-                  </select>
-                </div>
-                <div class="input-nova-ficha">
-                  <label for="patient">CPF do Paciente</label>
-                  <input type="text" name="cpf" id="cpf">
-                </div>
-                <div class="data-horario">
-                <div class="input-nova-ficha">
-                  <label for="date">Data</label>
-                  <input type="date" name="date" id="date">
-                </div>
-                <div class="input-nova-ficha">
-                  <label for="time">Horário</label>
-                  <input type="time" name="time" id="time">
+  </head>
+  <body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-heart-pulse"></i> Med<span>+</span> collaborador
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bi bi-person-circle"></i> Maria Oliveira
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="./profile-collab.html"
+                    ><i class="bi bi-person"></i> Perfil</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="bi bi-box-arrow-right"></i> Sair</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block sidebar bg-white">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link active" href="./dashboard-collab.html">
+                  <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./collab-patients.html">
+                  <i class="bi bi-people"></i> Pacientes
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./collab-records.html">
+                  <i class="bi bi-files"></i> Fichas
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./collab-schedule.html">
+                  <i class="bi bi-calendar-check"></i> Agenda
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./profile-collab.html">
+                  <i class="bi bi-person"></i> Meu Perfil
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+          >
+            <h1 class="h2"><i class="bi bi-speedometer2"></i> Dashboard</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <span class="me-2">
+                <i class="bi bi-person-badge"></i> Atendente
+              </span>
+              <span class="badge bg-primary"> Unidade Centro </span>
+            </div>
+          </div>
+
+          <!-- Stats Cards -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card stat-card">
+                <div class="card-body">
+                  <div class="card-icon text-primary">
+                    <i class="bi bi-people"></i>
+                  </div>
+                  <h5 class="card-title">Pacientes Cadastrados</h5>
+                  <p class="card-value">42</p>
+                  <p class="text-muted mb-0">
+                    <span class="text-success">+5</span> este mês
+                  </p>
                 </div>
               </div>
-                
             </div>
-            <a href="./" class="btn-agendar-consulta">Agendar Consulta</a>
-        </fieldset>
-      </section>
-      <section class="fichas-registradas">
-          <h2>Fichas registradas</h2>
-          <div class="search-fichas">
-            <input type="text" name="search" id="search" placeholder="CPF Paciente">
-            <a href="./" class="btn-search-fichas">Buscar</a>
-            <a href="./" class="btn-voltar-fichas">Voltar</a>
+            <div class="col-md-3">
+              <div class="card stat-card">
+                <div class="card-body">
+                  <div class="card-icon text-success">
+                    <i class="bi bi-file-earmark-text"></i>
+                  </div>
+                  <h5 class="card-title">Fichas Ativas</h5>
+                  <p class="card-value">28</p>
+                  <p class="text-muted mb-0">
+                    <span class="text-success">+3</span> hoje
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stat-card">
+                <div class="card-body">
+                  <div class="card-icon text-warning">
+                    <i class="bi bi-calendar-check"></i>
+                  </div>
+                  <h5 class="card-title">Agendamentos Hoje</h5>
+                  <p class="card-value">9</p>
+                  <p class="text-muted mb-0">
+                    <span class="text-danger">2</span> urgentes
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card stat-card">
+                <div class="card-body">
+                  <div class="card-icon text-info">
+                    <i class="bi bi-clock-history"></i>
+                  </div>
+                  <h5 class="card-title">Atividades</h5>
+                  <p class="card-value">56</p>
+                  <p class="text-muted mb-0">esta semana</p>
+                </div>
+              </div>
+            </div>
           </div>
-            <table class="tabela-fichas">
-                <thead>
-                    <tr>
-                        <th>Paciente</th>
-                        <th>Data</th>
-                        <th>Horário</th>
-                        <th>Status</th>
-                        <th>Tipo</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody class="tbody-fichas">
-                </tbody>
-            </table>
-            <h2 style="text-align: center;">Gráfico de fichas</h2>
-            <div style="display:flex !important; justify-content:center !important; margin: 40px 0 !important;">
-            <canvas id="graficoPizza" style="max-height: 400px !important;"></canvas>
+
+          <!-- Main Content Row -->
+          <div class="row">
+            <!-- Left Column -->
+            <div class="col-lg-8">
+              <!-- Appointments Card -->
+              <div class="card mb-4">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">
+                    <i class="bi bi-calendar-check"></i> Próximos Agendamentos
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <div class="list-group">
+                    <a
+                      href="#"
+                      class="list-group-item list-group-item-action border-0 appointment-card urgent"
+                    >
+                      <div class="d-flex w-100 justify-content-between">
+                        <div>
+                          <h6 class="mb-1">Dr. Carlos Andrade</h6>
+                          <p class="mb-1">
+                            João da Silva - Consulta de emergência
+                          </p>
+                          <span class="badge bg-danger appointment-badge"
+                            >Urgente</span
+                          >
+                        </div>
+                        <div class="text-end">
+                          <small class="text-muted">Hoje</small>
+                          <p class="mb-0">09:30 - 10:00</p>
+                        </div>
+                      </div>
+                    </a>
+                    <a
+                      href="#"
+                      class="list-group-item list-group-item-action border-0 appointment-card"
+                    >
+                      <div class="d-flex w-100 justify-content-between">
+                        <div>
+                          <h6 class="mb-1">Dra. Ana Beatriz</h6>
+                          <p class="mb-1">Maria Oliveira - Acompanhamento</p>
+                          <span class="badge bg-primary appointment-badge"
+                            >Confirmado</span
+                          >
+                        </div>
+                        <div class="text-end">
+                          <small class="text-muted">Hoje</small>
+                          <p class="mb-0">11:15 - 11:45</p>
+                        </div>
+                      </div>
+                    </a>
+                    <a
+                      href="#"
+                      class="list-group-item list-group-item-action border-0 appointment-card"
+                    >
+                      <div class="d-flex w-100 justify-content-between">
+                        <div>
+                          <h6 class="mb-1">Dr. Roberto Santos</h6>
+                          <p class="mb-1">
+                            Carlos Ferreira - Consulta de rotina
+                          </p>
+                          <span class="badge bg-primary appointment-badge"
+                            >Confirmado</span
+                          >
+                        </div>
+                        <div class="text-end">
+                          <small class="text-muted">Hoje</small>
+                          <p class="mb-0">14:00 - 14:30</p>
+                        </div>
+                      </div>
+                    </a>
+                    <a
+                      href="#"
+                      class="list-group-item list-group-item-action border-0 appointment-card completed"
+                    >
+                      <div class="d-flex w-100 justify-content-between">
+                        <div>
+                          <h6 class="mb-1">Dra. Juliana Costa</h6>
+                          <p class="mb-1">Ana Paula - Retorno</p>
+                          <span class="badge bg-success appointment-badge"
+                            >Concluído</span
+                          >
+                        </div>
+                        <div class="text-end">
+                          <small class="text-muted">Hoje</small>
+                          <p class="mb-0">08:00 - 08:30</p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="text-center mt-3">
+                    <a
+                      href="./collab-schedule.html"
+                      class="btn btn-sm btn-outline-primary"
+                    >
+                      Ver agenda completa <i class="bi bi-arrow-right"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Recent Patients Card -->
+              <div class="card mb-4">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">
+                    <i class="bi bi-people"></i> Pacientes Recentes
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Nome</th>
+                          <th>CPF</th>
+                          <th>Última Consulta</th>
+                          <th>Status</th>
+                          <th>Ações</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>João da Silva</td>
+                          <td>123.456.789-00</td>
+                          <td>Hoje</td>
+                          <td><span class="badge bg-success">Ativo</span></td>
+                          <td>
+                            <button
+                              class="btn btn-sm btn-outline-primary action-btn"
+                            >
+                              <i class="bi bi-eye"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Maria Oliveira</td>
+                          <td>987.654.321-00</td>
+                          <td>Ontem</td>
+                          <td><span class="badge bg-success">Ativo</span></td>
+                          <td>
+                            <button
+                              class="btn btn-sm btn-outline-primary action-btn"
+                            >
+                              <i class="bi bi-eye"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Carlos Ferreira</td>
+                          <td>456.123.789-00</td>
+                          <td>2 dias atrás</td>
+                          <td>
+                            <span class="badge bg-warning">Pendente</span>
+                          </td>
+                          <td>
+                            <button
+                              class="btn btn-sm btn-outline-primary action-btn"
+                            >
+                              <i class="bi bi-eye"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="text-center mt-2">
+                    <a
+                      href="./collab-patients.html"
+                      class="btn btn-sm btn-outline-primary"
+                    >
+                      Ver todos os pacientes <i class="bi bi-arrow-right"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-lg-4">
+              <!-- Quick Actions Card -->
+              <div class="card mb-4">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">
+                    <i class="bi bi-lightning"></i> Ações Rápidas
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <div class="d-grid gap-2">
+                    <a
+                      href="#"
+                      class="btn btn-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#newPatientModal"
+                    >
+                      <i class="bi bi-person-plus"></i> Novo Paciente
+                    </a>
+                    <a
+                      href="#"
+                      class="btn btn-outline-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#newRecordModal"
+                    >
+                      <i class="bi bi-file-earmark-plus"></i> Nova Ficha
+                    </a>
+                    <a
+                      href="./collab-schedule.html"
+                      class="btn btn-outline-primary"
+                    >
+                      <i class="bi bi-calendar-plus"></i> Novo Agendamento
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Recent Activity Card -->
+              <div class="card mb-4">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">
+                    <i class="bi bi-clock-history"></i> Atividade Recente
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <div class="list-group list-group-flush">
+                    <div class="list-group-item border-0 px-0 py-2">
+                      <div class="d-flex">
+                        <div class="flex-shrink-0 text-primary">
+                          <i class="bi bi-person-plus"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                          <small class="text-muted">15 minutos atrás</small>
+                          <p class="mb-0">
+                            Novo paciente cadastrado: João da Silva
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="list-group-item border-0 px-0 py-2">
+                      <div class="d-flex">
+                        <div class="flex-shrink-0 text-success">
+                          <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                          <small class="text-muted">2 horas atrás</small>
+                          <p class="mb-0">Ficha atualizada: Maria Oliveira</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="list-group-item border-0 px-0 py-2">
+                      <div class="d-flex">
+                        <div class="flex-shrink-0 text-warning">
+                          <i class="bi bi-calendar-check"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                          <small class="text-muted">Ontem</small>
+                          <p class="mb-0">Consulta agendada: Dr. Carlos</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="list-group-item border-0 px-0 py-2">
+                      <div class="d-flex">
+                        <div class="flex-shrink-0 text-info">
+                          <i class="bi bi-chat-left-text"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                          <small class="text-muted">Ontem</small>
+                          <p class="mb-0">Mensagem enviada para Ana Beatriz</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center mt-2">
+                    <a href="#" class="btn btn-sm btn-outline-primary">
+                      Ver todas as atividades
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Stats Chart Card -->
+              <div class="card">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">
+                    <i class="bi bi-bar-chart"></i> Consultas Esta Semana
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <canvas id="appointmentsChart" height="200"></canvas>
+                </div>
+              </div>
+            </div>
           </div>
-      </section>
-      <script>
-        function mostrarSubtipo() {
-          const tipoFicha = document.getElementById("tipoFicha").value;
-          const subtipoFichaContainer = document.getElementById("subtipoFichaContainer");
-          const subtipoFicha = document.getElementById("subtipoFicha");
-          
-          subtipoFicha.innerHTML = "";
-          if (tipoFicha === "consulta") {
-            subtipoFichaContainer.style.display = "block";
-            const opcoes = ["Cardiologista", "Otorrinolaringologista", "Clínico Geral", "Gastroenterologista", "Ortopedista", "Pneumologista"];
-            opcoes.forEach(opcao => {
-              let optionElement = document.createElement("option");
-              optionElement.value = opcao.toLowerCase();
-              optionElement.textContent = opcao;
-              subtipoFicha.appendChild(optionElement);
-            });
-          } else if (tipoFicha === "exame") {
-            subtipoFichaContainer.style.display = "block";
-            const opcoes = ["Hemograma", "Raio X", "Endoscopia", "Ecocardiograma", "Ultrassonografia Abdominal", "Tomografia", "Ressonância Magnética"];
-            opcoes.forEach(opcao => {
-              let optionElement = document.createElement("option");
-              optionElement.value = opcao.toLowerCase().replace(/\s+/g, "_");
-              optionElement.textContent = opcao;
-              subtipoFicha.appendChild(optionElement);
-            });
-          } else {
-            subtipoFichaContainer.style.display = "none";
-          }
-        }
-      </script>
-      <script>
-        const ctx = document.getElementById('graficoPizza').getContext('2d');
-        const graficoPizza = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Ficha A', 'Ficha B', 'Ficha C', 'Ficha D'],
-                datasets: [{
-                    data: [30, 20, 25, 25],
-                    backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0'],
-                }]
+        </main>
+      </div>
+    </div>
+
+    <!-- New Patient Modal -->
+    <div
+      class="modal fade"
+      id="newPatientModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="bi bi-person-plus"></i> Novo Paciente
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="patientName" class="form-label"
+                  >Nome Completo</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="patientName"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="patientCpf" class="form-label">CPF</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="patientCpf"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="patientBirth" class="form-label"
+                  >Data de Nascimento</label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="patientBirth"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="patientPhone" class="form-label">Telefone</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="patientPhone"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-primary">Cadastrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Record Modal -->
+    <div
+      class="modal fade"
+      id="newRecordModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="bi bi-file-earmark-plus"></i> Nova Ficha
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="recordPatient" class="form-label">Paciente</label>
+                <select class="form-select" id="recordPatient" required>
+                  <option value="">Selecione um paciente</option>
+                  <option value="1">João da Silva</option>
+                  <option value="2">Maria Oliveira</option>
+                  <option value="3">Carlos Ferreira</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="recordDoctor" class="form-label">Médico</label>
+                <select class="form-select" id="recordDoctor" required>
+                  <option value="">Selecione um médico</option>
+                  <option value="1">Dr. Carlos Andrade</option>
+                  <option value="2">Dra. Ana Beatriz</option>
+                  <option value="3">Dr. Roberto Santos</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="recordType" class="form-label">Tipo de Ficha</label>
+                <select class="form-select" id="recordType" required>
+                  <option value="">Selecione o tipo</option>
+                  <option value="consulta">Consulta</option>
+                  <option value="retorno">Retorno</option>
+                  <option value="emergencia">Emergência</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-primary">Criar Ficha</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize appointments chart
+        const appointmentsCtx = document
+          .getElementById("appointmentsChart")
+          .getContext("2d");
+        const appointmentsChart = new Chart(appointmentsCtx, {
+          type: "bar",
+          data: {
+            labels: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
+            datasets: [
+              {
+                label: "Consultas",
+                data: [8, 12, 6, 10, 15, 4],
+                backgroundColor: "rgba(49, 130, 206, 0.7)",
+                borderColor: "rgba(49, 130, 206, 1)",
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                display: false,
+              },
             },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                    }
-                }
-            }
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
         });
+
+        // Form submission handlers
+        document
+          .querySelector("#newPatientModal .btn-primary")
+          .addEventListener("click", function () {
+            alert("Paciente cadastrado com sucesso!");
+            bootstrap.Modal.getInstance(
+              document.getElementById("newPatientModal")
+            ).hide();
+          });
+
+        document
+          .querySelector("#newRecordModal .btn-primary")
+          .addEventListener("click", function () {
+            alert("Ficha criada com sucesso!");
+            bootstrap.Modal.getInstance(
+              document.getElementById("newRecordModal")
+            ).hide();
+          });
+      });
     </script>
   </body>
 </html>

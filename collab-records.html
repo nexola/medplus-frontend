@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Med+ | Fichas</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
+    <!-- Bootstrap 5.3 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <style>
+      :root {
+        --med-primary: #3182ce;
+        --med-dark: #2c5282;
+        --med-light: #f5f9ff;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #212529;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        color: var(--med-primary);
+      }
+
+      .navbar-brand span {
+        color: var(--med-dark);
+      }
+
+      .sidebar {
+        background-color: white;
+        min-height: calc(100vh - 56px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .sidebar .nav-link {
+        color: #495057;
+        border-radius: 5px;
+        margin-bottom: 5px;
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        background-color: var(--med-light);
+        color: var(--med-primary);
+      }
+
+      .sidebar .nav-link i {
+        margin-right: 10px;
+      }
+
+      .card {
+        border: none;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+      }
+
+      .btn-primary {
+        background-color: var(--med-primary);
+        border-color: var(--med-primary);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--med-dark);
+        border-color: var(--med-dark);
+      }
+
+      .action-btn {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .badge-collab {
+        background-color: #6f42c1;
+      }
+
+      .search-box {
+        position: relative;
+      }
+
+      .search-box .form-control {
+        padding-left: 40px;
+      }
+
+      .search-box i {
+        position: absolute;
+        left: 15px;
+        top: 12px;
+        color: #6c757d;
+      }
+
+      .filter-dropdown .dropdown-menu {
+        width: 300px;
+        padding: 15px;
+      }
+
+      .ficha-card {
+        border-left: 4px solid var(--med-primary);
+        transition: all 0.2s;
+      }
+
+      .ficha-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .ficha-card.urgent {
+        border-left-color: #dc3545;
+      }
+
+      .ficha-card.completed {
+        border-left-color: #28a745;
+      }
+
+      .ficha-card.pending {
+        border-left-color: #ffc107;
+      }
+
+      .patient-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-heart-pulse"></i> Med<span>+</span> Collab
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bi bi-person-circle"></i> Maria Oliveira
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="./profile-collab.html"
+                    ><i class="bi bi-person"></i> Perfil</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="bi bi-box-arrow-right"></i> Sair</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block sidebar bg-white">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="./dashboard-collab.html">
+                  <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./collab-patients.html">
+                  <i class="bi bi-people"></i> Pacientes
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="./collab-records.html">
+                  <i class="bi bi-files"></i> Fichas
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./collab-schedule.html">
+                  <i class="bi bi-calendar-check"></i> Agenda
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./profile-collab.html">
+                  <i class="bi bi-person"></i> Meu Perfil
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+          >
+            <h1 class="h2"><i class="bi bi-files"></i> Fichas Médicas</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <button
+                class="btn btn-primary me-2"
+                data-bs-toggle="modal"
+                data-bs-target="#newFichaModal"
+              >
+                <i class="bi bi-plus-lg"></i> Nova Ficha
+              </button>
+              <div class="btn-group">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary dropdown-toggle filter-dropdown"
+                  data-bs-toggle="dropdown"
+                >
+                  <i class="bi bi-funnel"></i> Filtros
+                </button>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <div class="mb-3">
+                    <label class="form-label">Status</label>
+                    <select class="form-select">
+                      <option>Todas</option>
+                      <option>Ativas</option>
+                      <option>Concluídas</option>
+                      <option>Urgentes</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Tipo</label>
+                    <select class="form-select">
+                      <option>Todos</option>
+                      <option>Consulta</option>
+                      <option>Retorno</option>
+                      <option>Emergência</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Médico</label>
+                    <select class="form-select">
+                      <option>Todos</option>
+                      <option>Dr. Carlos Andrade</option>
+                      <option>Dra. Ana Beatriz</option>
+                      <option>Dr. Roberto Santos</option>
+                    </select>
+                  </div>
+                  <div class="d-grid">
+                    <button class="btn btn-sm btn-primary">
+                      Aplicar Filtros
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search and Stats -->
+          <div class="row mb-4">
+            <div class="col-md-8">
+              <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Buscar fichas por paciente, médico ou código..."
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="d-flex justify-content-end align-items-center h-100">
+                <span class="text-muted me-2">Total:</span>
+                <span class="fw-bold">28 fichas</span>
+                <span class="badge bg-success ms-2">15 ativas</span>
+                <span class="badge bg-secondary ms-2">10 concluídas</span>
+                <span class="badge bg-danger ms-2">3 urgentes</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fichas List -->
+          <div class="row">
+            <!-- Ficha Card -->
+            <div class="col-lg-6 mb-4">
+              <div class="card ficha-card urgent h-100">
+                <div class="card-body">
+                  <div
+                    class="d-flex justify-content-between align-items-start mb-3"
+                  >
+                    <div>
+                      <span class="badge bg-danger">Urgente</span>
+                      <h5 class="mt-2">#FCH-2023-0042</h5>
+                    </div>
+                    <small class="text-muted">Criada: 15/11/2023</small>
+                  </div>
+
+                  <div class="d-flex align-items-center mb-3">
+                    <img
+                      src="https://randomuser.me/api/portraits/men/32.jpg"
+                      alt="Patient"
+                      class="patient-avatar me-3"
+                    />
+                    <div>
+                      <h6 class="mb-0">João da Silva</h6>
+                      <small class="text-muted">45 anos • Masculino</small>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <p class="mb-1">
+                      <strong>Médico:</strong> Dr. Carlos Andrade
+                    </p>
+                    <p class="mb-1"><strong>Tipo:</strong> Emergência</p>
+                    <p class="mb-1">
+                      <strong>Descrição:</strong> Dor no peito e falta de ar
+                    </p>
+                  </div>
+
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <span class="badge bg-primary">Cardiologia</span>
+                    </div>
+                    <div>
+                      <button class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-eye"></i> Visualizar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ficha Card -->
+            <div class="col-lg-6 mb-4">
+              <div class="card ficha-card h-100">
+                <div class="card-body">
+                  <div
+                    class="d-flex justify-content-between align-items-start mb-3"
+                  >
+                    <div>
+                      <span class="badge bg-success">Ativa</span>
+                      <h5 class="mt-2">#FCH-2023-0038</h5>
+                    </div>
+                    <small class="text-muted">Criada: 10/11/2023</small>
+                  </div>
+
+                  <div class="d-flex align-items-center mb-3">
+                    <img
+                      src="https://randomuser.me/api/portraits/women/44.jpg"
+                      alt="Patient"
+                      class="patient-avatar me-3"
+                    />
+                    <div>
+                      <h6 class="mb-0">Maria Oliveira</h6>
+                      <small class="text-muted">32 anos • Feminino</small>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <p class="mb-1">
+                      <strong>Médico:</strong> Dra. Ana Beatriz
+                    </p>
+                    <p class="mb-1"><strong>Tipo:</strong> Consulta</p>
+                    <p class="mb-1">
+                      <strong>Descrição:</strong> Acompanhamento pré-natal
+                    </p>
+                  </div>
+
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <span class="badge bg-success">Obstetrícia</span>
+                    </div>
+                    <div>
+                      <button class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-eye"></i> Visualizar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ficha Card -->
+            <div class="col-lg-6 mb-4">
+              <div class="card ficha-card completed h-100">
+                <div class="card-body">
+                  <div
+                    class="d-flex justify-content-between align-items-start mb-3"
+                  >
+                    <div>
+                      <span class="badge bg-secondary">Concluída</span>
+                      <h5 class="mt-2">#FCH-2023-0029</h5>
+                    </div>
+                    <small class="text-muted">Criada: 05/11/2023</small>
+                  </div>
+
+                  <div class="d-flex align-items-center mb-3">
+                    <img
+                      src="https://randomuser.me/api/portraits/men/75.jpg"
+                      alt="Patient"
+                      class="patient-avatar me-3"
+                    />
+                    <div>
+                      <h6 class="mb-0">Carlos Ferreira</h6>
+                      <small class="text-muted">28 anos • Masculino</small>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <p class="mb-1">
+                      <strong>Médico:</strong> Dr. Roberto Santos
+                    </p>
+                    <p class="mb-1"><strong>Tipo:</strong> Retorno</p>
+                    <p class="mb-1">
+                      <strong>Descrição:</strong> Avaliação pós-cirúrgica
+                    </p>
+                  </div>
+
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <span class="badge bg-warning text-dark">Ortopedia</span>
+                    </div>
+                    <div>
+                      <button class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-eye"></i> Visualizar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ficha Card -->
+            <div class="col-lg-6 mb-4">
+              <div class="card ficha-card pending h-100">
+                <div class="card-body">
+                  <div
+                    class="d-flex justify-content-between align-items-start mb-3"
+                  >
+                    <div>
+                      <span class="badge bg-warning text-dark">Pendente</span>
+                      <h5 class="mt-2">#FCH-2023-0045</h5>
+                    </div>
+                    <small class="text-muted">Criada: 18/11/2023</small>
+                  </div>
+
+                  <div class="d-flex align-items-center mb-3">
+                    <img
+                      src="https://randomuser.me/api/portraits/women/68.jpg"
+                      alt="Patient"
+                      class="patient-avatar me-3"
+                    />
+                    <div>
+                      <h6 class="mb-0">Ana Paula Santos</h6>
+                      <small class="text-muted">50 anos • Feminino</small>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <p class="mb-1">
+                      <strong>Médico:</strong> Dra. Juliana Costa
+                    </p>
+                    <p class="mb-1"><strong>Tipo:</strong> Consulta</p>
+                    <p class="mb-1">
+                      <strong>Descrição:</strong> Exames de rotina
+                    </p>
+                  </div>
+
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <span class="badge bg-info">Clínico Geral</span>
+                    </div>
+                    <div>
+                      <button class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-eye"></i> Visualizar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pagination -->
+          <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Anterior</a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">Próxima</a>
+              </li>
+            </ul>
+          </nav>
+        </main>
+      </div>
+    </div>
+
+    <!-- New Ficha Modal -->
+    <div class="modal fade" id="newFichaModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="bi bi-file-earmark-plus"></i> Nova Ficha Médica
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="newFichaForm">
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <label for="fichaPatient" class="form-label">Paciente</label>
+                  <select class="form-select" id="fichaPatient" required>
+                    <option value="">Selecione um paciente</option>
+                    <option value="1">João da Silva</option>
+                    <option value="2">Maria Oliveira</option>
+                    <option value="3">Carlos Ferreira</option>
+                    <option value="4">Ana Paula Santos</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="fichaDoctor" class="form-label">Médico</label>
+                  <select class="form-select" id="fichaDoctor" required>
+                    <option value="">Selecione um médico</option>
+                    <option value="1">Dr. Carlos Andrade</option>
+                    <option value="2">Dra. Ana Beatriz</option>
+                    <option value="3">Dr. Roberto Santos</option>
+                    <option value="4">Dra. Juliana Costa</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <label for="fichaType" class="form-label"
+                    >Tipo de Ficha</label
+                  >
+                  <select class="form-select" id="fichaType" required>
+                    <option value="">Selecione o tipo</option>
+                    <option value="consulta">Consulta</option>
+                    <option value="retorno">Retorno</option>
+                    <option value="emergencia">Emergência</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="fichaPriority" class="form-label"
+                    >Prioridade</label
+                  >
+                  <select class="form-select" id="fichaPriority">
+                    <option value="normal">Normal</option>
+                    <option value="urgente">Urgente</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="fichaDescription" class="form-label"
+                  >Descrição</label
+                >
+                <textarea
+                  class="form-control"
+                  id="fichaDescription"
+                  rows="3"
+                  required
+                ></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="fichaSymptoms" class="form-label">Sintomas</label>
+                <textarea
+                  class="form-control"
+                  id="fichaSymptoms"
+                  rows="2"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="submit" form="newFichaForm" class="btn btn-primary">
+              Criar Ficha
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Form submission handler
+        document
+          .getElementById("newFichaForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Ficha médica criada com sucesso!");
+            bootstrap.Modal.getInstance(
+              document.getElementById("newFichaModal")
+            ).hide();
+            this.reset();
+          });
+
+        // Search functionality
+        const searchInput = document.querySelector(".search-box input");
+        searchInput.addEventListener("input", function () {
+          // In a real app, you would filter the fichas here
+          console.log("Searching for:", this.value);
+        });
+      });
+    </script>
+  </body>
+</html>
