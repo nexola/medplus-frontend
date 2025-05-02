@@ -1,42 +1,641 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css">
-    <script defer src="script.js"></script>
-    <title>Paciente</title>
+    <title>Med+ | Fichas do Paciente</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
+    <!-- Bootstrap 5.3 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <style>
+      :root {
+        --med-primary: #3182ce;
+        --med-dark: #2c5282;
+        --med-light: #f5f9ff;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #212529;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        color: var(--med-primary);
+      }
+
+      .navbar-brand span {
+        color: var(--med-dark);
+      }
+
+      .card {
+        border: none;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+      }
+
+      .table th {
+        background-color: var(--med-light);
+        color: var(--med-dark);
+        border-top: none;
+      }
+
+      .status-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .status-agendado {
+        background-color: #e3f2fd;
+        color: #1976d2;
+      }
+
+      .status-concluido {
+        background-color: #e8f5e9;
+        color: #388e3c;
+      }
+
+      .status-cancelado {
+        background-color: #ffebee;
+        color: #d32f2f;
+      }
+
+      .status-pendente {
+        background-color: #fff8e1;
+        color: #ffa000;
+      }
+
+      .nav-pills .nav-link.active {
+        background-color: var(--med-primary);
+      }
+
+      .btn-primary {
+        background-color: var(--med-primary);
+        border-color: var(--med-primary);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--med-dark);
+        border-color: var(--med-dark);
+      }
+
+      .patient-info-card {
+        border-left: 4px solid var(--med-primary);
+      }
+    </style>
   </head>
-  <body id="main-collab">
-    <div class="bg-header">
-    <header class="header-main">
-      <h1>Med+<span>paciente</span></h1>
-      <nav class="nav-main">
-        <ul>
-          <li><a href="#fichas" class="active-tab">Fichas</a></li>
-          <li><a href="./profile-patient.html">Perfil</a></li>
-          <li><a href="./index.html" class="btn-logout">Sair</a></li>
-        </ul>
-      </nav>
-    </header>
-  </div>
-    <main class="main-collab">
-      
-      <section class="fichas-registradas">
-            <table class="tabela-fichas">
-                <thead>
+  <body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-heart-pulse"></i> Med<span>+</span> Paciente
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="#"
+                ><i class="bi bi-files"></i> Fichas</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="profile-patient.html"
+                ><i class="bi bi-person"></i> Perfil</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"
+                ><i class="bi bi-box-arrow-right"></i> Sair</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+      <div class="row">
+        <main class="col-12">
+          <!-- Patient Info Card -->
+          <div class="card patient-info-card mb-4">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-md-2 text-center">
+                  <img
+                    src="https://randomuser.me/api/portraits/men/32.jpg"
+                    alt="Patient"
+                    class="rounded-circle mb-3"
+                    width="80"
+                    height="80"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <h5 class="mb-1">João da Silva</h5>
+                  <p class="text-muted mb-1">45 anos • Masculino</p>
+                  <p class="mb-1">
+                    <i class="bi bi-envelope"></i> joao.silva@email.com
+                  </p>
+                  <p class="mb-0">
+                    <i class="bi bi-telephone"></i> (11) 98765-4321
+                  </p>
+                </div>
+                <div class="col-md-4">
+                  <p class="mb-1">
+                    <strong>Plano de Saúde:</strong> Amil Saúde
+                  </p>
+                  <p class="mb-1"><strong>Número:</strong> 1234567890</p>
+                  <p class="mb-1"><strong>Tipo Sanguíneo:</strong> O+</p>
+                </div>
+                <div class="col-md-2 text-end">
+                  <button
+                    class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#newFichaModal"
+                  >
+                    <i class="bi bi-plus-lg"></i> Nova Ficha
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header bg-white">
+              <h5 class="card-title mb-0">
+                <i class="bi bi-files"></i> Minhas Fichas Médicas
+              </h5>
+            </div>
+            <div class="card-body">
+              <!-- Status Filter Tabs -->
+              <ul class="nav nav-pills mb-4" id="statusTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link active"
+                    id="all-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#all"
+                    type="button"
+                  >
+                    Todos
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="agendado-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#agendado"
+                    type="button"
+                  >
+                    Agendados
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="concluido-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#concluido"
+                    type="button"
+                  >
+                    Concluídos
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="cancelado-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#cancelado"
+                    type="button"
+                  >
+                    Cancelados
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="pendente-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pendente"
+                    type="button"
+                  >
+                    Pendentes
+                  </button>
+                </li>
+              </ul>
+
+              <!-- Records Table -->
+              <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                  <thead>
                     <tr>
-                        <th>Paciente</th>
-                        <th>Data</th>
-                        <th>Horário</th>
-                        <th>Status</th>
-                        <th></th>
+                      <th>Código</th>
+                      <th>Data</th>
+                      <th>Médico</th>
+                      <th>Especialidade</th>
+                      <th>Status</th>
+                      <th>Ações</th>
                     </tr>
-                </thead>
-                <tbody class="tbody-fichas">
-                    
-                </tbody>
-            </table>
-      </section>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#FCH-2023-0042</td>
+                      <td>15/05/2023 • 14:30</td>
+                      <td>Dr. Carlos Andrade</td>
+                      <td>Cardiologia</td>
+                      <td>
+                        <span class="status-badge status-agendado"
+                          >Agendado</span
+                        >
+                      </td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary"
+                          title="Visualizar"
+                          data-bs-toggle="modal"
+                          data-bs-target="#viewFichaModal"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-secondary"
+                          title="Editar"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#FCH-2023-0038</td>
+                      <td>10/05/2023 • 09:15</td>
+                      <td>Dra. Ana Beatriz</td>
+                      <td>Clínico Geral</td>
+                      <td>
+                        <span class="status-badge status-concluido"
+                          >Concluído</span
+                        >
+                      </td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary"
+                          title="Visualizar"
+                          data-bs-toggle="modal"
+                          data-bs-target="#viewFichaModal"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-secondary"
+                          title="Editar"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#FCH-2023-0029</td>
+                      <td>02/05/2023 • 16:45</td>
+                      <td>Dr. Roberto Santos</td>
+                      <td>Ortopedia</td>
+                      <td>
+                        <span class="status-badge status-cancelado"
+                          >Cancelado</span
+                        >
+                      </td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary"
+                          title="Visualizar"
+                          data-bs-toggle="modal"
+                          data-bs-target="#viewFichaModal"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-secondary"
+                          title="Editar"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#FCH-2023-0025</td>
+                      <td>25/04/2023 • 11:00</td>
+                      <td>Dra. Juliana Costa</td>
+                      <td>Dermatologia</td>
+                      <td>
+                        <span class="status-badge status-concluido"
+                          >Concluído</span
+                        >
+                      </td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary"
+                          title="Visualizar"
+                          data-bs-toggle="modal"
+                          data-bs-target="#viewFichaModal"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-secondary"
+                          title="Editar"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#FCH-2023-0018</td>
+                      <td>18/04/2023 • 08:30</td>
+                      <td>Dr. Carlos Andrade</td>
+                      <td>Cardiologia</td>
+                      <td>
+                        <span class="status-badge status-pendente"
+                          >Pendente</span
+                        >
+                      </td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary"
+                          title="Visualizar"
+                          data-bs-toggle="modal"
+                          data-bs-target="#viewFichaModal"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-secondary"
+                          title="Editar"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Pagination -->
+              <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                  </li>
+                  <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">Próxima</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- New Ficha Modal -->
+    <div class="modal fade" id="newFichaModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="bi bi-file-earmark-plus"></i> Nova Ficha Médica
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="newFichaForm">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="fichaDate" class="form-label">Data</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="fichaDate"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="fichaTime" class="form-label">Hora</label>
+                  <input
+                    type="time"
+                    class="form-control"
+                    id="fichaTime"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="fichaDoctor" class="form-label">Médico</label>
+                  <select class="form-select" id="fichaDoctor" required>
+                    <option value="">Selecione um médico</option>
+                    <option value="1">Dr. Carlos Andrade (Cardiologia)</option>
+                    <option value="2">Dra. Ana Beatriz (Clínico Geral)</option>
+                    <option value="3">Dr. Roberto Santos (Ortopedia)</option>
+                    <option value="4">Dra. Juliana Costa (Dermatologia)</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="fichaType" class="form-label">Tipo</label>
+                  <select class="form-select" id="fichaType" required>
+                    <option value="">Selecione o tipo</option>
+                    <option value="consulta">Consulta</option>
+                    <option value="retorno">Retorno</option>
+                    <option value="exame">Exame</option>
+                    <option value="emergencia">Emergência</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="fichaReason" class="form-label">Motivo</label>
+                <textarea
+                  class="form-control"
+                  id="fichaReason"
+                  rows="3"
+                  required
+                ></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="fichaSymptoms" class="form-label">Sintomas</label>
+                <textarea
+                  class="form-control"
+                  id="fichaSymptoms"
+                  rows="2"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="submit" form="newFichaForm" class="btn btn-primary">
+              Criar Ficha
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- View Ficha Modal -->
+    <div
+      class="modal fade"
+      id="viewFichaModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="bi bi-file-earmark-text"></i> Ficha Médica
+              #FCH-2023-0042
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <h6>Informações Básicas</h6>
+                <p><strong>Paciente:</strong> João da Silva</p>
+                <p><strong>Data:</strong> 15/05/2023 • 14:30</p>
+                <p><strong>Médico:</strong> Dr. Carlos Andrade</p>
+                <p><strong>Especialidade:</strong> Cardiologia</p>
+                <p>
+                  <strong>Status:</strong>
+                  <span class="status-badge status-agendado">Agendado</span>
+                </p>
+              </div>
+              <div class="col-md-6">
+                <h6>Detalhes</h6>
+                <p><strong>Tipo:</strong> Consulta</p>
+                <p><strong>Motivo:</strong> Acompanhamento cardíaco</p>
+                <p>
+                  <strong>Sintomas:</strong> Pressão arterial elevada ocasional
+                </p>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <h6>Histórico</h6>
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="flex-shrink-0">
+                      <i class="bi bi-file-earmark-text text-primary"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <small class="text-muted"
+                        >10/05/2023 • Dra. Ana Beatriz</small
+                      >
+                      <p class="mb-0">
+                        Paciente relatou melhora nos sintomas após ajuste
+                        medicamentoso. Pressão arterial estável.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <i class="bi bi-file-earmark-text text-primary"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <small class="text-muted"
+                        >25/04/2023 • Dra. Juliana Costa</small
+                      >
+                      <p class="mb-0">
+                        Exame de rotina sem alterações significativas. Paciente
+                        orientado sobre dieta balanceada.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Fechar
+            </button>
+            <button type="button" class="btn btn-primary">
+              <i class="bi bi-printer"></i> Imprimir
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Enable tooltips
+        var tooltipTriggerList = [].slice.call(
+          document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        );
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        // Form submission handler
+        document
+          .getElementById("newFichaForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Ficha médica criada com sucesso!");
+            bootstrap.Modal.getInstance(
+              document.getElementById("newFichaModal")
+            ).hide();
+            this.reset();
+          });
+      });
+    </script>
   </body>
 </html>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Med+ | Editar Perfil</title>
+    <title>Med+ | Editar Perfil Médico</title>
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
     <!-- Bootstrap 5.3 CSS -->
@@ -37,32 +37,16 @@
         color: var(--med-dark);
       }
 
-      .sidebar {
-        background-color: white;
-        min-height: calc(100vh - 56px);
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-      }
-
-      .sidebar .nav-link {
-        color: #495057;
-        border-radius: 5px;
-        margin-bottom: 5px;
-      }
-
-      .sidebar .nav-link:hover,
-      .sidebar .nav-link.active {
-        background-color: var(--med-light);
-        color: var(--med-primary);
-      }
-
-      .sidebar .nav-link i {
-        margin-right: 10px;
-      }
-
       .card {
         border: none;
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
         border-radius: 10px;
+      }
+
+      .profile-header {
+        border-bottom: 1px solid #dee2e6;
+        padding-bottom: 1rem;
+        margin-bottom: 2rem;
       }
 
       .btn-primary {
@@ -75,10 +59,9 @@
         border-color: var(--med-dark);
       }
 
-      .profile-header {
-        border-bottom: 1px solid #dee2e6;
-        padding-bottom: 1rem;
-        margin-bottom: 2rem;
+      .form-select:focus {
+        border-color: var(--med-primary);
+        box-shadow: 0 0 0 0.25rem rgba(49, 130, 206, 0.25);
       }
     </style>
   </head>
@@ -87,12 +70,12 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <i class="bi bi-heart-pulse"></i> Med<span>+</span> Paciente
+          <i class="bi bi-heart-pulse"></i> Med<span>+</span> Médico
         </a>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link" href="main-patient.html"
+              <a class="nav-link" href="main-doctor.html"
                 ><i class="bi bi-files"></i> Fichas</a
               >
             </li>
@@ -111,67 +94,58 @@
       </div>
     </nav>
 
-    <div class="container-fluid">
+    <div class="container-fluid mt-4">
       <div class="row">
-        <!-- Main Content -->
-        <main class="col-md-12 px-md-4 py-4">
-          <div
-            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3"
-          >
-            <h1 class="h2"><i class="bi bi-person-gear"></i> Editar Dados</h1>
-          </div>
-
+        <main class="col-md-8 mx-auto">
           <div class="card">
+            <div class="card-header bg-white">
+              <h5 class="card-title mb-0">
+                <i class="bi bi-person-gear"></i> Editar Dados do médico
+              </h5>
+            </div>
             <div class="card-body">
-              <form id="editProfileForm">
+              <form id="editCollaboratorForm">
                 <div class="row mb-4">
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label for="patientName" class="form-label">Nome</label>
+                      <label for="collaboratorName" class="form-label"
+                        >Nome</label
+                      >
                       <input
                         type="text"
                         class="form-control"
-                        id="patientName"
-                        value="João da Silva"
+                        id="collaboratorName"
+                        value="Dr. Carlos Andrade"
                         required
                       />
                     </div>
                     <div class="mb-3">
-                      <label for="patientEmail" class="form-label">Email</label>
+                      <label for="collaboratorEmail" class="form-label"
+                        >Email</label
+                      >
                       <input
                         type="email"
                         class="form-control"
-                        id="patientEmail"
-                        value="joao.silva@example.com"
+                        id="collaboratorEmail"
+                        value="carlos.andrade@medplus.com"
                         required
                       />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label for="patientPassword" class="form-label"
+                      <label for="collaboratorPassword" class="form-label"
                         >Senha</label
                       >
                       <input
                         type="password"
                         class="form-control"
-                        id="patientPassword"
+                        id="collaboratorPassword"
                         placeholder="Digite uma nova senha"
                       />
                       <div class="form-text">
                         Deixe em branco para manter a senha atual
                       </div>
-                    </div>
-                    <div class="mb-3">
-                      <label for="confirmPassword" class="form-label"
-                        >Confirmar Senha</label
-                      >
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="confirmPassword"
-                        placeholder="Confirme a nova senha"
-                      />
                     </div>
                   </div>
                 </div>
@@ -194,23 +168,19 @@
       document.addEventListener("DOMContentLoaded", function () {
         // Form submission handler
         document
-          .getElementById("editProfileForm")
+          .getElementById("editCollaboratorForm")
           .addEventListener("submit", function (e) {
             e.preventDefault();
 
             // Basic password validation
-            const password = document.getElementById("patientPassword").value;
-            const confirmPassword =
-              document.getElementById("confirmPassword").value;
+            const password = document.getElementById(
+              "collaboratorPassword"
+            ).value;
 
-            if (password && password !== confirmPassword) {
-              alert("As senhas não coincidem!");
+            if (password && password.length < 6) {
+              alert("A senha deve ter pelo menos 6 caracteres!");
               return;
             }
-
-            // Here you would normally make an API call to update the profile
-            alert("Perfil atualizado com sucesso!");
-            // You might want to redirect or reload the page after successful update
           });
       });
     </script>

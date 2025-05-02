@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Med+ | Gerenciamento de Pacientes</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
+    <!-- Bootstrap 5.3 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <style>
+      :root {
+        --med-primary: #3182ce;
+        --med-dark: #2c5282;
+        --med-light: #f5f9ff;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #212529;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        color: var(--med-primary);
+      }
+
+      .navbar-brand span {
+        color: var(--med-dark);
+      }
+
+      .sidebar {
+        background-color: white;
+        min-height: calc(100vh - 56px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .sidebar .nav-link {
+        color: #495057;
+        border-radius: 5px;
+        margin-bottom: 5px;
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        background-color: var(--med-light);
+        color: var(--med-primary);
+      }
+
+      .sidebar .nav-link i {
+        margin-right: 10px;
+      }
+
+      .card {
+        border: none;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+      }
+
+      .patient-status {
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .status-ativo {
+        background-color: #e8f5e9;
+        color: #388e3c;
+      }
+
+      .status-inativo {
+        background-color: #ffebee;
+        color: #d32f2f;
+      }
+
+      .action-btn {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .filter-card {
+        transition: all 0.3s;
+      }
+
+      .filter-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .patient-avatar {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-heart-pulse"></i> Med<span>+</span> Admin
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bi bi-person-circle"></i> Admin
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="profile-unity.html"
+                    ><i class="bi bi-person"></i> Perfil</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="bi bi-box-arrow-right"></i> Sair</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block sidebar bg-white">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="main-unity.html">
+                  <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="doctors.html">
+                  <i class="bi bi-person-badge"></i> Médicos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="collabs.html">
+                  <i class="bi bi-people"></i> Colaboradores
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="unity-records.html">
+                  <i class="bi bi-files"></i> Fichas
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="unity-patients.html">
+                  <i class="bi bi-people"></i> Pacientes
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+          >
+            <h1 class="h2">
+              <i class="bi bi-people"></i> Gerenciamento de Pacientes
+            </h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <button
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#novoPacienteModal"
+              >
+                <i class="bi bi-plus-lg"></i> Novo Paciente
+              </button>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card filter-card h-100">
+                <div class="card-body text-center">
+                  <h6 class="card-title">Total de Pacientes</h6>
+                  <p class="display-6 mb-0">156</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card filter-card h-100">
+                <div class="card-body text-center">
+                  <h6 class="card-title">Ativos</h6>
+                  <p class="display-6 mb-0">142</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card filter-card h-100">
+                <div class="card-body text-center">
+                  <h6 class="card-title">Novos (30 dias)</h6>
+                  <p class="display-6 mb-0">14</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card filter-card h-100">
+                <div class="card-body text-center">
+                  <h6 class="card-title">Consultas/Mês</h6>
+                  <p class="display-6 mb-0">356</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search and Advanced Filters -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-5">
+                  <label for="searchInput" class="form-label">Pesquisar</label>
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="bi bi-search"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="searchInput"
+                      placeholder="Nome, CPF ou telefone"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <label for="statusFilter" class="form-label"
+                    >Filtrar por</label
+                  >
+                  <select class="form-select" id="statusFilter">
+                    <option value="">Todos os pacientes</option>
+                    <option value="ativo">Ativos</option>
+                    <option value="inativo">Inativos</option>
+                    <option value="sem-consulta">Sem consulta recente</option>
+                  </select>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                  <button class="btn btn-primary w-100">
+                    <i class="bi bi-funnel"></i> Aplicar Filtros
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Patients Table -->
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                  <thead>
+                    <tr>
+                      <th>Paciente</th>
+                      <th>CPF</th>
+                      <th>Telefone</th>
+                      <th>Idade</th>
+                      <th>Convênio</th>
+                      <th>Status</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="flex-shrink-0">
+                            <img
+                              src="./assets/patient1.jpg"
+                              alt="João da Silva"
+                              class="patient-avatar"
+                            />
+                          </div>
+                          <div class="flex-grow-1 ms-3">
+                            <strong>João da Silva</strong>
+                            <div class="text-muted small">
+                              joao.silva@email.com
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>123.456.789-00</td>
+                      <td>(11) 98765-4321</td>
+                      <td>38 anos</td>
+                      <td>Amil Saúde</td>
+                      <td>
+                        <span class="patient-status status-ativo">Ativo</span>
+                      </td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary action-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editarPacienteModal"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-danger action-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#desativarPacienteModal"
+                        >
+                          <i class="bi bi-person-x"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-secondary action-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#detalhesPacienteModal"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="flex-shrink-0">
+                            <img
+                              src="./assets/patient2.jpg"
+                              alt="Maria Oliveira"
+                              class="patient-avatar"
+                            />
+                          </div>
+                          <div class="flex-grow-1 ms-3">
+                            <strong>Maria Oliveira</strong>
+                            <div class="text-muted small">
+                              maria.oliveira@email.com
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>987.654.321-00</td>
+                      <td>(11) 98765-1234</td>
+                      <td>45 anos</td>
+                      <td>Bradesco Saúde</td>
+                      <td>
+                        <span class="patient-status status-ativo">Ativo</span>
+                      </td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary action-btn"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-danger action-btn"
+                        >
+                          <i class="bi bi-person-x"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-secondary action-btn"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="flex-shrink-0">
+                            <img
+                              src="./assets/patient3.jpg"
+                              alt="Pedro Souza"
+                              class="patient-avatar"
+                            />
+                          </div>
+                          <div class="flex-grow-1 ms-3">
+                            <strong>Pedro Souza</strong>
+                            <div class="text-muted small">
+                              pedro.souza@email.com
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>456.789.123-00</td>
+                      <td>(11) 98765-5678</td>
+                      <td>29 anos</td>
+                      <td>SulAmérica</td>
+                      <td>
+                        <span class="patient-status status-inativo"
+                          >Inativo</span
+                        >
+                      </td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary action-btn"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-success action-btn"
+                        >
+                          <i class="bi bi-person-check"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-secondary action-btn"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Pagination -->
+              <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mt-4">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                  </li>
+                  <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">Próxima</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Novo Paciente Modal -->
+    <div
+      class="modal fade"
+      id="novoPacienteModal"
+      tabindex="-1"
+      aria-labelledby="novoPacienteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="novoPacienteModalLabel">
+              <i class="bi bi-person-plus"></i> Cadastrar Novo Paciente
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="novoPacienteForm">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="nomeCompleto" class="form-label"
+                    >Nome Completo</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nomeCompleto"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="dataNascimento" class="form-label"
+                    >Data de Nascimento</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="dataNascimento"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="cpf" class="form-label">CPF</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cpf"
+                    placeholder="000.000.000-00"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="telefone" class="form-label">Telefone</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="telefone"
+                    placeholder="(00) 00000-0000"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" />
+                </div>
+                <div class="col-md-6">
+                  <label for="convenio" class="form-label"
+                    >Convênio Médico</label
+                  >
+                  <select class="form-select" id="convenio">
+                    <option value="">Selecione...</option>
+                    <option value="amil">Amil Saúde</option>
+                    <option value="bradesco">Bradesco Saúde</option>
+                    <option value="sulamerica">SulAmérica</option>
+                    <option value="particular">Particular</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="endereco" class="form-label"
+                  >Endereço Completo</label
+                >
+                <input type="text" class="form-control" id="endereco" />
+              </div>
+
+              <div class="mb-3">
+                <label for="observacoes" class="form-label">Observações</label>
+                <textarea
+                  class="form-control"
+                  id="observacoes"
+                  rows="3"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              form="novoPacienteForm"
+              class="btn btn-primary"
+            >
+              Cadastrar Paciente
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Editar Paciente Modal -->
+    <div
+      class="modal fade"
+      id="editarPacienteModal"
+      tabindex="-1"
+      aria-labelledby="editarPacienteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editarPacienteModalLabel">
+              <i class="bi bi-person-gear"></i> Editar Paciente
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editarPacienteForm">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="editNomeCompleto" class="form-label"
+                    >Nome Completo</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editNomeCompleto"
+                    value="João da Silva"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="editDataNascimento" class="form-label"
+                    >Data de Nascimento</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="editDataNascimento"
+                    value="1985-03-15"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="editCpf" class="form-label">CPF</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editCpf"
+                    value="123.456.789-00"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="editTelefone" class="form-label">Telefone</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="editTelefone"
+                    value="(11) 98765-4321"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="editEmail" class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="editEmail"
+                    value="joao.silva@email.com"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="editConvenio" class="form-label"
+                    >Convênio Médico</label
+                  >
+                  <select class="form-select" id="editConvenio">
+                    <option value="amil" selected>Amil Saúde</option>
+                    <option value="bradesco">Bradesco Saúde</option>
+                    <option value="sulamerica">SulAmérica</option>
+                    <option value="particular">Particular</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="editEndereco" class="form-label"
+                  >Endereço Completo</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editEndereco"
+                  value="Rua das Flores, 123 - Centro, São Paulo - SP"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label for="editObservacoes" class="form-label"
+                  >Observações</label
+                >
+                <textarea class="form-control" id="editObservacoes" rows="3">
+Paciente com histórico de hipertensão. Alergia a dipirona.</textarea
+                >
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              form="editarPacienteForm"
+              class="btn btn-primary"
+            >
+              Salvar Alterações
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desativar Paciente Modal -->
+    <div
+      class="modal fade"
+      id="desativarPacienteModal"
+      tabindex="-1"
+      aria-labelledby="desativarPacienteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title text-danger"
+              id="desativarPacienteModalLabel"
+            >
+              <i class="bi bi-exclamation-triangle"></i> Desativar Paciente
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Tem certeza que deseja desativar o paciente
+              <strong>"João da Silva"</strong>?
+            </p>
+            <p class="text-muted">
+              O paciente não aparecerá em buscas e não poderá marcar novas
+              consultas, mas seu histórico permanecerá no sistema.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-danger">
+              Confirmar Desativação
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detalhes Paciente Modal -->
+    <div
+      class="modal fade"
+      id="detalhesPacienteModal"
+      tabindex="-1"
+      aria-labelledby="detalhesPacienteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="detalhesPacienteModalLabel">
+              <i class="bi bi-person-lines-fill"></i> Detalhes do Paciente
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row mb-4">
+              <div class="col-md-3 text-center">
+                <img
+                  src="./assets/patient1.jpg"
+                  alt="João da Silva"
+                  class="img-thumbnail mb-3"
+                  style="width: 150px; height: 150px; object-fit: cover"
+                />
+                <div>
+                  <span class="patient-status status-ativo">Ativo</span>
+                </div>
+              </div>
+              <div class="col-md-9">
+                <h4>João da Silva</h4>
+                <p class="text-muted">
+                  ID: PAC-12345 | Cadastrado em: 15/03/2020
+                </p>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <ul class="list-group list-group-flush">
+                      <li
+                        class="list-group-item d-flex justify-content-between"
+                      >
+                        <span>Data Nasc.:</span>
+                        <strong>15/03/1985 (38 anos)</strong>
+                      </li>
+                      <li
+                        class="list-group-item d-flex justify-content-between"
+                      >
+                        <span>CPF:</span>
+                        <span>123.456.789-00</span>
+                      </li>
+                      <li
+                        class="list-group-item d-flex justify-content-between"
+                      >
+                        <span>Telefone:</span>
+                        <span>(11) 98765-4321</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-md-6">
+                    <ul class="list-group list-group-flush">
+                      <li
+                        class="list-group-item d-flex justify-content-between"
+                      >
+                        <span>Email:</span>
+                        <span>joao.silva@email.com</span>
+                      </li>
+                      <li
+                        class="list-group-item d-flex justify-content-between"
+                      >
+                        <span>Convênio:</span>
+                        <span>Amil Saúde</span>
+                      </li>
+                      <li
+                        class="list-group-item d-flex justify-content-between"
+                      >
+                        <span>Endereço:</span>
+                        <span>Rua das Flores, 123 - SP</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="mb-3">
+              <i class="bi bi-heart-pulse"></i> Histórico Médico
+            </h5>
+            <div class="card mb-3">
+              <div class="card-body">
+                <h6>Alergias</h6>
+                <p>Dipirona (reação cutânea)</p>
+
+                <h6 class="mt-3">Condições Crônicas</h6>
+                <p>Hipertensão arterial (controlada)</p>
+
+                <h6 class="mt-3">Medicações</h6>
+                <p>Losartana 50mg (1x/dia)</p>
+              </div>
+            </div>
+
+            <h5 class="mb-3">
+              <i class="bi bi-calendar-check"></i> Últimas Consultas
+            </h5>
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Médico</th>
+                    <th>Especialidade</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>15/06/2023</td>
+                    <td>Dr. Carlos Andrade</td>
+                    <td>Cardiologia</td>
+                    <td>
+                      <span class="status-badge status-em-andamento"
+                        >Em Andamento</span
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>10/03/2023</td>
+                    <td>Dra. Ana Beatriz</td>
+                    <td>Clínico Geral</td>
+                    <td>
+                      <span class="status-badge status-concluido"
+                        >Concluído</span
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>15/12/2022</td>
+                    <td>Dr. Carlos Andrade</td>
+                    <td>Cardiologia</td>
+                    <td>
+                      <span class="status-badge status-concluido"
+                        >Concluído</span
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Fechar
+            </button>
+            <button type="button" class="btn btn-primary">
+              <i class="bi bi-printer"></i> Imprimir Prontuário
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Form submission handler for new patient
+        document
+          .getElementById("novoPacienteForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Paciente cadastrado com sucesso!");
+            var modal = bootstrap.Modal.getInstance(
+              document.getElementById("novoPacienteModal")
+            );
+            modal.hide();
+          });
+
+        // Form submission handler for edit patient
+        document
+          .getElementById("editarPacienteForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Alterações salvas com sucesso!");
+            var modal = bootstrap.Modal.getInstance(
+              document.getElementById("editarPacienteModal")
+            );
+            modal.hide();
+          });
+
+        // Deactivate patient handler
+        document
+          .querySelector("#desativarPacienteModal .btn-danger")
+          .addEventListener("click", function () {
+            alert("Paciente desativado com sucesso!");
+            var modal = bootstrap.Modal.getInstance(
+              document.getElementById("desativarPacienteModal")
+            );
+            modal.hide();
+          });
+      });
+    </script>
+  </body>
+</html>

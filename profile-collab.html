@@ -1,66 +1,503 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
+    <title>Med+ | Perfil do Colaborador</title>
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
-    <title>Med+ Perfil</title>
-    <script defer src="script.js"></script>
+    <!-- Bootstrap 5.3 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <style>
+      :root {
+        --med-primary: #3182ce;
+        --med-dark: #2c5282;
+        --med-light: #f5f9ff;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #212529;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        color: var(--med-primary);
+      }
+
+      .navbar-brand span {
+        color: var(--med-dark);
+      }
+
+      .sidebar {
+        background-color: white;
+        min-height: calc(100vh - 56px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .sidebar .nav-link {
+        color: #495057;
+        border-radius: 5px;
+        margin-bottom: 5px;
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        background-color: var(--med-light);
+        color: var(--med-primary);
+      }
+
+      .sidebar .nav-link i {
+        margin-right: 10px;
+      }
+
+      .card {
+        border: none;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+        transition: transform 0.2s;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+      }
+
+      .card-icon {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .stat-card .card-title {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-card .card-value {
+        font-size: 1.8rem;
+        font-weight: 700;
+      }
+
+      .btn-primary {
+        background-color: var(--med-primary);
+        border-color: var(--med-primary);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--med-dark);
+        border-color: var(--med-dark);
+      }
+
+      .action-btn {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .tab-content {
+        padding: 20px 0;
+      }
+
+      .profile-img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 4px solid white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .profile-header {
+        background: linear-gradient(
+          135deg,
+          var(--med-primary),
+          var(--med-dark)
+        );
+        color: white;
+        padding: 2rem 0;
+        border-radius: 10px;
+        margin-bottom: -60px;
+      }
+
+      .profile-body {
+        position: relative;
+        z-index: 1;
+      }
+
+      .profile-card {
+        margin-top: 80px;
+      }
+
+      .badge-colab {
+        background-color: #6f42c1;
+      }
+    </style>
   </head>
-  <body id="profile-collab">
-    <div class="bg-header">
-      <header class="header-main">
-        <h1>Med+<span>colaborador</span></h1>
-        <nav class="nav-main">
-          <ul>
-            <li><a href="./main-collab.html">Fichas</a></li>
-            <li><a href="" class="active-tab">Perfil</a></li>
-            <li><a href="./index.html">Sair</a></li>
+  <body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-heart-pulse"></i> Med<span>+</span> Colaborador
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bi bi-person-circle"></i> Maria Oliveira
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="bi bi-person"></i> Perfil</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="bi bi-box-arrow-right"></i> Sair</a
+                  >
+                </li>
+              </ul>
+            </li>
           </ul>
-        </nav>
-      </header>
-    </div>
-    <main class="editar-dados">
-      <fieldset>
-        <legend>Editar dados</legend>
-        <div class="form-editar-dados">
-          <div class="input-editar-dados">
-            <label for="name">Nome</label>
-            <input type="text" name="name" id="name" />
-          </div>
-          <div class="input-editar-dados">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" />
-          </div>
-          <div class="input-editar-dados">
-            <label for="password">Senha</label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              readonly
-              disabled
-            />
-            <span class="after-input btn-edit-password-doctor"></span>
-          </div>
-          <div class="input-editar-dados">
-            <select
-              name="specialization"
-              id="specialization-profile"
-              class="input"
-            >
-              <option value="MEDICO">MÉDICO</option>
-              <option value="ENFERMEIRO">ENFERMEIRO</option>
-            </select>
-          </div>
-          <a
-            href="javascript: void(0)"
-            class="btn-atualizar-perfil btn-atualizar-perfil-collab"
-            >Atualizar perfil</a
-          >
         </div>
-      </fieldset>
-    </main>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block sidebar bg-white">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="./main-collab.html">
+                  <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./collab-patients.html">
+                  <i class="bi bi-people"></i> Pacientes
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./collab-records.html">
+                  <i class="bi bi-files"></i> Fichas
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./collab-schedule.html">
+                  <i class="bi bi-calendar-check"></i> Agenda
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="./profile-collab.html">
+                  <i class="bi bi-person"></i> Meu Perfil
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+          <!-- Profile Header -->
+          <div class="profile-header text-center">
+            <div class="container">
+              <h3>Maria Oliveira</h3>
+              <p class="mb-1">maria.oliveira@medplus.com</p>
+              <span class="badge badge-colab text-white">Atendente</span>
+            </div>
+          </div>
+
+          <!-- Profile Content -->
+          <div class="container profile-body">
+            <div class="card profile-card">
+              <div class="card-body">
+                <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link active"
+                      id="info-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#info"
+                      type="button"
+                    >
+                      <i class="bi bi-info-circle"></i> Informações
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="security-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#security"
+                      type="button"
+                    >
+                      <i class="bi bi-shield-lock"></i> Segurança
+                    </button>
+                  </li>
+                </ul>
+
+                <div class="tab-content p-4" id="profileTabsContent">
+                  <!-- Info Tab -->
+                  <div class="tab-pane fade show active" id="info">
+                    <form id="profileForm">
+                      <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                          <label for="firstName" class="form-label">Nome</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="firstName"
+                            value="Maria"
+                          />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="lastName" class="form-label"
+                            >Sobrenome</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="lastName"
+                            value="Oliveira"
+                          />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="email" class="form-label">Email</label>
+                          <input
+                            type="email"
+                            class="form-control"
+                            id="email"
+                            value="maria.oliveira@medplus.com"
+                          />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="phone" class="form-label">Telefone</label>
+                          <input
+                            type="tel"
+                            class="form-control"
+                            id="phone"
+                            value="(11) 98765-4321"
+                          />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="birthDate" class="form-label"
+                            >Data de Nascimento</label
+                          >
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="birthDate"
+                            value="1985-05-15"
+                          />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="position" class="form-label">Cargo</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="position"
+                            value="Atendente"
+                            disabled
+                          />
+                        </div>
+                      </div>
+
+                      <div class="d-flex justify-content-end">
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary me-2"
+                        >
+                          Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                          Salvar Alterações
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+
+                  <!-- Security Tab -->
+                  <div class="tab-pane fade" id="security">
+                    <form id="securityForm">
+                      <div class="row mb-4">
+                        <div class="col-md-12 mb-4">
+                          <h5 class="mb-3">Alterar Senha</h5>
+                          <div class="mb-3">
+                            <label for="currentPassword" class="form-label"
+                              >Senha Atual</label
+                            >
+                            <div class="input-group">
+                              <input
+                                type="password"
+                                class="form-control"
+                                id="currentPassword"
+                              />
+                              <span class="input-group-text">
+                                <i class="bi bi-eye-slash"></i>
+                              </span>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <label for="newPassword" class="form-label"
+                              >Nova Senha</label
+                            >
+                            <div class="input-group">
+                              <input
+                                type="password"
+                                class="form-control"
+                                id="newPassword"
+                              />
+                              <span class="input-group-text">
+                                <i class="bi bi-eye-slash"></i>
+                              </span>
+                            </div>
+                            <div class="form-text">
+                              A senha deve conter pelo menos 8 caracteres.
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <label for="confirmPassword" class="form-label"
+                              >Confirmar Nova Senha</label
+                            >
+                            <div class="input-group">
+                              <input
+                                type="password"
+                                class="form-control"
+                                id="confirmPassword"
+                              />
+                              <span class="input-group-text">
+                                <i class="bi bi-eye-slash"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="d-flex justify-content-end">
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary me-2"
+                        >
+                          Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                          Alterar Senha
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card mt-4">
+              <div class="card-header">
+                <h5 class="mb-0">
+                  <i class="bi bi-clock-history"></i> Atividade Recente
+                </h5>
+              </div>
+              <div class="card-body">
+                <div class="list-group">
+                  <a
+                    href="#"
+                    class="list-group-item list-group-item-action border-0"
+                  >
+                    <div class="d-flex w-100 justify-content-between">
+                      <h6 class="mb-1">Novo paciente cadastrado</h6>
+                      <small class="text-muted">15 minutos atrás</small>
+                    </div>
+                    <p class="mb-1">João da Silva</p>
+                  </a>
+                  <a
+                    href="#"
+                    class="list-group-item list-group-item-action border-0"
+                  >
+                    <div class="d-flex w-100 justify-content-between">
+                      <h6 class="mb-1">Ficha médica atualizada</h6>
+                      <small class="text-muted">2 horas atrás</small>
+                    </div>
+                    <p class="mb-1">Ana Beatriz - Consulta de rotina</p>
+                  </a>
+                  <a
+                    href="#"
+                    class="list-group-item list-group-item-action border-0"
+                  >
+                    <div class="d-flex w-100 justify-content-between">
+                      <h6 class="mb-1">Consulta agendada</h6>
+                      <small class="text-muted">Ontem</small>
+                    </div>
+                    <p class="mb-1">Dr. Carlos - Cardiologia</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Toggle password visibility
+        document.querySelectorAll(".input-group-text").forEach((icon) => {
+          icon.addEventListener("click", function () {
+            const input = this.previousElementSibling;
+            const type =
+              input.getAttribute("type") === "password" ? "text" : "password";
+            input.setAttribute("type", type);
+
+            // Toggle eye icon
+            const eyeIcon = this.querySelector("i");
+            if (type === "password") {
+              eyeIcon.classList.remove("bi-eye");
+              eyeIcon.classList.add("bi-eye-slash");
+            } else {
+              eyeIcon.classList.remove("bi-eye-slash");
+              eyeIcon.classList.add("bi-eye");
+            }
+          });
+        });
+
+        // Form submission handlers
+        document
+          .getElementById("profileForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Perfil atualizado com sucesso!");
+          });
+
+        document
+          .getElementById("securityForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Senha alterada com sucesso!");
+            this.reset();
+          });
+      });
+    </script>
   </body>
 </html>

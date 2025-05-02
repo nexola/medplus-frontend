@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Med+ | Gerenciamento de Fichas</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
+    <!-- Bootstrap 5.3 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <style>
+      :root {
+        --med-primary: #3182ce;
+        --med-dark: #2c5282;
+        --med-light: #f5f9ff;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #212529;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        color: var(--med-primary);
+      }
+
+      .navbar-brand span {
+        color: var(--med-dark);
+      }
+
+      .sidebar {
+        background-color: white;
+        min-height: calc(100vh - 56px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .sidebar .nav-link {
+        color: #495057;
+        border-radius: 5px;
+        margin-bottom: 5px;
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        background-color: var(--med-light);
+        color: var(--med-primary);
+      }
+
+      .sidebar .nav-link i {
+        margin-right: 10px;
+      }
+
+      .card {
+        border: none;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+      }
+
+      .status-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .status-agendado {
+        background-color: #e3f2fd;
+        color: #1976d2;
+      }
+
+      .status-em-andamento {
+        background-color: #fff8e1;
+        color: #ffa000;
+      }
+
+      .status-concluido {
+        background-color: #e8f5e9;
+        color: #388e3c;
+      }
+
+      .status-cancelado {
+        background-color: #ffebee;
+        color: #d32f2f;
+      }
+
+      .action-btn {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .filter-card {
+        transition: all 0.3s;
+      }
+
+      .filter-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-heart-pulse"></i> Med<span>+</span> Admin
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bi bi-person-circle"></i> Admin
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="profile.unity.html"
+                    ><i class="bi bi-person"></i> Perfil</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="bi bi-box-arrow-right"></i> Sair</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block sidebar bg-white">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="main-unity.html">
+                  <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="doctors.html">
+                  <i class="bi bi-person-badge"></i> Médicos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="collabs.html">
+                  <i class="bi bi-people"></i> Colaboradores
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="unity-records.html">
+                  <i class="bi bi-files"></i> Fichas
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="unity-patients.html">
+                  <i class="bi bi-people"></i> Pacientes
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+          >
+            <h1 class="h2">
+              <i class="bi bi-files"></i> Gerenciamento de Fichas
+            </h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <button
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#novaFichaModal"
+              >
+                <i class="bi bi-plus-lg"></i> Nova Ficha
+              </button>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card filter-card h-100">
+                <div class="card-body text-center">
+                  <h6 class="card-title">Total de Fichas</h6>
+                  <p class="display-6 mb-0">124</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card filter-card h-100">
+                <div class="card-body text-center">
+                  <h6 class="card-title">Agendadas</h6>
+                  <p class="display-6 mb-0">15</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card filter-card h-100">
+                <div class="card-body text-center">
+                  <h6 class="card-title">Em Andamento</h6>
+                  <p class="display-6 mb-0">8</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card filter-card h-100">
+                <div class="card-body text-center">
+                  <h6 class="card-title">Concluídas</h6>
+                  <p class="display-6 mb-0">101</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search and Advanced Filters -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label for="searchInput" class="form-label">Pesquisar</label>
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="bi bi-search"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="searchInput"
+                      placeholder="Paciente, Médico ou ID"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label for="statusFilter" class="form-label">Status</label>
+                  <select class="form-select" id="statusFilter">
+                    <option value="">Todos status</option>
+                    <option value="agendado">Agendado</option>
+                    <option value="andamento">Em Andamento</option>
+                    <option value="concluido">Concluído</option>
+                    <option value="cancelado">Cancelado</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label for="dateFilter" class="form-label">Período</label>
+                  <select class="form-select" id="dateFilter">
+                    <option value="">Todos os períodos</option>
+                    <option value="hoje">Hoje</option>
+                    <option value="semana">Esta semana</option>
+                    <option value="mes">Este mês</option>
+                    <option value="custom">Personalizado</option>
+                  </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                  <button class="btn btn-primary w-100">
+                    <i class="bi bi-funnel"></i> Filtrar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fichas Table -->
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Paciente</th>
+                      <th>Médico</th>
+                      <th>Data</th>
+                      <th>Horário</th>
+                      <th>Status</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#FCH-2023-0015</td>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="flex-shrink-0">
+                            <div
+                              class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
+                              style="width: 40px; height: 40px"
+                            >
+                              <i class="bi bi-person"></i>
+                            </div>
+                          </div>
+                          <div class="flex-grow-1 ms-3">
+                            <strong>João da Silva</strong>
+                            <div class="text-muted small">
+                              CPF: 123.456.789-00
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>Dr. Carlos Andrade</td>
+                      <td>15/06/2023</td>
+                      <td>14:30</td>
+                      <td>
+                        <span class="status-badge status-em-andamento"
+                          >Em Andamento</span
+                        >
+                      </td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary action-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#detalhesFichaModal"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-secondary action-btn"
+                        >
+                          <i class="bi bi-printer"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#FCH-2023-0014</td>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="flex-shrink-0">
+                            <div
+                              class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
+                              style="width: 40px; height: 40px"
+                            >
+                              <i class="bi bi-person"></i>
+                            </div>
+                          </div>
+                          <div class="flex-grow-1 ms-3">
+                            <strong>Maria Oliveira</strong>
+                            <div class="text-muted small">
+                              CPF: 987.654.321-00
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>Dra. Ana Beatriz</td>
+                      <td>14/06/2023</td>
+                      <td>10:15</td>
+                      <td>
+                        <span class="status-badge status-concluido"
+                          >Concluído</span
+                        >
+                      </td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary action-btn"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-secondary action-btn"
+                        >
+                          <i class="bi bi-printer"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#FCH-2023-0013</td>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="flex-shrink-0">
+                            <div
+                              class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
+                              style="width: 40px; height: 40px"
+                            >
+                              <i class="bi bi-person"></i>
+                            </div>
+                          </div>
+                          <div class="flex-grow-1 ms-3">
+                            <strong>Pedro Souza</strong>
+                            <div class="text-muted small">
+                              CPF: 456.789.123-00
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>Dr. Marcelo Silva</td>
+                      <td>16/06/2023</td>
+                      <td>09:00</td>
+                      <td>
+                        <span class="status-badge status-agendado"
+                          >Agendado</span
+                        >
+                      </td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary action-btn"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-secondary action-btn"
+                        >
+                          <i class="bi bi-printer"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Pagination -->
+              <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mt-4">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                  </li>
+                  <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">Próxima</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Nova Ficha Modal -->
+    <div
+      class="modal fade"
+      id="novaFichaModal"
+      tabindex="-1"
+      aria-labelledby="novaFichaModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="novaFichaModalLabel">
+              <i class="bi bi-file-earmark-plus"></i> Nova Ficha Médica
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="novaFichaForm">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="pacienteSelect" class="form-label"
+                    >Paciente</label
+                  >
+                  <select class="form-select" id="pacienteSelect" required>
+                    <option value="">Selecione um paciente...</option>
+                    <option value="1">
+                      João da Silva (CPF: 123.456.789-00)
+                    </option>
+                    <option value="2">
+                      Maria Oliveira (CPF: 987.654.321-00)
+                    </option>
+                    <option value="3">Pedro Souza (CPF: 456.789.123-00)</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="medicoSelect" class="form-label">Médico</label>
+                  <select class="form-select" id="medicoSelect" required>
+                    <option value="">Selecione um médico...</option>
+                    <option value="1">Dr. Carlos Andrade (Cardiologia)</option>
+                    <option value="2">Dra. Ana Beatriz (Pediatria)</option>
+                    <option value="3">Dr. Marcelo Silva (Ortopedia)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="dataConsulta" class="form-label"
+                    >Data da Consulta</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="dataConsulta"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="horaConsulta" class="form-label">Horário</label>
+                  <input
+                    type="time"
+                    class="form-control"
+                    id="horaConsulta"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="tipoConsulta" class="form-label"
+                  >Tipo de Consulta</label
+                >
+                <select class="form-select" id="tipoConsulta" required>
+                  <option value="">Selecione o tipo...</option>
+                  <option value="rotina">Consulta de Rotina</option>
+                  <option value="retorno">Retorno</option>
+                  <option value="emergencia">Emergência</option>
+                  <option value="exame">Acompanhamento de Exame</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="observacoes" class="form-label">Observações</label>
+                <textarea
+                  class="form-control"
+                  id="observacoes"
+                  rows="3"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="submit" form="novaFichaForm" class="btn btn-primary">
+              Criar Ficha
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detalhes Ficha Modal -->
+    <div
+      class="modal fade"
+      id="detalhesFichaModal"
+      tabindex="-1"
+      aria-labelledby="detalhesFichaModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="detalhesFichaModalLabel">
+              <i class="bi bi-file-earmark-text"></i> Detalhes da Ficha
+              #FCH-2023-0015
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <h6>Informações do Paciente</h6>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span>Nome:</span>
+                    <strong>João da Silva</strong>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span>CPF:</span>
+                    <span>123.456.789-00</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span>Data Nasc.:</span>
+                    <span>15/03/1985</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span>Convênio:</span>
+                    <span>Amil Saúde</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h6>Informações da Consulta</h6>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span>Médico:</span>
+                    <strong>Dr. Carlos Andrade</strong>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span>Data/Horário:</span>
+                    <span>15/06/2023 às 14:30</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span>Tipo:</span>
+                    <span>Consulta de Rotina</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span>Status:</span>
+                    <span
+                      ><span class="status-badge status-em-andamento"
+                        >Em Andamento</span
+                      ></span
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <h6>Histórico e Anotações</h6>
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="flex-shrink-0">
+                      <div
+                        class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
+                        style="width: 40px; height: 40px"
+                      >
+                        <i class="bi bi-person-badge"></i>
+                      </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <strong>Dr. Carlos Andrade</strong>
+                      <div class="text-muted small">15/06/2023 14:45</div>
+                      <p class="mt-1 mb-0">
+                        Paciente relatou dores no peito ocasionais. Pressão
+                        arterial 13x8. Marcado ECG para avaliação.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <div
+                        class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
+                        style="width: 40px; height: 40px"
+                      >
+                        <i class="bi bi-person-badge"></i>
+                      </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <strong>Dra. Ana Beatriz</strong>
+                      <div class="text-muted small">10/03/2023 09:30</div>
+                      <p class="mt-1 mb-0">
+                        Consulta de rotina. Paciente sem queixas. Exames dentro
+                        da normalidade.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="novaAnotacao" class="form-label"
+                >Adicionar Anotação</label
+              >
+              <textarea
+                class="form-control"
+                id="novaAnotacao"
+                rows="3"
+                placeholder="Digite suas observações..."
+              ></textarea>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <div>
+                <button class="btn btn-outline-secondary">
+                  <i class="bi bi-printer"></i> Imprimir Ficha
+                </button>
+              </div>
+              <div>
+                <button class="btn btn-success me-2">
+                  <i class="bi bi-check-circle"></i> Concluir Consulta
+                </button>
+                <button class="btn btn-danger">
+                  <i class="bi bi-x-circle"></i> Cancelar Consulta
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Form submission handler for new record
+        document
+          .getElementById("novaFichaForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Ficha criada com sucesso!");
+            var modal = bootstrap.Modal.getInstance(
+              document.getElementById("novaFichaModal")
+            );
+            modal.hide();
+          });
+
+        // Example of status change handlers
+        document
+          .querySelector("#detalhesFichaModal .btn-success")
+          .addEventListener("click", function () {
+            alert("Consulta marcada como concluída!");
+            var modal = bootstrap.Modal.getInstance(
+              document.getElementById("detalhesFichaModal")
+            );
+            modal.hide();
+          });
+
+        document
+          .querySelector("#detalhesFichaModal .btn-danger")
+          .addEventListener("click", function () {
+            if (confirm("Tem certeza que deseja cancelar esta consulta?")) {
+              alert("Consulta cancelada com sucesso!");
+              var modal = bootstrap.Modal.getInstance(
+                document.getElementById("detalhesFichaModal")
+              );
+              modal.hide();
+            }
+          });
+      });
+    </script>
+  </body>
+</html>

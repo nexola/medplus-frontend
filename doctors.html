@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Med+ | Listagem de Médicos</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
+    <!-- Bootstrap 5.3 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <style>
+      :root {
+        --med-primary: #3182ce;
+        --med-dark: #2c5282;
+        --med-light: #f5f9ff;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #212529;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        color: var(--med-primary);
+      }
+
+      .navbar-brand span {
+        color: var(--med-dark);
+      }
+
+      .sidebar {
+        background-color: white;
+        min-height: calc(100vh - 56px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .sidebar .nav-link {
+        color: #495057;
+        border-radius: 5px;
+        margin-bottom: 5px;
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        background-color: var(--med-light);
+        color: var(--med-primary);
+      }
+
+      .sidebar .nav-link i {
+        margin-right: 10px;
+      }
+
+      .card {
+        border: none;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+      }
+
+      .table th {
+        background-color: var(--med-light);
+        color: var(--med-dark);
+        border-top: none;
+      }
+
+      .action-btn {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .specialty-badge {
+        background-color: #e6f7ff;
+        color: var(--med-primary);
+        font-weight: 500;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-heart-pulse"></i> Med<span>+</span> Unidade Centro
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bi bi-person-circle"></i> Admin Unidade
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="./profile-unity.html"
+                    ><i class="bi bi-person"></i> Perfil</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="bi bi-box-arrow-right"></i> Sair</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block sidebar bg-white">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="./main-unity.html">
+                  <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="doctors.html">
+                  <i class="bi bi-person-badge"></i> Médicos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="collabs.html">
+                  <i class="bi bi-people"></i> Colaboradores
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="unity-records.html">
+                  <i class="bi bi-files"></i> Fichas
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="unity-patients.html">
+                  <i class="bi bi-people"></i> Pacientes
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+          >
+            <h1 class="h2">
+              <i class="bi bi-person-badge"></i> Listagem de Médicos
+            </h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <button
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#addMedicoModal"
+              >
+                <i class="bi bi-plus-lg"></i> Adicionar Médico
+              </button>
+            </div>
+          </div>
+
+          <!-- Search and Filter -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input-group mb-3">
+                    <span class="input-group-text"
+                      ><i class="bi bi-search"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Pesquisar médicos..."
+                    />
+                    <button class="btn btn-outline-secondary" type="button">
+                      Buscar
+                    </button>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="bi bi-filter"></i> Filtrar por:</span
+                    >
+                    <select class="form-select">
+                      <option selected>Todas especialidades</option>
+                      <option>Cardiologia</option>
+                      <option>Pediatria</option>
+                      <option>Ortopedia</option>
+                      <option>Dermatologia</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Médicos Table -->
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>CRM</th>
+                      <th>Especialidade</th>
+                      <th>Email</th>
+                      <th>Telefone</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="flex-shrink-0">
+                            <div
+                              class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
+                              style="width: 40px; height: 40px"
+                            >
+                              <i class="bi bi-person"></i>
+                            </div>
+                          </div>
+                          <div class="flex-grow-1 ms-3">
+                            <strong>Dr. Carlos Andrade</strong>
+                          </div>
+                        </div>
+                      </td>
+                      <td>SP-123456</td>
+                      <td><span class="specialty-badge">Cardiologia</span></td>
+                      <td>carlos.andrade@medplus.com</td>
+                      <td>(11) 98765-4321</td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary action-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editMedicoModal"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-danger action-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteMedicoModal"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="flex-shrink-0">
+                            <div
+                              class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
+                              style="width: 40px; height: 40px"
+                            >
+                              <i class="bi bi-person"></i>
+                            </div>
+                          </div>
+                          <div class="flex-grow-1 ms-3">
+                            <strong>Dra. Ana Beatriz</strong>
+                          </div>
+                        </div>
+                      </td>
+                      <td>RJ-654321</td>
+                      <td><span class="specialty-badge">Pediatria</span></td>
+                      <td>ana.beatriz@medplus.com</td>
+                      <td>(21) 99876-5432</td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary action-btn"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-danger action-btn"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="flex-shrink-0">
+                            <div
+                              class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
+                              style="width: 40px; height: 40px"
+                            >
+                              <i class="bi bi-person"></i>
+                            </div>
+                          </div>
+                          <div class="flex-grow-1 ms-3">
+                            <strong>Dr. Marcelo Silva</strong>
+                          </div>
+                        </div>
+                      </td>
+                      <td>MG-789012</td>
+                      <td><span class="specialty-badge">Ortopedia</span></td>
+                      <td>marcelo.silva@medplus.com</td>
+                      <td>(31) 98765-1234</td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary action-btn"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-danger action-btn"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Pagination -->
+              <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mt-4">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                  </li>
+                  <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">Próxima</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Add Médico Modal -->
+    <div
+      class="modal fade"
+      id="addMedicoModal"
+      tabindex="-1"
+      aria-labelledby="addMedicoModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addMedicoModalLabel">
+              <i class="bi bi-person-badge"></i> Adicionar Médico
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="addMedicoForm">
+              <div class="mb-3">
+                <label for="medicoNome" class="form-label">Nome Completo</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="medicoNome"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="medicoCRM" class="form-label">CRM</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="medicoCRM"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="medicoEspecialidade" class="form-label"
+                  >Especialidade</label
+                >
+                <select class="form-select" id="medicoEspecialidade" required>
+                  <option value="">Selecione...</option>
+                  <option value="cardiologia">Cardiologia</option>
+                  <option value="pediatria">Pediatria</option>
+                  <option value="ortopedia">Ortopedia</option>
+                  <option value="dermatologia">Dermatologia</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="medicoEmail" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="medicoEmail"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="medicoTelefone" class="form-label">Telefone</label>
+                <input type="tel" class="form-control" id="medicoTelefone" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="submit" form="addMedicoForm" class="btn btn-primary">
+              Cadastrar Médico
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Médico Modal -->
+    <div
+      class="modal fade"
+      id="editMedicoModal"
+      tabindex="-1"
+      aria-labelledby="editMedicoModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editMedicoModalLabel">
+              <i class="bi bi-person-badge"></i> Editar Médico
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editMedicoForm">
+              <div class="mb-3">
+                <label for="editMedicoNome" class="form-label"
+                  >Nome Completo</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editMedicoNome"
+                  value="Dr. Carlos Andrade"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editMedicoCRM" class="form-label">CRM</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editMedicoCRM"
+                  value="SP-123456"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editMedicoEspecialidade" class="form-label"
+                  >Especialidade</label
+                >
+                <select
+                  class="form-select"
+                  id="editMedicoEspecialidade"
+                  required
+                >
+                  <option value="cardiologia" selected>Cardiologia</option>
+                  <option value="pediatria">Pediatria</option>
+                  <option value="ortopedia">Ortopedia</option>
+                  <option value="dermatologia">Dermatologia</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="editMedicoEmail" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="editMedicoEmail"
+                  value="carlos.andrade@medplus.com"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editMedicoTelefone" class="form-label"
+                  >Telefone</label
+                >
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="editMedicoTelefone"
+                  value="(11) 98765-4321"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="submit" form="editMedicoForm" class="btn btn-primary">
+              Salvar Alterações
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Médico Modal -->
+    <div
+      class="modal fade"
+      id="deleteMedicoModal"
+      tabindex="-1"
+      aria-labelledby="deleteMedicoModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-danger" id="deleteMedicoModalLabel">
+              <i class="bi bi-exclamation-triangle"></i> Confirmar Exclusão
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Tem certeza que deseja excluir o médico
+              <strong>"Dr. Carlos Andrade"</strong>?
+            </p>
+            <p class="text-danger">
+              Esta ação não pode ser desfeita e todos os dados relacionados
+              serão perdidos.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-danger">
+              Confirmar Exclusão
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Form submission handlers
+        document
+          .getElementById("addMedicoForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Médico cadastrado com sucesso!");
+            var modal = bootstrap.Modal.getInstance(
+              document.getElementById("addMedicoModal")
+            );
+            modal.hide();
+          });
+
+        document
+          .getElementById("editMedicoForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Alterações salvas com sucesso!");
+            var modal = bootstrap.Modal.getInstance(
+              document.getElementById("editMedicoModal")
+            );
+            modal.hide();
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -1,46 +1,213 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MedPlus - Login</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Med+ | Login</title>
     <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
-    <script defer src="script.js"></script>
-  </head>
-  <body id="login">
-    <main class="container--login">
-      <form action="" class="container--form-login">
-        <img src="./assets/logo.svg" alt="medplus" id="logo" />
+    <!-- Bootstrap 5.3 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f5f9ff;
+        min-height: 100vh;
+        color: #2a4365;
+      }
 
-        <div class="container--input">
-          <label for="email">Email</label>
-          <input type="email" id="login-email" name="email" class="input" />
-        </div>
-        <div class="container--input">
-          <label for="password">Senha</label>
+      .login-container {
+        width: 700px;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .logo {
+        font-size: 28px;
+        font-weight: 700;
+        color: #3182ce;
+      }
+
+      .logo span {
+        color: #2c5282;
+      }
+
+      .form-control:focus {
+        border-color: #3182ce;
+        box-shadow: 0 0 0 0.25rem rgba(49, 130, 206, 0.25);
+      }
+
+      .btn-login {
+        background-color: #3182ce;
+        border: none;
+        font-weight: 600;
+      }
+
+      .btn-login:hover {
+        background-color: #2c5282;
+      }
+
+      .link {
+        color: #3182ce;
+        font-weight: 500;
+        text-decoration: none;
+      }
+
+      .link:hover {
+        color: #2c5282;
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body class="d-flex justify-content-center align-items-center p-3">
+    <div class="login-container bg-white p-4 p-md-5">
+      <h1 class="logo text-center mb-4">Med<span>+</span></h1>
+
+      <form>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
           <input
-            type="password"
-            id="login-password"
-            name="password"
-            class="input"
+            type="email"
+            class="form-control py-2 px-3"
+            id="email"
+            placeholder="Seu email"
           />
         </div>
 
-        <div class="container--btns">
-          <a href="./" class="btn--dark" id="btn--login">Entrar</a>
-          <div class="container--btn-cadastro">
-            <a href="./signup-patient.html" class="btn--light"
-              >Cadastrar paciente</a
-            >
-            <a href="./signup-doctor.html" class="btn--light"
-              >Cadastrar médico</a
-            >
-          </div>
+        <div class="mb-4">
+          <label for="password" class="form-label">Senha</label>
+          <input
+            type="password"
+            class="form-control py-2 px-3"
+            id="password"
+            placeholder="Sua senha"
+          />
         </div>
-        <a href="./forget-pass.html" class="forget-pass">Esqueci minha senha</a>
+
+        <hr class="my-4" />
+
+        <div id="error-message" class="text-danger text-center mb-3" style="display: none;"></div>
+
+        <button type="submit" class="btn btn-primary w-100 py-2 mb-3 btn-login">
+          ENTRAR
+        </button>
+
+        <div class="d-flex justify-content-center w-100">
+          <a href="recover-password.html" class="link">ESQUECI MINHA SENHA</a>
+        </div>
       </form>
-      <div class="bg--login"></div>
-    </main>
+    </div>
+
+    <div id="loading" class="text-center mb-3" style="display: none;">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+    </div>
+
+    <div id="error-message" class="alert alert-danger text-center mb-3" style="display: none;"></div>
+
+    <!-- Bootstrap 5.3 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      document.querySelector('form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const errorElement = document.getElementById('error-message');
+        const loadingElement = document.getElementById('loading');
+        const submitButton = document.querySelector('button[type="submit"]');
+
+        // Reset states
+        errorElement.style.display = 'none';
+        loadingElement.style.display = 'block';
+        submitButton.disabled = true;
+
+        try {
+          // Obter credenciais
+          const email = document.getElementById('email').value.trim();
+          const password = document.getElementById('password').value.trim();
+
+          // Validação básica
+          if (!email || !password) {
+            throw new Error('Por favor, preencha todos os campos!');
+          }
+
+          // Login com OAuth2
+          const tokenResponse = await fetch('http://localhost:8080/oauth2/token', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Authorization': 'Basic ' + btoa('myclientid:myclientsecret')
+            },
+            body: new URLSearchParams({
+              username: email,
+              password: password,
+              grant_type: 'password'
+            })
+          });
+
+          if (!tokenResponse.ok) {
+            const errorData = await tokenResponse.json();
+            throw new Error(errorData.error_description || 'Credenciais inválidas');
+          }
+
+          const tokenData = await tokenResponse.json();
+          console.log(tokenData.access_token)
+
+          // Obter dados do usuário
+          const userResponse = await fetch('http://localhost:8080/users/me', {
+            headers: {
+              'Authorization': `Bearer ${tokenData.access_token}`
+            }
+          });
+
+          if (!userResponse.ok) {
+            throw new Error('Falha ao obter dados do usuário');
+          }
+
+          console.log(userResponse.json)
+          const userData = await userResponse.json();
+
+          // Armazenar tokens e dados do usuário
+          localStorage.setItem('access_token', tokenData.access_token);
+          localStorage.setItem('refresh_token', tokenData.refresh_token);
+          localStorage.setItem('user', JSON.stringify(userData));
+
+
+          console.log(userData.roles)
+          if (userData.roles.includes('ROLE_ADMIN')) {
+            window.location.href = '/unities.html';
+          } else if (userData.roles.includes('ROLE_DOCTOR')) {
+            window.location.href = '/main-doctor.html';
+          } else if (userData.roles.includes('ROLE_PATIENT')) {
+            window.location.href = '/main-patient.html';
+          } else if (userData.roles.includes('ROLE_STAFF')) {
+            window.location.href = '/main-collab.html';
+          } else if(userData.roles.includes('ROLE_UNIT')){
+            window.location.href = '/main-unity.html';
+          }
+
+        } catch (error) {
+          errorElement.textContent = error.message;
+          errorElement.style.display = 'block';
+          console.error('Erro no login:', error);
+        } finally {
+          loadingElement.style.display = 'none';
+          submitButton.disabled = false;
+        }
+      });
+
+      // Verificar se já está logado
+      window.addEventListener('DOMContentLoaded', () => {
+        const user = localStorage.getItem('user');
+        if (user) {
+          const userData = JSON.parse(user);
+          if (userData.roles.includes('ROLE_ADMIN')) {
+            window.location.href = '/unities.html';
+          }
+          // Adicione verificações para outros perfis se necessário
+        }
+      });
+    </script>
   </body>
 </html>
