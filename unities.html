@@ -309,41 +309,19 @@
             <form id="createUnitForm">
               <div class="mb-3">
                 <label for="unitName" class="form-label">Nome da Unidade</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="unitName"
-                  required
-                />
+                <input type="text" class="form-control" id="unitName" required />
               </div>
               <div class="mb-3">
                 <label for="unitEmail" class="form-label">Email</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  id="unitEmail"
-                  required
-                />
+                <input type="email" class="form-control" id="unitEmail" required />
+              </div>
+              <div class="mb-3">
+                <label for="unitPassword" class="form-label">Senha</label>
+                <input type="password" class="form-control" id="unitPassword" required />
               </div>
               <div class="mb-3">
                 <label for="unitAddress" class="form-label">Endereço</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="unitAddress"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="unitColaboradores" class="form-label"
-                  >Número de Colaboradores</label
-                >
-                <input
-                  type="number"
-                  class="form-control"
-                  id="unitColaboradores"
-                  min="0"
-                />
+                <input type="text" class="form-control" id="unitAddress" required />
               </div>
             </form>
           </div>
@@ -387,48 +365,20 @@
           <div class="modal-body">
             <form id="editUnitForm">
               <div class="mb-3">
-                <label for="editUnitName" class="form-label"
-                  >Nome da Unidade</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="editUnitName"
-                  value="Unidade Centro"
-                  required
-                />
+                <label for="editUnitName" class="form-label">Nome da Unidade</label>
+                <input type="text" class="form-control" id="editUnitName" required />
               </div>
               <div class="mb-3">
                 <label for="editUnitEmail" class="form-label">Email</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  id="editUnitEmail"
-                  value="centro@medplus.com"
-                  required
-                />
+                <input type="email" class="form-control" id="editUnitEmail" required />
+              </div>
+              <div class="mb-3">
+                <label for="editUnitPassword" class="form-label">Nova Senha (opcional)</label>
+                <input type="password" class="form-control" id="editUnitPassword" />
               </div>
               <div class="mb-3">
                 <label for="editUnitAddress" class="form-label">Endereço</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="editUnitAddress"
-                  value="Rua Principal, 123 - Centro"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="editUnitColaboradores" class="form-label"
-                  >Número de Colaboradores</label
-                >
-                <input
-                  type="number"
-                  class="form-control"
-                  id="editUnitColaboradores"
-                  value="15"
-                  min="0"
-                />
+                <input type="text" class="form-control" id="editUnitAddress" required />
               </div>
             </form>
           </div>
@@ -498,42 +448,272 @@
     <!-- Bootstrap 5.3 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      // Enable tooltips
-      document.addEventListener("DOMContentLoaded", function () {
-        var tooltipTriggerList = [].slice.call(
-          document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        );
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-          return new bootstrap.Tooltip(tooltipTriggerEl);
+      const API_BASE = 'http://localhost:8080';
+      let currentUnits = [];
+      let currentStaff = [];
+      let selectedUnitId = null;
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        await checkAuth();
+        await loadData();
+        setupEventListeners();
+      });
+
+      async function checkAuth() {
+        const token = localStorage.getItem('access_token');
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (!token || !user || !user.roles.includes('ROLE_ADMIN')) {
+          window.location.href = 'index.html';
+        }
+      }
+
+      async function loadData() {
+        try {
+          const [unitsResponse, staffResponse] = await Promise.all([
+            fetch(`${API_BASE}/health-units`, {
+              headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+              }
+            }),
+            fetch(`${API_BASE}/staff`, {
+              headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+              }
+            })
+          ]);
+
+          if (!unitsResponse.ok || !staffResponse.ok) {
+            throw new Error('Erro ao carregar dados');
+          }
+
+          currentUnits = await unitsResponse.json();
+          currentStaff = await staffResponse.json();
+
+          renderTable();
+        } catch (error) {
+          showError('Falha ao carregar dados: ' + error.message);
+        }
+      }
+
+      function calculateStaffCount(unitId) {
+        return currentStaff.filter(staff =>
+          staff.healthUnit &&
+          Number(staff.healthUnit.id) === Number(unitId)
+        ).length;
+      }
+
+      function renderTable() {
+        const tbody = document.querySelector('table tbody');
+        tbody.innerHTML = '';
+
+        currentUnits.forEach(unit => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${unit.name}</td>
+            <td>${unit.email}</td>
+            <td>${unit.address}</td>
+            <td><span class="badge badge-colaboradores">${calculateStaffCount(unit.id)}</span></td>
+            <td>
+              <button
+                class="btn btn-sm btn-outline-primary action-btn edit-btn"
+                data-id="${unit.id}"
+              >
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button
+                class="btn btn-sm btn-outline-danger action-btn delete-btn"
+                data-id="${unit.id}"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          `;
+          tbody.appendChild(row);
         });
 
-        // Example of form handling (would be replaced with actual form submission logic)
-        document
-          .getElementById("createUnitForm")
-          .addEventListener("submit", function (e) {
-            e.preventDefault();
-            // Here you would handle the form submission via AJAX or similar
-            alert("Unidade criada com sucesso!");
-            var createModal = bootstrap.Modal.getInstance(
-              document.getElementById("createUnitModal")
-            );
-            createModal.hide();
-            // Refresh the page or update the table
+        setupTableEvents();
+      }
+
+      function setupTableEvents() {
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            selectedUnitId = e.currentTarget.dataset.id;
+            openEditModal(selectedUnitId);
+          });
+        });
+
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            selectedUnitId = e.currentTarget.dataset.id;
+            openDeleteModal(selectedUnitId);
+          });
+        });
+      }
+
+      function openEditModal(unitId) {
+        const unit = currentUnits.find(u => u.id == unitId);
+        if (!unit) return;
+
+        document.getElementById('editUnitName').value = unit.name;
+        document.getElementById('editUnitEmail').value = unit.email;
+        document.getElementById('editUnitAddress').value = unit.address;
+        document.getElementById('editUnitPassword').value = '';
+
+        new bootstrap.Modal(document.getElementById('editUnitModal')).show();
+      }
+
+      function openDeleteModal(unitId) {
+        const unit = currentUnits.find(u => u.id == unitId);
+        if (!unit) return;
+
+        const modal = document.getElementById('deleteUnitModal');
+        modal.querySelector('strong').textContent = unit.name;
+        new bootstrap.Modal(modal).show();
+      }
+
+      async function handleCreateUnit(e) {
+        e.preventDefault();
+
+        const unitData = {
+          name: document.getElementById('unitName').value,
+          email: document.getElementById('unitEmail').value,
+          password: document.getElementById('unitPassword').value,
+          phone: '11999999999', // Você deve adicionar um campo para phone no modal
+          address: document.getElementById('unitAddress').value
+        };
+
+        try {
+          const response = await fetch(`${API_BASE}/health-units`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            },
+            body: JSON.stringify(unitData)
           });
 
-        document
-          .getElementById("editUnitForm")
-          .addEventListener("submit", function (e) {
-            e.preventDefault();
-            // Here you would handle the form submission via AJAX or similar
-            alert("Alterações salvas com sucesso!");
-            var editModal = bootstrap.Modal.getInstance(
-              document.getElementById("editUnitModal")
-            );
-            editModal.hide();
-            // Refresh the page or update the table
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Erro ao criar unidade');
+          }
+
+          await loadData();
+
+          // Fechar o modal corretamente
+          const createModal = bootstrap.Modal.getInstance(document.getElementById('createUnitModal'));
+          if (createModal) createModal.hide();
+
+          // Resetar o formulário
+          document.getElementById('createUnitForm').reset();
+
+          showSuccess('Unidade criada com sucesso!');
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      async function handleEditUnit(e) {
+        e.preventDefault();
+
+        const unitData = {
+          name: document.getElementById('editUnitName').value,
+          email: document.getElementById('editUnitEmail').value,
+          address: document.getElementById('editUnitAddress').value
+        };
+
+        const newPassword = document.getElementById('editUnitPassword').value;
+        if (newPassword) unitData.password = newPassword;
+
+        try {
+          const response = await fetch(`${API_BASE}/health-units/${selectedUnitId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            },
+            body: JSON.stringify(unitData)
           });
-      });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Erro ao atualizar unidade');
+          }
+
+          await loadData();
+          const editModal = bootstrap.Modal.getInstance(document.getElementById('editUnitModal'));
+          if (editModal) editModal.hide();
+          showSuccess('Unidade atualizada com sucesso!');
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      async function handleDeleteUnit() {
+        try {
+          const unit = currentUnits.find(u => u.id == selectedUnitId);
+          if (!unit) return;
+
+          // Verificar número de colaboradores
+          const staffCount = calculateStaffCount(selectedUnitId);
+          console.log(staffCount)
+          if (staffCount > 0) {
+            throw new Error('Não é possível excluir a unidade pois existem colaboradores vinculados');
+          }
+
+          const response = await fetch(`${API_BASE}/health-units/${selectedUnitId}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Erro ao excluir unidade');
+          }
+
+          await loadData();
+          const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteUnitModal'));
+          if (deleteModal) deleteModal.hide();
+          showSuccess('Unidade excluída com sucesso!');
+        } catch (error) {
+          showError(error.message);
+          const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteUnitModal'));
+          if (deleteModal) deleteModal.hide();
+        }
+      }
+
+      function setupEventListeners() {
+        document.querySelector('.dropdown-item[href="#"]').addEventListener('click', () => {
+          localStorage.clear();
+          window.location.href = 'index.html';
+        });
+
+        document.getElementById('createUnitForm').addEventListener('submit', handleCreateUnit);
+        document.getElementById('editUnitForm').addEventListener('submit', handleEditUnit);
+        document.querySelector('#deleteUnitModal .btn-danger').addEventListener('click', handleDeleteUnit);
+      }
+
+      function showError(message) {
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3';
+        alert.innerHTML = `
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alert);
+      }
+
+      function showSuccess(message) {
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3';
+        alert.innerHTML = `
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alert);
+      }
     </script>
   </body>
 </html>
