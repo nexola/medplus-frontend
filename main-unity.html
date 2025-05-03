@@ -161,7 +161,7 @@
                   <i class="bi bi-speedometer2"></i> Dashboard
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a
                   class="nav-link"
                   href="#"
@@ -186,8 +186,8 @@
                     </li>
                   </ul>
                 </div>
-              </li>
-              <li class="nav-item">
+              </li> -->
+              <!-- <li class="nav-item">
                 <a
                   class="nav-link"
                   href="#"
@@ -212,7 +212,7 @@
                     </li>
                   </ul>
                 </div>
-              </li>
+              </li> -->
               <li class="nav-item">
                 <a class="nav-link" href="unity-records.html">
                   <i class="bi bi-files"></i> Fichas
@@ -544,10 +544,6 @@
                 >
                 <select class="form-select" id="medicoEspecialidade" required>
                   <option value="">Selecione...</option>
-                  <option value="cardiologia">Cardiologia</option>
-                  <option value="pediatria">Pediatria</option>
-                  <option value="ortopedia">Ortopedia</option>
-                  <option value="dermatologia">Dermatologia</option>
                 </select>
               </div>
               <div class="mb-3">
@@ -556,6 +552,15 @@
                   type="email"
                   class="form-control"
                   id="medicoEmail"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="medicoSenha" class="form-label">Senha</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="medicoSenha"
                   required
                 />
               </div>
@@ -601,6 +606,15 @@
           <div class="modal-body">
             <form id="editMedicoForm">
               <div class="mb-3">
+                <label for="editMedicoEmail" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="editMedicoEmail"
+                  required
+                />
+              </div>
+              <div class="mb-3">
                 <label for="editMedicoNome" class="form-label"
                   >Nome Completo</label
                 >
@@ -626,26 +640,13 @@
                 <label for="editMedicoEspecialidade" class="form-label"
                   >Especialidade</label
                 >
-                <select
-                  class="form-select"
-                  id="editMedicoEspecialidade"
-                  required
-                >
-                  <option value="cardiologia" selected>Cardiologia</option>
-                  <option value="pediatria">Pediatria</option>
-                  <option value="ortopedia">Ortopedia</option>
-                  <option value="dermatologia">Dermatologia</option>
+                <select class="form-select" id="editMedicoEspecialidade" required>
+                  <option value="">Selecione...</option>
                 </select>
               </div>
               <div class="mb-3">
-                <label for="editMedicoEmail" class="form-label">Email</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  id="editMedicoEmail"
-                  value="carlos.andrade@medplus.com"
-                  required
-                />
+                <label for="editMedicoSenha" class="form-label">Nova Senha</label>
+                <input type="password" class="form-control" id="editMedicoSenha">
               </div>
             </form>
           </div>
@@ -767,6 +768,15 @@
                   required
                 />
               </div>
+              <div class="mb-3">
+                <label for="colaboradorSenha" class="form-label">Senha</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="colaboradorSenha"
+                  required
+                />
+              </div>
             </form>
           </div>
           <div class="modal-footer">
@@ -847,6 +857,16 @@
                   required
                 />
               </div>
+              <!-- No modal de Editar Colaborador, antes do fechamento do form -->
+              <div class="mb-3">
+                <label for="editColaboradorSenha" class="form-label">Nova Senha</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="editColaboradorSenha"
+                  placeholder="Deixe em branco para manter a atual"
+                />
+              </div>
             </form>
           </div>
           <div class="modal-footer">
@@ -922,139 +942,555 @@
     <!-- Bootstrap 5.3 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Initialize charts
-        const specialtyCtx = document
-          .getElementById("specialtyChart")
-          .getContext("2d");
-        const specialtyChart = new Chart(specialtyCtx, {
-          type: "bar",
-          data: {
-            labels: [
-              "Cardiologia",
-              "Pediatria",
-              "Ortopedia",
-              "Dermatologia",
-              "Clínico Geral",
-            ],
-            datasets: [
-              {
-                label: "Consultas por Especialidade",
-                data: [12, 19, 8, 5, 10],
-                backgroundColor: [
-                  "rgba(75, 192, 192, 0.6)",
-                  "rgba(54, 162, 235, 0.6)",
-                  "rgba(255, 206, 86, 0.6)",
-                  "rgba(153, 102, 255, 0.6)",
-                  "rgba(255, 159, 64, 0.6)",
-                ],
-                borderColor: [
-                  "rgba(75, 192, 192, 1)",
-                  "rgba(54, 162, 235, 1)",
-                  "rgba(255, 206, 86, 1)",
-                  "rgba(153, 102, 255, 1)",
-                  "rgba(255, 159, 64, 1)",
-                ],
-                borderWidth: 1,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: {
-                display: false,
-              },
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-              },
-            },
-          },
-        });
+      const API_BASE = 'http://localhost:8080';
+      let currentUser = null;
+      let currentDoctors = [];
+      let currentStaff = [];
+      let currentAppointments = [];
+      let selectedDoctorId = null;
+      let selectedStaffId = null;
 
-        const statusCtx = document
-          .getElementById("statusChart")
-          .getContext("2d");
-        const statusChart = new Chart(statusCtx, {
-          type: "doughnut",
-          data: {
-            labels: ["Agendadas", "Concluídas", "Canceladas", "Em Andamento"],
-            datasets: [
-              {
-                data: [15, 30, 5, 8],
-                backgroundColor: [
-                  "rgba(54, 162, 235, 0.6)",
-                  "rgba(75, 192, 192, 0.6)",
-                  "rgba(255, 99, 132, 0.6)",
-                  "rgba(255, 206, 86, 0.6)",
-                ],
-                borderColor: [
-                  "rgba(54, 162, 235, 1)",
-                  "rgba(75, 192, 192, 1)",
-                  "rgba(255, 99, 132, 1)",
-                  "rgba(255, 206, 86, 1)",
-                ],
-                borderWidth: 1,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: {
-                position: "bottom",
-              },
-            },
-          },
-        });
+      document.addEventListener('DOMContentLoaded', async () => {
+        try {
+          await checkAuth();
+          await loadSpecializations();
+          await loadData();
+          setupEventListeners();
+          initCharts();
 
-        // Form submission handlers
-        document
-          .getElementById("addMedicoForm")
-          .addEventListener("submit", function (e) {
-            e.preventDefault();
-            alert("Médico cadastrado com sucesso!");
-            var modal = bootstrap.Modal.getInstance(
-              document.getElementById("addMedicoModal")
-            );
-            modal.hide();
-          });
+          document.querySelector('.navbar-brand').textContent = `Med+ ${currentUser.name}`;
 
-        document
-          .getElementById("editMedicoForm")
-          .addEventListener("submit", function (e) {
-            e.preventDefault();
-            alert("Alterações salvas com sucesso!");
-            var modal = bootstrap.Modal.getInstance(
-              document.getElementById("editMedicoModal")
-            );
-            modal.hide();
-          });
-
-        document
-          .getElementById("addColaboradorForm")
-          .addEventListener("submit", function (e) {
-            e.preventDefault();
-            alert("Colaborador cadastrado com sucesso!");
-            var modal = bootstrap.Modal.getInstance(
-              document.getElementById("addColaboradorModal")
-            );
-            modal.hide();
-          });
-
-        document
-          .getElementById("editColaboradorForm")
-          .addEventListener("submit", function (e) {
-            e.preventDefault();
-            alert("Alterações salvas com sucesso!");
-            var modal = bootstrap.Modal.getInstance(
-              document.getElementById("editColaboradorModal")
-            );
-            modal.hide();
-          });
+        } catch (error) {
+          showError(error.message);
+        }
       });
+
+      async function checkAuth() {
+        const token = localStorage.getItem('access_token');
+
+        if (!token) {
+          localStorage.clear();
+          window.location.href = 'index.html';
+          throw new Error('Redirecionando para login');
+        }
+
+        try {
+          const response = await fetch(`${API_BASE}/users/me`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+
+          if (!response.ok) throw new Error('Falha na autenticação');
+
+          currentUser = await response.json();
+
+          if (!currentUser.roles?.includes('ROLE_UNIT')) {
+            localStorage.clear();
+            window.location.href = 'index.html';
+            throw new Error('Acesso não autorizado');
+          }
+
+        } catch (error) {
+          localStorage.clear();
+          window.location.href = 'index.html';
+          throw error;
+        }
+      }
+
+      async function loadData() {
+        try {
+          await loadSpecializations();
+          const [doctorsRes, staffRes, appointmentsRes] = await Promise.all([
+            fetch(`${API_BASE}/doctors?unitId=${currentUser.id}`, {
+              headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+              }
+            }),
+            // Corrigir o endpoint para /staff (singular)
+            fetch(`${API_BASE}/staffs?unitId=${currentUser.id}`, {
+              headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+              }
+            }),
+            fetch(`${API_BASE}/appointments?unitId=${currentUser.id}`, {
+              headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+              }
+            })
+          ]);
+
+          if (!doctorsRes.ok || !staffRes.ok || !appointmentsRes.ok) {
+            throw new Error('Erro ao carregar dados');
+          }
+
+          currentDoctors = await doctorsRes.json();
+          currentStaff = await staffRes.json();
+
+          // Verificar se é uma lista paginada
+          if (currentStaff.content) {
+            currentStaff = currentStaff.content;
+          }
+
+          currentAppointments = await appointmentsRes.json();
+
+          updateStats();
+          renderTables();
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      function updateStats() {
+        const statsValues = document.querySelectorAll('.card-value');
+        if (statsValues.length >= 4) {
+          statsValues[0].textContent = currentDoctors.length;
+          statsValues[1].textContent = currentStaff.length;
+
+          // Fichas Ativas (considerando appointments com status 'ACTIVE')
+          statsValues[2].textContent = currentAppointments.filter(a => a.state === 'AGENDADO').length;
+
+          // Pacientes Únicos
+          statsValues[3].textContent = [...new Set(currentAppointments.map(a => a.patientId))].length;
+        }
+      }
+
+      function renderTables() {
+        renderDoctorsTable();
+        renderStaffTable();
+      }
+
+      function renderDoctorsTable() {
+        const tbody = document.querySelector('#medicos tbody');
+        if (tbody) {
+          tbody.innerHTML = currentDoctors.map(doctor => `
+            <tr>
+              <td>${doctor.name}</td>
+              <td>${doctor.crm}</td>
+              <td>${doctor.specialization}</td>
+              <td>${doctor.email}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary action-btn edit-doctor" data-id="${doctor.id}">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger action-btn delete-doctor" data-id="${doctor.id}">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          `).join('');
+        }
+      }
+
+      function renderStaffTable() {
+        const tbody = document.querySelector('#colaboradores tbody');
+        if (tbody) {
+          tbody.innerHTML = currentStaff.map(staff => `
+            <tr>
+              <td>${staff.name}</td>
+              <td><span class="badge bg-primary">${staff.role}</span></td>
+              <td>${staff.email}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary action-btn edit-staff" data-id="${staff.id}">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger action-btn delete-staff" data-id="${staff.id}">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          `).join('');
+        }
+      }
+
+      function initCharts() {
+        // Gráfico de Especialidades
+        const specialtyCounts = currentDoctors.reduce((acc, doctor) => {
+          acc[doctor.specialization] = (acc[doctor.specialization] || 0) + 1;
+          return acc;
+        }, {});
+
+        initSpecialtyChart(
+          Object.keys(specialtyCounts),
+          Object.values(specialtyCounts)
+        );
+
+        // Gráfico de Status de Consultas
+        const statusCounts = currentAppointments.reduce((acc, appointment) => {
+          acc[appointment.state] = (acc[appointment.state] || 0) + 1;
+          return acc;
+        }, {});
+
+        initStatusChart(
+          Object.keys(statusCounts),
+          Object.values(statusCounts)
+        );
+      }
+
+      function initSpecialtyChart(labels, data) {
+        const ctx = document.getElementById('specialtyChart')?.getContext('2d');
+        if (ctx) {
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Médicos por Especialidade',
+                data: data,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: { legend: { display: false } },
+              scales: { y: { beginAtZero: true } }
+            }
+          });
+        }
+      }
+
+      function initStatusChart(labels, data) {
+        const ctx = document.getElementById('statusChart')?.getContext('2d');
+        if (ctx) {
+          new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+              labels: labels,
+              datasets: [{
+                data: data,
+                backgroundColor: [
+                  'rgba(54, 162, 235, 0.6)',
+                  'rgba(75, 192, 192, 0.6)',
+                  'rgba(255, 99, 132, 0.6)',
+                  'rgba(255, 206, 86, 0.6)'
+                ]
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: { legend: { position: 'bottom' } }
+            }
+          });
+        }
+      }
+
+
+      // Handlers para Médicos
+      async function handleCreateDoctor(e) {
+        e.preventDefault();
+        const formData = {
+          name: document.getElementById('medicoNome').value,
+          crm: document.getElementById('medicoCRM').value,
+          specialization: document.getElementById('medicoEspecialidade').value,
+          email: document.getElementById('medicoEmail').value,
+          healthUnitId: currentUser.id,
+          password: document.getElementById('medicoSenha').value,
+        };
+
+        console.log("Current unit: " + currentUser)
+
+        try {
+          const response = await fetch(`${API_BASE}/doctors`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            },
+            body: JSON.stringify(formData)
+          });
+
+          if (!response.ok) throw new Error(await response.text());
+
+          await loadData();
+          closeModal('addMedicoModal');
+          showSuccess('Médico cadastrado com sucesso!');
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      async function handleUpdateDoctor(e) {
+        e.preventDefault();
+        const formData = {
+          name: document.getElementById('editMedicoNome').value,
+          crm: document.getElementById('editMedicoCRM').value,
+          specialization: document.getElementById('editMedicoEspecialidade').value,
+          email: document.getElementById('editMedicoEmail').value,
+          password: document.getElementById('editMedicoSenha').value || undefined
+        };
+
+        try {
+          const response = await fetch(`${API_BASE}/doctors/${selectedDoctorId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            },
+            body: JSON.stringify(formData)
+          });
+
+          if (!response.ok) throw new Error(await response.text());
+
+          await loadData();
+          closeModal('editMedicoModal');
+          showSuccess('Médico atualizado com sucesso!');
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      async function handleDeleteDoctor() {
+        try {
+          const response = await fetch(`${API_BASE}/doctors/${selectedDoctorId}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+          });
+
+          if (!response.ok) throw new Error(await response.text());
+
+          await loadData();
+          closeModal('deleteMedicoModal');
+          showSuccess('Médico excluído com sucesso!');
+        } catch (error) {
+          showError(error.message);
+          closeModal('deleteMedicoModal');
+        }
+      }
+
+      // Handlers para Colaboradores
+      async function handleCreateStaff(e) {
+        e.preventDefault();
+        const formData = {
+          name: document.getElementById('colaboradorNome').value,
+          role: document.getElementById('colaboradorTipo').value,
+          email: document.getElementById('colaboradorEmail').value,
+          password: document.getElementById('colaboradorSenha').value,
+          healthUnitId: currentUser.id
+        };
+
+        try {
+          const response = await fetch(`${API_BASE}/staffs`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            },
+            body: JSON.stringify(formData)
+          });
+
+          if (!response.ok) throw new Error(await response.text());
+
+          await loadData();
+          closeModal('addColaboradorModal');
+          showSuccess('Colaborador cadastrado com sucesso!');
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      async function handleUpdateStaff(e) {
+          e.preventDefault();
+          const formData = {
+            name: document.getElementById('editColaboradorNome').value,
+            role: document.getElementById('editColaboradorTipo').value,
+            email: document.getElementById('editColaboradorEmail').value,
+            password: document.getElementById('editColaboradorSenha').value || undefined,
+            healthUnitId: currentUser.id
+          };
+
+
+
+        try {
+          const response = await fetch(`${API_BASE}/staffs/${selectedStaffId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            },
+            body: JSON.stringify(formData)
+          });
+
+          if (!response.ok) throw new Error(await response.text());
+
+          await loadData();
+          closeModal('editColaboradorModal');
+          showSuccess('Colaborador atualizado com sucesso!');
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      async function handleDeleteStaff() {
+        try {
+          const response = await fetch(`${API_BASE}/staffs/${selectedStaffId}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+          });
+
+          if (!response.ok) throw new Error(await response.text());
+
+          await loadData();
+          closeModal('deleteColaboradorModal');
+          showSuccess('Colaborador excluído com sucesso!');
+        } catch (error) {
+          showError(error.message);
+          closeModal('deleteColaboradorModal');
+        }
+      }
+
+      // Configuração de Eventos
+      function setupEventListeners() {
+        // Logout
+        document.querySelector('.dropdown-item[href="#"]').addEventListener('click', () => {
+          localStorage.clear();
+          window.location.href = 'index.html';
+        });
+
+        // Médicos - Event Delegation
+        document.querySelector('#medicos tbody')?.addEventListener('click', (e) => {
+          const btn = e.target.closest('button');
+          if (!btn) return;
+
+          if (btn.classList.contains('delete-doctor')) {
+            selectedDoctorId = btn.dataset.id;
+            const doctor = currentDoctors.find(d => d.id == selectedDoctorId);
+            openDeleteModal('deleteMedicoModal', doctor);
+          }
+          if (btn.classList.contains('edit-doctor')) {
+            selectedDoctorId = btn.dataset.id;
+            const doctor = currentDoctors.find(d => d.id == selectedDoctorId);
+            openEditModal('editMedicoModal', doctor);
+          }
+        });
+
+        // Colaboradores - Event Delegation
+        document.querySelector('#colaboradores tbody')?.addEventListener('click', (e) => {
+          const btn = e.target.closest('button');
+          if (!btn) return;
+
+          if (btn.classList.contains('delete-staff')) {
+            selectedStaffId = btn.dataset.id;
+            const staff = currentStaff.find(s => s.id == selectedStaffId);
+            openDeleteModal('deleteColaboradorModal', staff);
+          }
+          if (btn.classList.contains('edit-staff')) {
+            selectedStaffId = btn.dataset.id;
+            const staff = currentStaff.find(s => s.id == selectedStaffId);
+            openEditModal('editColaboradorModal', staff);
+          }
+        });
+
+        // Formulários
+        document.getElementById('addMedicoForm')?.addEventListener('submit', handleCreateDoctor);
+        document.getElementById('editMedicoForm')?.addEventListener('submit', handleUpdateDoctor);
+        document.getElementById('addColaboradorForm')?.addEventListener('submit', handleCreateStaff);
+        document.getElementById('editColaboradorForm')?.addEventListener('submit', handleUpdateStaff);
+
+        // Modais de Exclusão
+        document.querySelector('#deleteMedicoModal .btn-danger')?.addEventListener('click', handleDeleteDoctor);
+        document.querySelector('#deleteColaboradorModal .btn-danger')?.addEventListener('click', handleDeleteStaff);
+      }
+
+      // Funções Auxiliares
+      function openEditModal(modalId, data) {
+        if (!data) return;
+
+        const modal = document.getElementById(modalId);
+        if (!modal) return;
+
+        switch(modalId) {
+          case 'editMedicoModal':
+            modal.querySelector('#editMedicoNome').value = data.name;
+            modal.querySelector('#editMedicoCRM').value = data.crm;
+            modal.querySelector('#editMedicoEspecialidade').value = data.specialization;
+            modal.querySelector('#editMedicoEmail').value = data.email; // Adicionar esta linha
+            modal.querySelector('#editMedicoSenha').value = '';
+            break;
+
+          case 'editColaboradorModal':
+            modal.querySelector('#editColaboradorNome').value = data.name;
+            modal.querySelector('#editColaboradorTipo').value = data.role;
+            modal.querySelector('#editColaboradorEmail').value = data.email;
+            break;
+        }
+
+        new bootstrap.Modal(modal).show();
+      }
+
+      async function loadSpecializations() {
+        try {
+          const response = await fetch(`${API_BASE}/specializations`, {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+          });
+
+          if (!response.ok) throw new Error('Erro ao carregar especializações');
+
+          const specializations = await response.json();
+          populateSpecializationSelects(specializations);
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      function populateSpecializationSelects(specializations) {
+        const selects = document.querySelectorAll('[id$="Especialidade"]');
+
+        selects.forEach(select => {
+          // Limpa opções existentes
+          select.innerHTML = '<option value="">Selecione...</option>';
+
+          // Adiciona novas opções
+          specializations.forEach(spec => {
+            const option = document.createElement('option');
+            option.value = spec; // Usando o valor do enum (ex: "CARDIOLOGIA")
+            option.textContent = spec; // Supondo que a API já retorna formatado
+            select.appendChild(option);
+          });
+        });
+      }
+
+      function openDeleteModal(modalId, data) {
+        if (!data) return;
+
+        const modal = document.getElementById(modalId);
+        if (!modal) return;
+
+        modal.querySelector('strong').textContent = data.name;
+        new bootstrap.Modal(modal).show();
+      }
+
+      function closeModal(modalId) {
+        const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
+        if (modal) modal.hide();
+      }
+
+      function showError(message) {
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3';
+        alert.innerHTML = `
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alert);
+      }
+
+      function showSuccess(message) {
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3';
+        alert.innerHTML = `
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alert);
+      }
     </script>
   </body>
 </html>
