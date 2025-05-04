@@ -162,7 +162,7 @@
                   <i class="bi bi-person-badge"></i> Médicos
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a class="nav-link" href="collabs.html">
                   <i class="bi bi-people"></i> Colaboradores
                 </a>
@@ -172,7 +172,7 @@
                   <i class="bi bi-files"></i> Fichas
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item"> -->
                 <a class="nav-link active" href="unity-patients.html">
                   <i class="bi bi-people"></i> Pacientes
                 </a>
@@ -285,9 +285,6 @@
                       <th>CPF</th>
                       <th>Telefone</th>
                       <th>Idade</th>
-                      <th>Convênio</th>
-                      <th>Status</th>
-                      <th>Ações</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -312,7 +309,6 @@
                       <td>123.456.789-00</td>
                       <td>(11) 98765-4321</td>
                       <td>38 anos</td>
-                      <td>Amil Saúde</td>
                       <td>
                         <span class="patient-status status-ativo">Ativo</span>
                       </td>
@@ -362,9 +358,7 @@
                       <td>(11) 98765-1234</td>
                       <td>45 anos</td>
                       <td>Bradesco Saúde</td>
-                      <td>
-                        <span class="patient-status status-ativo">Ativo</span>
-                      </td>
+
                       <td>
                         <button
                           class="btn btn-sm btn-outline-primary action-btn"
@@ -406,11 +400,6 @@
                       <td>29 anos</td>
                       <td>SulAmérica</td>
                       <td>
-                        <span class="patient-status status-inativo"
-                          >Inativo</span
-                        >
-                      </td>
-                      <td>
                         <button
                           class="btn btn-sm btn-outline-primary action-btn"
                         >
@@ -433,7 +422,7 @@
               </div>
 
               <!-- Pagination -->
-              <nav aria-label="Page navigation">
+              <!-- <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center mt-4">
                   <li class="page-item disabled">
                     <a class="page-link" href="#" tabindex="-1">Anterior</a>
@@ -447,7 +436,7 @@
                     <a class="page-link" href="#">Próxima</a>
                   </li>
                 </ul>
-              </nav>
+              </nav> -->
             </div>
           </div>
         </main>
@@ -530,18 +519,16 @@
                   <label for="email" class="form-label">Email</label>
                   <input type="email" class="form-control" id="email" />
                 </div>
-                <div class="col-md-6">
-                  <label for="convenio" class="form-label"
-                    >Convênio Médico</label
-                  >
-                  <select class="form-select" id="convenio">
-                    <option value="">Selecione...</option>
-                    <option value="amil">Amil Saúde</option>
-                    <option value="bradesco">Bradesco Saúde</option>
-                    <option value="sulamerica">SulAmérica</option>
-                    <option value="particular">Particular</option>
-                  </select>
-                </div>
+                  <div class="col-md-6">
+                    <label for="password" class="form-label">Senha</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="password"
+                      required
+                      minlength="6"
+                    />
+                    <div class="form-text">Mínimo de 6 caracteres</div>
               </div>
 
               <div class="mb-3">
@@ -656,25 +643,19 @@
 
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="editEmail" class="form-label">Email</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="editEmail"
-                    value="joao.silva@email.com"
-                  />
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" />
                 </div>
-                <div class="col-md-6">
-                  <label for="editConvenio" class="form-label"
-                    >Convênio Médico</label
-                  >
-                  <select class="form-select" id="editConvenio">
-                    <option value="amil" selected>Amil Saúde</option>
-                    <option value="bradesco">Bradesco Saúde</option>
-                    <option value="sulamerica">SulAmérica</option>
-                    <option value="particular">Particular</option>
-                  </select>
-                </div>
+                  <div class="col-md-6">
+                    <label for="password" class="form-label">Senha</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="password"
+                      required
+                      minlength="6"
+                    />
+                    <div class="form-text">Mínimo de 6 caracteres</div>
               </div>
 
               <div class="mb-3">
@@ -941,42 +922,187 @@ Paciente com histórico de hipertensão. Alergia a dipirona.</textarea
     <!-- Bootstrap 5.3 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Form submission handler for new patient
-        document
-          .getElementById("novoPacienteForm")
-          .addEventListener("submit", function (e) {
-            e.preventDefault();
-            alert("Paciente cadastrado com sucesso!");
-            var modal = bootstrap.Modal.getInstance(
-              document.getElementById("novoPacienteModal")
-            );
-            modal.hide();
-          });
+      const API_BASE = 'http://localhost:8080';
+      let currentUser = null;
+      let currentPatients = [];
 
-        // Form submission handler for edit patient
-        document
-          .getElementById("editarPacienteForm")
-          .addEventListener("submit", function (e) {
-            e.preventDefault();
-            alert("Alterações salvas com sucesso!");
-            var modal = bootstrap.Modal.getInstance(
-              document.getElementById("editarPacienteModal")
-            );
-            modal.hide();
-          });
-
-        // Deactivate patient handler
-        document
-          .querySelector("#desativarPacienteModal .btn-danger")
-          .addEventListener("click", function () {
-            alert("Paciente desativado com sucesso!");
-            var modal = bootstrap.Modal.getInstance(
-              document.getElementById("desativarPacienteModal")
-            );
-            modal.hide();
-          });
+      document.addEventListener('DOMContentLoaded', async () => {
+        await checkAuth();
+        await loadPatients();
+        setupEventListeners();
       });
+
+      async function checkAuth() {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+          window.location.href = 'index.html';
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_BASE}/users/me`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+
+          if (!response.ok) throw new Error('Falha na autenticação');
+          currentUser = await response.json();
+
+          if (!currentUser.roles?.includes('ROLE_UNIT')) {
+            throw new Error('Acesso não autorizado');
+          }
+
+        } catch (error) {
+          localStorage.clear();
+          window.location.href = 'index.html';
+        }
+      }
+
+      async function loadPatients() {
+        try {
+          const response = await fetch(`${API_BASE}/patients`, {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+          });
+
+          currentPatients = await response.json();
+          renderPatients();
+          updateStats();
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      function renderPatients() {
+        const tbody = document.querySelector('table tbody');
+        tbody.innerHTML = currentPatients.map(patient => `
+          <tr>
+            <td>
+              <div class="d-flex align-items-center">
+                <div class="flex-shrink-0">
+                  <div class="patient-avatar bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center">
+                    ${patient.name.charAt(0)}
+                  </div>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <strong>${patient.name}</strong>
+                  <div class="text-muted small">${patient.email}</div>
+                </div>
+              </div>
+            </td>
+            <td>${formatCPF(patient.cpf)}</td>
+            <td>${patient.phone || 'Não cadastrado'}</td>
+            <td>${calculateAge(patient.birth_date)} anos</td>
+            <td>
+              <!-- Botões de ação -->
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      // Funções auxiliares
+      function formatCPF(cpf) {
+        return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+      }
+
+      function calculateAge(birthDate) {
+        const diff = Date.now() - new Date(birthDate).getTime();
+        return Math.abs(new Date(diff).getUTCFullYear() - 1970);
+      }
+
+      async function handleCreatePatient(e) {
+        e.preventDefault();
+
+        const formData = {
+          name: document.getElementById('nomeCompleto').value,
+          email: document.getElementById('email').value,
+          password: document.getElementById('password').value,
+          cpf: document.getElementById('cpf').value.replace(/\D/g, ''),
+          birth_date: new Date(document.getElementById('dataNascimento').value).toISOString(),
+          address: document.getElementById('endereco').value,
+          phone: document.getElementById('telefone').value,
+          healthUnitId: currentUser.id
+        };
+
+        try {
+          const response = await fetch(`${API_BASE}/patients`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            },
+            body: JSON.stringify(formData)
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.errors.join(', '));
+          }
+
+          await loadPatients();
+          showSuccess('Paciente cadastrado com sucesso!');
+          bootstrap.Modal.getInstance(document.getElementById('novoPacienteModal')).hide();
+          document.getElementById('novoPacienteForm').reset();
+
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      function setupEventListeners() {
+        document.getElementById('novoPacienteForm').addEventListener('submit', handleCreatePatient);
+
+        // Máscaras de entrada
+        document.getElementById('cpf').addEventListener('input', function(e) {
+          this.value = this.value.replace(/\D/g, '')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        });
+
+        document.getElementById('telefone').addEventListener('input', function(e) {
+          this.value = this.value.replace(/\D/g, '')
+            .replace(/(\d{2})(\d)/, '($1) $2')
+            .replace(/(\d{5})(\d)/, '$1-$2');
+        });
+
+        document.querySelector('.dropdown-item[href="#"]').addEventListener('click', function(e) {
+          e.preventDefault();
+          localStorage.clear();
+          window.location.href = 'index.html'; // Redireciona para a página de login
+        });
+      }
+
+      function showError(message) {
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3';
+        alert.innerHTML = `
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alert);
+      }
+
+      function showSuccess(message) {
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3';
+        alert.innerHTML = `
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alert);
+      }
+
+      function updateStats() {
+        const total = currentPatients.length;
+        const active = currentPatients.filter(p => p.active).length;
+
+        document.querySelectorAll('.filter-card .display-6').forEach((el, index) => {
+          el.textContent = [total, active, 0, 0][index]; // Atualize conforme sua lógica
+        });
+      }
     </script>
   </body>
 </html>
