@@ -104,7 +104,7 @@
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#"
+              <a class="nav-link" href="#" id="logoutButton"
                 ><i class="bi bi-box-arrow-right"></i> Sair</a
               >
             </li>
@@ -121,9 +121,9 @@
             <div class="d-flex justify-content-between align-items-center">
               <div>
                 <h4>Bem-vindo, <strong>Dr. Carlos Andrade</strong></h4>
-                <p class="mb-0">
+                <!-- <p class="mb-0">
                   Você tem <strong>3 consultas</strong> agendadas para hoje
-                </p>
+                </p> -->
               </div>
               <div class="text-end">
                 <p class="mb-0">
@@ -145,14 +145,14 @@
                 <i class="bi bi-files"></i> Minhas Fichas
               </h5>
               <div>
-                <button class="btn btn-sm btn-outline-primary">
+                <!-- <button class="btn btn-sm btn-outline-primary">
                   <i class="bi bi-funnel"></i> Filtrar
-                </button>
+                </button> -->
               </div>
             </div>
             <div class="card-body">
               <!-- Status Filter Tabs -->
-              <ul class="nav nav-pills mb-4" id="statusTabs" role="tablist">
+              <!-- <ul class="nav nav-pills mb-4" id="statusTabs" role="tablist">
                 <li class="nav-item" role="presentation">
                   <button
                     class="nav-link active"
@@ -197,7 +197,7 @@
                     Concluídos
                   </button>
                 </li>
-              </ul>
+              </ul> -->
 
               <!-- Records Table -->
               <div class="table-responsive">
@@ -295,7 +295,7 @@
               </div>
 
               <!-- Pagination -->
-              <nav aria-label="Page navigation">
+              <!-- <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
                   <li class="page-item disabled">
                     <a class="page-link" href="#" tabindex="-1">Anterior</a>
@@ -309,7 +309,7 @@
                     <a class="page-link" href="#">Próxima</a>
                   </li>
                 </ul>
-              </nav>
+              </nav> -->
             </div>
           </div>
         </main>
@@ -420,61 +420,205 @@
     <!-- Bootstrap 5.3 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Enable tooltips
-        var tooltipTriggerList = [].slice.call(
-          document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        );
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-          return new bootstrap.Tooltip(tooltipTriggerEl);
+      const API_BASE = 'http://localhost:8080';
+      let currentUser = null;
+      let currentAppointments = [];
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        await checkAuth();
+        await loadAppointments();
+        setupEventListeners();
+      });
+
+      async function checkAuth() {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+          window.location.href = 'index.html';
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_BASE}/users/me`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+
+          if (!response.ok) throw new Error('Falha na autenticação');
+          currentUser = await response.json();
+
+          if (!currentUser.roles?.includes('ROLE_DOCTOR')) {
+            throw new Error('Acesso não autorizado');
+          }
+
+          // Atualiza os dados do médico no cabeçalho
+          document.querySelector('strong').textContent = currentUser.name;
+          document.querySelectorAll('small')[0].textContent = `CRM: ${currentUser.crm}`;
+          document.querySelectorAll('small')[1].textContent = `Especialidade: ${currentUser.specialization}`;
+
+        } catch (error) {
+          localStorage.clear();
+          window.location.href = 'index.html';
+        }
+      }
+
+      async function loadAppointments() {
+        try {
+          const response = await fetch(`${API_BASE}/appointments/doctor`, {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+          });
+
+          currentAppointments = await response.json();
+          renderAppointments();
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      function renderAppointments() {
+        const tbody = document.querySelector('table tbody');
+        tbody.innerHTML = currentAppointments.map(appointment => `
+          <tr>
+            <td>${appointment.patient.name}</td>
+            <td>${new Date(appointment.date).toLocaleDateString('pt-BR')}</td>
+            <td>${new Date(appointment.date).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}</td>
+            <td>
+              <span class="status-badge status-${getStatusClass(appointment.state)}">
+                ${appointment.state}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#concluirFichaModal"
+                data-id="${appointment.id}">
+                <i class="bi bi-eye"></i>
+              </button>
+              ${appointment.state === 'EM_ANDAMENTO' ? `
+                <button class="btn btn-sm btn-success"
+                  data-bs-toggle="modal"
+                  data-bs-target="#concluirFichaModal"
+                  data-id="${appointment.id}">
+                  <i class="bi bi-check-circle"></i>
+                </button>
+              ` : ''}
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      async function handleConcludeAppointment(appointmentId, dto) {
+        try {
+          const response = await fetch(`${API_BASE}/appointments/${appointmentId}/conclude`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            },
+            body: JSON.stringify(dto)
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message);
+          }
+
+          await loadAppointments();
+          showSuccess('Ficha concluída com sucesso!');
+          return true;
+
+        } catch (error) {
+          showError(error.message);
+          return false;
+        }
+      }
+
+      function setupEventListeners() {
+        // Configura o modal de conclusão
+        document.getElementById('concluirFichaModal').addEventListener('show.bs.modal', function(event) {
+          const button = event.relatedTarget;
+          const appointmentId = button.getAttribute('data-id');
+          const appointment = currentAppointments.find(a => a.id == appointmentId);
+
+          // Atualiza os dados no modal
+          const modalBody = this.querySelector('.modal-body');
+          modalBody.querySelector('strong').textContent = appointment.patient.name;
+          modalBody.querySelector('p').innerHTML = `
+              Você está concluindo a ficha de <strong>${appointment.patient.name}</strong>
+              (${new Date(appointment.date).toLocaleDateString('pt-BR')} -
+              ${new Date(appointment.date).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}).
+          `;
+
+          // Reset dos campos
+          document.getElementById('observacoes').value = '';
+          document.getElementById('finalizarSemExame').checked = true;
+          document.getElementById('exameSelection').style.display = 'none';
+          document.getElementById('tipoExame').value = '';
+          document.getElementById('dataExame').value = '';
+
+          this.dataset.appointmentId = appointmentId;
+      });
+
+        // Submissão da conclusão
+        document.getElementById('confirmConcluir').addEventListener('click', async function() {
+          const modal = document.getElementById('concluirFichaModal');
+          const appointmentId = modal.dataset.appointmentId;
+
+          const examOption = document.querySelector('input[name="exameOption"]:checked').value;
+
+          const dto = {
+              observations: document.getElementById('observacoes').value,
+              examType: null,
+              examDate: null
+          };
+
+          if (examOption === 'exame') {
+              dto.examType = document.getElementById('tipoExame').value;
+              dto.examDate = document.getElementById('dataExame').value;
+
+              // Validação básica
+              if (!dto.examType || !dto.examDate) {
+                  showError('Preencha todos os campos do exame');
+                  return;
+              }
+          }
+
+          const success = await handleConcludeAppointment(appointmentId, dto);
+          if (success) {
+              bootstrap.Modal.getInstance(modal).hide();
+          }
+      });
+
+        // Logout
+        document.getElementById('logoutButton').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = 'index.html';
         });
 
-        // Show/hide exam selection based on radio button
-        document
-          .querySelectorAll('input[name="exameOption"]')
-          .forEach(function (radio) {
-            radio.addEventListener("change", function () {
-              document.getElementById("exameSelection").style.display =
-                this.value === "exame" ? "block" : "none";
-            });
-          });
+        // ... outros listeners se necessário
+    }
+    function getStatusClass(state) {
+      const statusMap = {
+          'AGENDADO': 'agendado',
+          'EM_ANDAMENTO': 'em-andamento',
+          'CONCLUIDO': 'concluido'
+      };
+      return statusMap[state] || 'agendado';
+  }
 
-        // Handle form submission
-        document
-          .getElementById("confirmConcluir")
-          .addEventListener("click", function () {
-            const exameOption = document.querySelector(
-              'input[name="exameOption"]:checked'
-            ).value;
-            const observacoes = document.getElementById("observacoes").value;
+  // Adicionar função para mostrar erros (se não existir)
+  function showError(message) {
+      alert('Erro: ' + message);
+  }
 
-            if (exameOption === "exame") {
-              const tipoExame = document.getElementById("tipoExame").value;
-              const dataExame = document.getElementById("dataExame").value;
+  function showSuccess(message) {
+      alert('Sucesso: ' + message);
+  }
 
-              if (!tipoExame || !dataExame) {
-                alert("Por favor, selecione o tipo e data do exame");
-                return;
-              }
-
-              // In a real app, you would send this data to the server
-              alert(
-                `Ficha concluída com exame marcado!\nExame: ${tipoExame}\nData: ${dataExame}\nObservações: ${observacoes}`
-              );
-            } else {
-              // In a real app, you would send this data to the server
-              alert(`Ficha concluída!\nObservações: ${observacoes}`);
-            }
-
-            // Close modal
-            var modal = bootstrap.Modal.getInstance(
-              document.getElementById("concluirFichaModal")
-            );
-            modal.hide();
-
-            // In a real app, you would refresh the table or update the UI
-          });
-      });
+      // ... funções showError e showSuccess
     </script>
   </body>
 </html>
