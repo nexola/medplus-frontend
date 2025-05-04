@@ -109,6 +109,15 @@
         transform: translateY(-3px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       }
+
+      @media (max-width: 768px) {
+        .table-responsive {
+          overflow-x: auto;
+        }
+        .modal-lg {
+          max-width: 95%;
+        }
+      }
     </style>
   </head>
   <body>
@@ -160,7 +169,7 @@
                   <i class="bi bi-speedometer2"></i> Dashboard
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a class="nav-link" href="doctors.html">
                   <i class="bi bi-person-badge"></i> Médicos
                 </a>
@@ -169,7 +178,7 @@
                 <a class="nav-link" href="collabs.html">
                   <i class="bi bi-people"></i> Colaboradores
                 </a>
-              </li>
+              </li> -->
               <li class="nav-item">
                 <a class="nav-link active" href="unity-records.html">
                   <i class="bi bi-files"></i> Fichas
@@ -567,193 +576,467 @@
     </div>
 
     <!-- Detalhes Ficha Modal -->
-    <div
-      class="modal fade"
-      id="detalhesFichaModal"
-      tabindex="-1"
-      aria-labelledby="detalhesFichaModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="detalhesFichaModalLabel">
-              <i class="bi bi-file-earmark-text"></i> Detalhes da Ficha
-              #FCH-2023-0015
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+<div class="modal fade" id="detalhesFichaModal" tabindex="-1" aria-labelledby="detalhesFichaModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="detalhesFichaModalLabel">
+          <i class="bi bi-file-earmark-text"></i> Detalhes da Ficha
+          <span id="detailAppointmentId"></span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <h6>Informações do Paciente</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Nome:</span>
+                <strong id="detailPatientName"></strong>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>CPF:</span>
+                <span id="detailPatientCpf"></span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Data Nasc.:</span>
+                <span id="detailPatientBirthdate"></span>
+              </li>
+            </ul>
           </div>
-          <div class="modal-body">
-            <div class="row mb-4">
-              <div class="col-md-6">
-                <h6>Informações do Paciente</h6>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span>Nome:</span>
-                    <strong>João da Silva</strong>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span>CPF:</span>
-                    <span>123.456.789-00</span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span>Data Nasc.:</span>
-                    <span>15/03/1985</span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span>Convênio:</span>
-                    <span>Amil Saúde</span>
-                  </li>
-                </ul>
-              </div>
-              <div class="col-md-6">
-                <h6>Informações da Consulta</h6>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span>Médico:</span>
-                    <strong>Dr. Carlos Andrade</strong>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span>Data/Horário:</span>
-                    <span>15/06/2023 às 14:30</span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span>Tipo:</span>
-                    <span>Consulta de Rotina</span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span>Status:</span>
-                    <span
-                      ><span class="status-badge status-em-andamento"
-                        >Em Andamento</span
-                      ></span
-                    >
-                  </li>
-                </ul>
-              </div>
-            </div>
+          <div class="col-md-6">
+            <h6>Informações da Consulta</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Médico:</span>
+                <strong id="detailDoctorName"></strong>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Data/Horário:</span>
+                <span id="detailAppointmentDate"></span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Tipo:</span>
+                <span id="detailAppointmentType"></span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Status:</span>
+                <span id="detailAppointmentStatus"></span>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-            <div class="mb-4">
-              <h6>Histórico e Anotações</h6>
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex mb-3">
-                    <div class="flex-shrink-0">
-                      <div
-                        class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
-                        style="width: 40px; height: 40px"
-                      >
-                        <i class="bi bi-person-badge"></i>
-                      </div>
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                      <strong>Dr. Carlos Andrade</strong>
-                      <div class="text-muted small">15/06/2023 14:45</div>
-                      <p class="mt-1 mb-0">
-                        Paciente relatou dores no peito ocasionais. Pressão
-                        arterial 13x8. Marcado ECG para avaliação.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div class="d-flex">
-                    <div class="flex-shrink-0">
-                      <div
-                        class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
-                        style="width: 40px; height: 40px"
-                      >
-                        <i class="bi bi-person-badge"></i>
-                      </div>
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                      <strong>Dra. Ana Beatriz</strong>
-                      <div class="text-muted small">10/03/2023 09:30</div>
-                      <p class="mt-1 mb-0">
-                        Consulta de rotina. Paciente sem queixas. Exames dentro
-                        da normalidade.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        <div class="mb-3">
+          <label class="form-label">Observações</label>
+          <div class="card">
+            <div class="card-body">
+              <p class="mb-0" id="detailAppointmentNotes"></p>
             </div>
+          </div>
+        </div>
 
-            <div class="mb-3">
-              <label for="novaAnotacao" class="form-label"
-                >Adicionar Anotação</label
-              >
-              <textarea
-                class="form-control"
-                id="novaAnotacao"
-                rows="3"
-                placeholder="Digite suas observações..."
-              ></textarea>
-            </div>
-
-            <div class="d-flex justify-content-between">
-              <div>
-                <button class="btn btn-outline-secondary">
-                  <i class="bi bi-printer"></i> Imprimir Ficha
-                </button>
-              </div>
-              <div>
-                <button class="btn btn-success me-2">
-                  <i class="bi bi-check-circle"></i> Concluir Consulta
-                </button>
-                <button class="btn btn-danger">
-                  <i class="bi bi-x-circle"></i> Cancelar Consulta
-                </button>
-              </div>
-            </div>
+        <div class="d-flex justify-content-between">
+          <div>
+            <button class="btn btn-outline-secondary">
+              <i class="bi bi-printer"></i> Imprimir Ficha
+            </button>
+          </div>
+          <div>
+            <button class="btn btn-success me-2" id="completeButton">
+              <i class="bi bi-check-circle"></i> Concluir Consulta
+            </button>
+            <button class="btn btn-danger" id="cancelButton">
+              <i class="bi bi-x-circle"></i> Cancelar Consulta
+            </button>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
 
     <!-- Bootstrap 5.3 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Form submission handler for new record
-        document
-          .getElementById("novaFichaForm")
-          .addEventListener("submit", function (e) {
-            e.preventDefault();
-            alert("Ficha criada com sucesso!");
-            var modal = bootstrap.Modal.getInstance(
-              document.getElementById("novaFichaModal")
-            );
-            modal.hide();
-          });
+      const API_BASE = 'http://localhost:8080';
+      let currentUser = null;
+      let currentAppointments = [];
+      let currentPatients = [];
+      let currentDoctors = [];
 
-        // Example of status change handlers
-        document
-          .querySelector("#detalhesFichaModal .btn-success")
-          .addEventListener("click", function () {
-            alert("Consulta marcada como concluída!");
-            var modal = bootstrap.Modal.getInstance(
-              document.getElementById("detalhesFichaModal")
-            );
-            modal.hide();
-          });
+      document.addEventListener('DOMContentLoaded', async () => {
+        await checkAuth();
+        await loadInitialData();
+        setupEventListeners();
+      });
 
-        document
-          .querySelector("#detalhesFichaModal .btn-danger")
-          .addEventListener("click", function () {
-            if (confirm("Tem certeza que deseja cancelar esta consulta?")) {
-              alert("Consulta cancelada com sucesso!");
-              var modal = bootstrap.Modal.getInstance(
-                document.getElementById("detalhesFichaModal")
-              );
-              modal.hide();
+      async function checkAuth() {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+          window.location.href = 'index.html';
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_BASE}/users/me`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
             }
           });
-      });
+
+          if (!response.ok) throw new Error('Falha na autenticação');
+
+          currentUser = await response.json();
+          if (!currentUser.roles?.includes('ROLE_UNIT')) {
+            throw new Error('Acesso não autorizado');
+          }
+
+        } catch (error) {
+          localStorage.clear();
+          window.location.href = 'index.html';
+        }
+      }
+
+      async function loadInitialData() {
+        try {
+          const [appointmentsRes, patientsRes, doctorsRes] = await Promise.all([
+            fetch(`${API_BASE}/appointments?unitId=${currentUser.id}`, {
+              headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+              }
+            }),
+            fetch(`${API_BASE}/patients`, {
+              headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+              }
+            }),
+            fetch(`${API_BASE}/doctors?unitId=${currentUser.id}`, {
+              headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+              }
+            })
+          ]);
+
+          currentAppointments = await appointmentsRes.json();
+          currentPatients = await patientsRes.json();
+          currentDoctors = await doctorsRes.json();
+
+          renderAppointments();
+          populateSelects();
+          updateStats();
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      function showAppointmentDetails(appointmentId) {
+        const appointment = currentAppointments.find(a => a.id == appointmentId);
+        if (!appointment) return;
+
+        // Função para formatar datas UTC corretamente
+        const formatUTCDate = (isoString) => {
+          try {
+            const date = new Date(isoString);
+            return date.toLocaleDateString('pt-BR', {
+              timeZone: 'UTC',
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            });
+          } catch (e) {
+            console.error('Erro ao formatar data:', e);
+            return 'Data inválida';
+          }
+        };
+
+        // Formatação da data/horário da consulta
+        const appointmentDate = new Date(appointment.date);
+        const formattedDate = appointmentDate.toLocaleDateString('pt-BR');
+        const formattedTime = appointmentDate.toLocaleTimeString('pt-BR', {
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZone: 'UTC' // Ajuste conforme necessidade
+        });
+
+        // Atualização do modal
+        document.getElementById('detailAppointmentId').textContent = `#FCH-${appointment.id.toString().padStart(4, '0')}`;
+
+        // Seção do Paciente
+        document.getElementById('detailPatientName').textContent = appointment.patient.name;
+        document.getElementById('detailPatientCpf').textContent = appointment.patient.cpf;
+        document.getElementById('detailPatientBirthdate').textContent =
+          formatUTCDate(appointment.patient.birth_date);
+
+        // Seção da Consulta
+        document.getElementById('detailDoctorName').textContent = appointment.doctor.name;
+        document.getElementById('detailAppointmentDate').textContent =
+          `${formattedDate} às ${formattedTime}`;
+
+        document.getElementById('detailAppointmentType').textContent =
+          appointment.type === 'rotina' ? 'Consulta de Rotina' :
+          appointment.type === 'retorno' ? 'Retorno' :
+          appointment.type === 'emergencia' ? 'Emergência' :
+          'Acompanhamento de Exame';
+
+        // Status
+        const statusElement = document.getElementById('detailAppointmentStatus');
+        statusElement.innerHTML = `
+          <span class="status-badge status-${getStatusClass(appointment.state)}">
+            ${appointment.state}
+          </span>
+        `;
+
+        // Observações
+        const notes = appointment.diagnosis || 'Nenhuma observação registrada';
+        document.getElementById('detailAppointmentNotes').textContent = notes;
+      }
+
+      function renderAppointments() {
+        const tbody = document.querySelector('table tbody');
+        tbody.innerHTML = currentAppointments.map(appointment => `
+          <tr>
+            <td>#FCH-${appointment.id.toString().padStart(4, '0')}</td>
+            <td>
+              <div class="d-flex align-items-center">
+                <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px">
+                  <i class="bi bi-person"></i>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <strong>${appointment.patient.name}</strong>
+                  <div class="text-muted small">CPF: ${appointment.patient.cpf}</div>
+                </div>
+              </div>
+            </td>
+            <td>${appointment.doctor.name}</td>
+            <td>${new Date(appointment.date).toLocaleDateString('pt-BR')}</td>
+            <td>${new Date(appointment.date).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}</td>
+            <td>
+              <span class="status-badge status-${getStatusClass(appointment.state)}">
+                ${appointment.state}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary action-btn"
+                data-bs-toggle="modal"
+                data-bs-target="#detalhesFichaModal"
+                data-id="${appointment.id}">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-secondary action-btn">
+                <i class="bi bi-printer"></i>
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      function getStatusClass(state) {
+        const statusMap = {
+          'AGENDADO': 'agendado',
+          'EM_ANDAMENTO': 'em-andamento',
+          'CONCLUIDO': 'concluido',
+          'CANCELADO': 'cancelado'
+        };
+        return statusMap[state] || 'agendado';
+      }
+
+      function populateSelects() {
+        const pacienteSelect = document.getElementById('pacienteSelect');
+        const medicoSelect = document.getElementById('medicoSelect');
+
+        // Popular pacientes
+        pacienteSelect.innerHTML = currentPatients.map(patient => `
+          <option value="${patient.id}">
+            ${patient.name} (CPF: ${patient.cpf})
+          </option>
+        `).join('');
+
+        // Popular médicos
+        medicoSelect.innerHTML = currentDoctors.map(doctor => `
+          <option value="${doctor.id}">
+            ${doctor.name} (${doctor.specialization})
+          </option>
+        `).join('');
+      }
+
+      async function handleCreateAppointment(e) {
+        e.preventDefault();
+
+        const formData = {
+          date: new Date(`${document.getElementById('dataConsulta').value}T${document.getElementById('horaConsulta').value}:00`).toISOString(),
+          diagnosis: document.getElementById('observacoes').value,
+          state: "AGENDADO",
+          type: document.getElementById('tipoConsulta').value,
+          patientId: document.getElementById('pacienteSelect').value,
+          doctorId:  document.getElementById('medicoSelect').value
+        };
+
+        try {
+          const response = await fetch(`${API_BASE}/appointments`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            },
+            body: JSON.stringify(formData)
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.errors[0]);
+          }
+
+          await loadInitialData();
+          showSuccess('Ficha criada com sucesso!');
+          bootstrap.Modal.getInstance(document.getElementById('novaFichaModal')).hide();
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      function setupEventListeners() {
+        // Formulário de nova ficha
+        document.getElementById('novaFichaForm').addEventListener('submit', handleCreateAppointment);
+
+        // Logout
+        document.querySelector('.dropdown-item[href="#"]').addEventListener('click', () => {
+          localStorage.clear();
+          window.location.href = 'index.html';
+        });
+
+        // Filtros
+        document.querySelector('#statusFilter').addEventListener('change', filterAppointments);
+        document.querySelector('#searchInput').addEventListener('input', filterAppointments);
+
+        document.querySelector('#detalhesFichaModal .btn-success').addEventListener('click', () => {
+          updateAppointmentState('CONCLUIDO');
+        });
+
+        document.querySelector('#detalhesFichaModal .btn-danger').addEventListener('click', () => {
+          updateAppointmentState('CANCELADO');
+        });
+      }
+
+      function filterAppointments() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const statusFilter = document.getElementById('statusFilter').value;
+
+        const filtered = currentAppointments.filter(appointment => {
+          const matchesSearch = appointment.patient.name.toLowerCase().includes(searchTerm) ||
+            appointment.doctor.name.toLowerCase().includes(searchTerm) ||
+            appointment.id.toString().includes(searchTerm);
+
+          const matchesStatus = !statusFilter ||
+            appointment.state.toLowerCase() === statusFilter.toUpperCase();
+
+          return matchesSearch && matchesStatus;
+        });
+
+        renderFilteredAppointments(filtered);
+      }
+
+      function renderFilteredAppointments(appointments) {
+        const tbody = document.querySelector('table tbody');
+        tbody.innerHTML = appointments.map(appointment => `
+          <tr>
+            <td>#FCH-${appointment.id.toString().padStart(4, '0')}</td>
+            <td>${appointment.patient.name}</td>
+            <td>${appointment.doctor.name}</td>
+            <td>${new Date(appointment.date).toLocaleDateString('pt-BR')}</td>
+            <td>${new Date(appointment.date).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}</td>
+            <td>
+              <span class="status-badge status-${getStatusClass(appointment.state)}">
+                ${appointment.state}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary action-btn">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-secondary action-btn">
+                <i class="bi bi-printer"></i>
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      function updateStats() {
+        const stats = {
+          total: currentAppointments.length,
+          agendado: currentAppointments.filter(a => a.state === 'AGENDADO').length,
+          andamento: currentAppointments.filter(a => a.state === 'EM_ANDAMENTO').length,
+          concluido: currentAppointments.filter(a => a.state === 'CONCLUIDO').length
+        };
+
+        document.querySelectorAll('.filter-card .display-6').forEach((el, index) => {
+          el.textContent = Object.values(stats)[index];
+        });
+      }
+
+      function showError(message) {
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3';
+        alert.innerHTML = `
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alert);
+      }
+
+      function showSuccess(message) {
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3';
+        alert.innerHTML = `
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alert);
+      }
+
+    document.getElementById('detalhesFichaModal').addEventListener('show.bs.modal', function(event) {
+      const button = event.relatedTarget; // Botão que acionou o modal
+      const appointmentId = button.getAttribute('data-id');
+      this.dataset.appointmentId = appointmentId;
+      showAppointmentDetails(appointmentId); // Chama a função para popular os dados
+    });
+
+    async function updateAppointmentState(newState) {
+      const modal = document.getElementById('detalhesFichaModal');
+      const appointmentId = modal.dataset.appointmentId;
+
+      try {
+        const response = await fetch(`${API_BASE}/appointments/${appointmentId}`, {
+          method: 'PUT', // Ou PUT dependendo da sua API
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+          },
+          body: JSON.stringify({ state: newState })
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.errors[0]);
+        }
+
+        // Atualiza o estado local
+        const appointment = currentAppointments.find(a => a.id == appointmentId);
+        if (appointment) {
+          appointment.state = newState;
+        }
+
+        // Atualiza a interface
+        renderAppointments();
+        updateStats();
+        showSuccess(`Status atualizado para ${newState}`);
+        bootstrap.Modal.getInstance(modal).hide();
+      } catch (error) {
+        showError(error.message);
+      }
+    }
     </script>
   </body>
 </html>
