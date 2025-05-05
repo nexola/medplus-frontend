@@ -58,6 +58,23 @@
         color: #2c5282;
         text-decoration: underline;
       }
+
+      /* Adicionar ao style existente */
+      .position-fixed {
+        position: fixed;
+      }
+
+      .translate-middle {
+        transform: translate(-50%, -50%);
+      }
+
+      .start-50 {
+        left: 50%;
+      }
+
+      .top-50 {
+        top: 50%;
+      }
     </style>
   </head>
   <body class="d-flex justify-content-center align-items-center p-3">
@@ -99,11 +116,7 @@
       </form>
     </div>
 
-    <div id="loading" class="text-center mb-3" style="display: none;">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Carregando...</span>
-      </div>
-    </div>
+
 
     <div id="error-message" class="alert alert-danger text-center mb-3" style="display: none;"></div>
 
@@ -133,7 +146,7 @@
           }
 
           // Login com OAuth2
-          const tokenResponse = await fetch('http://localhost:8080/oauth2/token', {
+          const tokenResponse = await fetch('https://ubs-zxgf.onrender.com/oauth2/token', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
@@ -155,7 +168,7 @@
           console.log(tokenData.access_token)
 
           // Obter dados do usuário
-          const userResponse = await fetch('http://localhost:8080/users/me', {
+          const userResponse = await fetch('https://ubs-zxgf.onrender.com/users/me', {
             headers: {
               'Authorization': `Bearer ${tokenData.access_token}`
             }
@@ -209,5 +222,15 @@
         }
       });
     </script>
+
+    <div id="loading"
+     class="position-fixed top-50 start-50 translate-middle"
+     style="display: none; z-index: 1000;">
+  <div class="spinner-border text-primary"
+       style="width: 3rem; height: 3rem;"
+       role="status">
+    <span class="visually-hidden">Carregando...</span>
+  </div>
+</div>
   </body>
 </html>
