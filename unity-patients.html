@@ -1010,7 +1010,7 @@ Paciente com histórico de hipertensão. Alergia a dipirona.</textarea
       let currentPatients = [];
 
       document.addEventListener('DOMContentLoaded', async () => {
-        <!-- await checkAuth(); -->
+        await checkAuth();
         await loadPatients();
         loadReminderSettings()
         setupEventListeners();
