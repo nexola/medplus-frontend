@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Med+ | Gerenciamento de Horários</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
+    <!-- Bootstrap 5.3 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <style>
+      :root {
+        --med-primary: #3182ce;
+        --med-dark: #2c5282;
+        --med-light: #f5f9ff;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #212529;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        color: var(--med-primary);
+      }
+
+      .navbar-brand span {
+        color: var(--med-dark);
+      }
+
+      .sidebar {
+        background-color: white;
+        min-height: calc(100vh - 56px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .sidebar .nav-link {
+        color: #495057;
+        border-radius: 5px;
+        margin-bottom: 5px;
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        background-color: var(--med-light);
+        color: var(--med-primary);
+      }
+
+      .sidebar .nav-link i {
+        margin-right: 10px;
+      }
+
+      .card {
+        border: none;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+      }
+
+      .btn-primary {
+        background-color: var(--med-primary);
+        border-color: var(--med-primary);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--med-dark);
+        border-color: var(--med-dark);
+      }
+
+      .time-slot {
+        background-color: #e9ecef;
+        border-radius: 5px;
+        padding: 5px 10px;
+        margin: 3px;
+        display: inline-block;
+        position: relative;
+      }
+
+      .time-slot .remove-slot {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #dc3545;
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .day-column {
+        border-right: 1px solid #dee2e6;
+        min-height: 200px;
+      }
+
+      .day-column:last-child {
+        border-right: none;
+      }
+
+      .day-header {
+        background-color: var(--med-light);
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      .time-slots-container {
+        padding: 10px;
+        min-height: 150px;
+      }
+
+      .slot-item {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 5px;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+      }
+
+      .action-btn {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .schedule-card {
+        transition: all 0.3s;
+      }
+
+      .schedule-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/main-unity.html">
+          <i class="bi bi-heart-pulse"></i> Med<span>+</span> Unidade
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bi bi-person-circle"></i>
+                <span class="username"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="profile-unity.html"
+                    ><i class="bi bi-person"></i> Perfil</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="bi bi-box-arrow-right"></i> Sair</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block sidebar bg-white">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="main-unity.html">
+                  <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="unity-records.html">
+                  <i class="bi bi-files"></i> Fichas
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="unity-patients.html">
+                  <i class="bi bi-people"></i> Pacientes
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="unity-queue.html">
+                  <i class="bi bi-calendar-plus"></i> Horários
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+          >
+            <h1 class="h2">
+              <i class="bi bi-calendar-plus"></i> Gerenciamento de Horários
+            </h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <button
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#newScheduleModal"
+              >
+                <i class="bi bi-plus-lg"></i> Novo Horário
+              </button>
+            </div>
+          </div>
+
+          <!-- Filtros -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="specialtyFilter" class="form-label"
+                    >Especialidade</label
+                  >
+                  <select class="form-select" id="specialtyFilter">
+                    <option value="">Todas especialidades</option>
+                    <option value="1">Cardiologia</option>
+                    <option value="2">Pediatria</option>
+                    <option value="3">Ortopedia</option>
+                    <option value="4">Clínico Geral</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="doctorFilter" class="form-label">Médico</label>
+                  <select class="form-select" id="doctorFilter">
+                    <option value="">Todos médicos</option>
+                    <option value="1">Dr. Carlos Andrade</option>
+                    <option value="2">Dra. Ana Beatriz</option>
+                    <option value="3">Dr. Roberto Santos</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grade de Horários -->
+          <div class="card mb-4">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Horários Cadastrados</h5>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Especialidade</th>
+                      <th>Médico</th>
+                      <th>Dias da Semana</th>
+                      <th>Horários</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Cardiologia</td>
+                      <td>Dr. Carlos Andrade</td>
+                      <td>Segunda, Quarta, Sexta</td>
+                      <td>
+                        <span class="time-slot">08:00 - 12:00</span>
+                        <span class="time-slot">14:00 - 18:00</span>
+                      </td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary action-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editScheduleModal"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-danger action-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteScheduleModal"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Pediatria</td>
+                      <td>Dra. Ana Beatriz</td>
+                      <td>Terça, Quinta</td>
+                      <td>
+                        <span class="time-slot">09:00 - 13:00</span>
+                        <span class="time-slot">15:00 - 19:00</span>
+                      </td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary action-btn"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-outline-danger action-btn"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visualização Semanal -->
+          <div class="card">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Visualização Semanal</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <!-- Segunda -->
+                <div class="col day-column">
+                  <div class="day-header">Segunda</div>
+                  <div class="time-slots-container">
+                    <div class="slot-item">
+                      <strong>Cardiologia</strong><br />
+                      Dr. Carlos Andrade<br />
+                      08:00 - 12:00<br />
+                      14:00 - 18:00
+                    </div>
+                  </div>
+                </div>
+                <!-- Terça -->
+                <div class="col day-column">
+                  <div class="day-header">Terça</div>
+                  <div class="time-slots-container">
+                    <div class="slot-item">
+                      <strong>Pediatria</strong><br />
+                      Dra. Ana Beatriz<br />
+                      09:00 - 13:00<br />
+                      15:00 - 19:00
+                    </div>
+                  </div>
+                </div>
+                <!-- Quarta -->
+                <div class="col day-column">
+                  <div class="day-header">Quarta</div>
+                  <div class="time-slots-container">
+                    <div class="slot-item">
+                      <strong>Cardiologia</strong><br />
+                      Dr. Carlos Andrade<br />
+                      08:00 - 12:00<br />
+                      14:00 - 18:00
+                    </div>
+                  </div>
+                </div>
+                <!-- Quinta -->
+                <div class="col day-column">
+                  <div class="day-header">Quinta</div>
+                  <div class="time-slots-container">
+                    <div class="slot-item">
+                      <strong>Pediatria</strong><br />
+                      Dra. Ana Beatriz<br />
+                      09:00 - 13:00<br />
+                      15:00 - 19:00
+                    </div>
+                  </div>
+                </div>
+                <!-- Sexta -->
+                <div class="col day-column">
+                  <div class="day-header">Sexta</div>
+                  <div class="time-slots-container">
+                    <div class="slot-item">
+                      <strong>Cardiologia</strong><br />
+                      Dr. Carlos Andrade<br />
+                      08:00 - 12:00<br />
+                      14:00 - 18:00
+                    </div>
+                  </div>
+                </div>
+                <!-- Sábado -->
+                <div class="col day-column">
+                  <div class="day-header">Sábado</div>
+                  <div class="time-slots-container">
+                    <div class="text-muted text-center mt-4">Sem horários</div>
+                  </div>
+                </div>
+                <!-- Domingo -->
+                <div class="col day-column">
+                  <div class="day-header">Domingo</div>
+                  <div class="time-slots-container">
+                    <div class="text-muted text-center mt-4">Sem horários</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Novo Horário Modal -->
+    <div
+      class="modal fade"
+      id="newScheduleModal"
+      tabindex="-1"
+      aria-labelledby="newScheduleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="newScheduleModalLabel">
+              <i class="bi bi-calendar-plus"></i> Novo Horário
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="newScheduleForm">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="scheduleSpecialty" class="form-label"
+                    >Especialidade</label
+                  >
+                  <select class="form-select" id="scheduleSpecialty" required>
+                    <option value="">Selecione uma especialidade</option>
+                    <option value="1">Cardiologia</option>
+                    <option value="2">Pediatria</option>
+                    <option value="3">Ortopedia</option>
+                    <option value="4">Clínico Geral</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="scheduleDoctor" class="form-label">Médico</label>
+                  <select class="form-select" id="scheduleDoctor" required>
+                    <option value="">Selecione um médico</option>
+                    <option value="1">Dr. Carlos Andrade</option>
+                    <option value="2">Dra. Ana Beatriz</option>
+                    <option value="3">Dr. Roberto Santos</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Dias da Semana</label>
+                <div class="d-flex flex-wrap gap-2">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="mondayCheck"
+                      value="1"
+                    />
+                    <label class="form-check-label" for="mondayCheck"
+                      >Segunda</label
+                    >
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="tuesdayCheck"
+                      value="2"
+                    />
+                    <label class="form-check-label" for="tuesdayCheck"
+                      >Terça</label
+                    >
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="wednesdayCheck"
+                      value="3"
+                    />
+                    <label class="form-check-label" for="wednesdayCheck"
+                      >Quarta</label
+                    >
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="thursdayCheck"
+                      value="4"
+                    />
+                    <label class="form-check-label" for="thursdayCheck"
+                      >Quinta</label
+                    >
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="fridayCheck"
+                      value="5"
+                    />
+                    <label class="form-check-label" for="fridayCheck"
+                      >Sexta</label
+                    >
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="saturdayCheck"
+                      value="6"
+                    />
+                    <label class="form-check-label" for="saturdayCheck"
+                      >Sábado</label
+                    >
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="sundayCheck"
+                      value="7"
+                    />
+                    <label class="form-check-label" for="sundayCheck"
+                      >Domingo</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Horários</label>
+                <div id="timeSlotsContainer">
+                  <!-- Os slots de horário serão adicionados aqui -->
+                </div>
+                <div class="d-flex gap-2 mt-2">
+                  <input
+                    type="time"
+                    class="form-control"
+                    id="startTime"
+                    style="max-width: 120px"
+                  />
+                  <span class="align-self-center">às</span>
+                  <input
+                    type="time"
+                    class="form-control"
+                    id="endTime"
+                    style="max-width: 120px"
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-primary"
+                    id="addTimeSlot"
+                  >
+                    <i class="bi bi-plus"></i> Adicionar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              form="newScheduleForm"
+              class="btn btn-primary"
+            >
+              Salvar Horário
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Editar Horário Modal -->
+    <div
+      class="modal fade"
+      id="editScheduleModal"
+      tabindex="-1"
+      aria-labelledby="editScheduleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editScheduleModalLabel">
+              <i class="bi bi-pencil"></i> Editar Horário
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editScheduleForm">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="editScheduleSpecialty" class="form-label"
+                    >Especialidade</label
+                  >
+                  <select
+                    class="form-select"
+                    id="editScheduleSpecialty"
+                    required
+                  >
+                    <option value="1" selected>Cardiologia</option>
+                    <option value="2">Pediatria</option>
+                    <option value="3">Ortopedia</option>
+                    <option value="4">Clínico Geral</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="editScheduleDoctor" class="form-label"
+                    >Médico</label
+                  >
+                  <select class="form-select" id="editScheduleDoctor" required>
+                    <option value="1" selected>Dr. Carlos Andrade</option>
+                    <option value="2">Dra. Ana Beatriz</option>
+                    <option value="3">Dr. Roberto Santos</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Dias da Semana</label>
+                <div class="d-flex flex-wrap gap-2">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="editMondayCheck"
+                      value="1"
+                      checked
+                    />
+                    <label class="form-check-label" for="editMondayCheck"
+                      >Segunda</label
+                    >
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="editTuesdayCheck"
+                      value="2"
+                    />
+                    <label class="form-check-label" for="editTuesdayCheck"
+                      >Terça</label
+                    >
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="editWednesdayCheck"
+                      value="3"
+                      checked
+                    />
+                    <label class="form-check-label" for="editWednesdayCheck"
+                      >Quarta</label
+                    >
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="editThursdayCheck"
+                      value="4"
+                    />
+                    <label class="form-check-label" for="editThursdayCheck"
+                      >Quinta</label
+                    >
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="editFridayCheck"
+                      value="5"
+                      checked
+                    />
+                    <label class="form-check-label" for="editFridayCheck"
+                      >Sexta</label
+                    >
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="editSaturdayCheck"
+                      value="6"
+                    />
+                    <label class="form-check-label" for="editSaturdayCheck"
+                      >Sábado</label
+                    >
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="editSundayCheck"
+                      value="7"
+                    />
+                    <label class="form-check-label" for="editSundayCheck"
+                      >Domingo</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Horários</label>
+                <div id="editTimeSlotsContainer">
+                  <span class="time-slot">
+                    08:00 - 12:00
+                    <span class="remove-slot">&times;</span>
+                  </span>
+                  <span class="time-slot">
+                    14:00 - 18:00
+                    <span class="remove-slot">&times;</span>
+                  </span>
+                </div>
+                <div class="d-flex gap-2 mt-2">
+                  <input
+                    type="time"
+                    class="form-control"
+                    id="editStartTime"
+                    style="max-width: 120px"
+                    value="08:00"
+                  />
+                  <span class="align-self-center">às</span>
+                  <input
+                    type="time"
+                    class="form-control"
+                    id="editEndTime"
+                    style="max-width: 120px"
+                    value="12:00"
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-primary"
+                    id="editAddTimeSlot"
+                  >
+                    <i class="bi bi-plus"></i> Adicionar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              form="editScheduleForm"
+              class="btn btn-primary"
+            >
+              Salvar Alterações
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Deletar Horário Modal -->
+    <div
+      class="modal fade"
+      id="deleteScheduleModal"
+      tabindex="-1"
+      aria-labelledby="deleteScheduleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-danger" id="deleteScheduleModalLabel">
+              <i class="bi bi-exclamation-triangle"></i> Confirmar Exclusão
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Tem certeza que deseja excluir o horário de
+              <strong>Cardiologia - Dr. Carlos Andrade</strong>?
+            </p>
+            <p class="text-danger">
+              Esta ação não pode ser desfeita e afetará todos os agendamentos
+              futuros.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-danger">
+              Confirmar Exclusão
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const API_BASE = "https://ubs-zxgf.onrender.com";
+      let currentUser = null;
+      let schedules = [];
+      let doctors = [];
+      let specialties = [];
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          await checkAuth();
+          await loadInitialData();
+          setupEventListeners();
+        } catch (error) {
+          console.error("Erro ao carregar página:", error);
+        }
+      });
+
+      async function checkAuth() {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+          window.location.href = "index.html";
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_BASE}/users/me`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (!response.ok) throw new Error("Falha na autenticação");
+
+          currentUser = await response.json();
+          updateUserInfo();
+
+          if (!currentUser.roles?.includes("ROLE_UNIT")) {
+            throw new Error("Acesso não autorizado");
+          }
+        } catch (error) {
+          localStorage.clear();
+          window.location.href = "index.html";
+        }
+      }
+
+      function updateUserInfo() {
+        document.querySelectorAll(".username").forEach((element) => {
+          element.textContent = currentUser.name;
+        });
+      }
+
+      async function loadInitialData() {
+        try {
+          const [schedulesRes, doctorsRes, specialtiesRes] = await Promise.all([
+            fetch(`${API_BASE}/schedules?unitId=${currentUser.id}`, {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+              },
+            }),
+            fetch(`${API_BASE}/doctors?unitId=${currentUser.id}`, {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+              },
+            }),
+            fetch(`${API_BASE}/specializations`, {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+              },
+            }),
+          ]);
+
+          schedules = await schedulesRes.json();
+          doctors = await doctorsRes.json();
+          specialties = await specialtiesRes.json();
+
+          renderSchedules();
+          populateFilters();
+          populateFormSelects();
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      function renderSchedules() {
+        const tbody = document.querySelector("table tbody");
+        if (!tbody) return;
+
+        tbody.innerHTML = schedules
+          .map((schedule) => {
+            const doctor =
+              doctors.find((d) => d.id === schedule.doctorId) || {};
+            const specialty =
+              specialties.find((s) => s === schedule.specialty) || "";
+
+            // Format days of week
+            const daysMap = {
+              1: "Segunda",
+              2: "Terça",
+              3: "Quarta",
+              4: "Quinta",
+              5: "Sexta",
+              6: "Sábado",
+              7: "Domingo",
+            };
+            const days = schedule.days.map((day) => daysMap[day]).join(", ");
+
+            // Format time slots
+            const timeSlots = schedule.timeSlots
+              .map(
+                (slot) =>
+                  `<span class="time-slot">${slot.start} - ${slot.end}</span>`
+              )
+              .join("");
+
+            return `
+            <tr data-id="${schedule.id}">
+              <td>${specialty}</td>
+              <td>${doctor.name || ""}</td>
+              <td>${days}</td>
+              <td>${timeSlots}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary action-btn edit-schedule">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger action-btn delete-schedule">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+          })
+          .join("");
+      }
+
+      function populateFilters() {
+        const specialtyFilter = document.getElementById("specialtyFilter");
+        const doctorFilter = document.getElementById("doctorFilter");
+
+        if (specialtyFilter) {
+          specialtyFilter.innerHTML =
+            '<option value="">Todas especialidades</option>' +
+            specialties
+              .map((s) => `<option value="${s}">${s}</option>`)
+              .join("");
+        }
+
+        if (doctorFilter) {
+          doctorFilter.innerHTML =
+            '<option value="">Todos médicos</option>' +
+            doctors
+              .map((d) => `<option value="${d.id}">${d.name}</option>`)
+              .join("");
+        }
+      }
+
+      function populateFormSelects() {
+        const specialtySelect = document.getElementById("scheduleSpecialty");
+        const doctorSelect = document.getElementById("scheduleDoctor");
+
+        if (specialtySelect) {
+          specialtySelect.innerHTML =
+            '<option value="">Selecione uma especialidade</option>' +
+            specialties
+              .map((s) => `<option value="${s}">${s}</option>`)
+              .join("");
+        }
+
+        if (doctorSelect) {
+          doctorSelect.innerHTML =
+            '<option value="">Selecione um médico</option>' +
+            doctors
+              .map((d) => `<option value="${d.id}">${d.name}</option>`)
+              .join("");
+        }
+      }
+
+      function setupEventListeners() {
+        // Logout
+        document
+          .querySelector('.dropdown-item[href="#"]')
+          .addEventListener("click", () => {
+            localStorage.clear();
+            window.location.href = "index.html";
+          });
+
+        // Adicionar slot de horário
+        document
+          .getElementById("addTimeSlot")
+          ?.addEventListener("click", addTimeSlot);
+        document
+          .getElementById("editAddTimeSlot")
+          ?.addEventListener("click", addTimeSlot);
+
+        // Remover slot de horário
+        document.addEventListener("click", function (e) {
+          if (e.target.classList.contains("remove-slot")) {
+            e.target.parentElement.remove();
+          }
+        });
+
+        // Filtros
+        document
+          .getElementById("specialtyFilter")
+          ?.addEventListener("change", filterSchedules);
+        document
+          .getElementById("doctorFilter")
+          ?.addEventListener("change", filterSchedules);
+
+        // Formulários
+        document
+          .getElementById("newScheduleForm")
+          ?.addEventListener("submit", handleCreateSchedule);
+        document
+          .getElementById("editScheduleForm")
+          ?.addEventListener("submit", handleUpdateSchedule);
+
+        // Botões de ação na tabela (usando event delegation)
+        document
+          .querySelector("table tbody")
+          ?.addEventListener("click", function (e) {
+            const btn = e.target.closest("button");
+            if (!btn) return;
+
+            const row = btn.closest("tr");
+            const scheduleId = row?.getAttribute("data-id");
+            const schedule = schedules.find((s) => s.id == scheduleId);
+
+            if (btn.classList.contains("edit-schedule")) {
+              openEditScheduleModal(schedule);
+            } else if (btn.classList.contains("delete-schedule")) {
+              openDeleteScheduleModal(schedule);
+            }
+          });
+
+        // Confirmar exclusão
+        document
+          .querySelector("#deleteScheduleModal .btn-danger")
+          ?.addEventListener("click", handleDeleteSchedule);
+      }
+
+      function addTimeSlot() {
+        const isEdit = this.id === "editAddTimeSlot";
+        const prefix = isEdit ? "edit" : "";
+        const containerId = isEdit
+          ? "editTimeSlotsContainer"
+          : "timeSlotsContainer";
+
+        const startTime = document.getElementById(`${prefix}StartTime`).value;
+        const endTime = document.getElementById(`${prefix}EndTime`).value;
+
+        if (!startTime || !endTime) {
+          showError("Por favor, preencha ambos os horários");
+          return;
+        }
+
+        if (startTime >= endTime) {
+          showError("O horário de início deve ser antes do horário de término");
+          return;
+        }
+
+        const container = document.getElementById(containerId);
+        const slot = document.createElement("span");
+        slot.className = "time-slot";
+        slot.innerHTML = `
+          ${startTime} - ${endTime}
+          <span class="remove-slot">&times;</span>
+        `;
+        container.appendChild(slot);
+
+        // Limpar os inputs
+        document.getElementById(`${prefix}StartTime`).value = "";
+        document.getElementById(`${prefix}EndTime`).value = "";
+      }
+
+      function filterSchedules() {
+        const specialtyFilter =
+          document.getElementById("specialtyFilter").value;
+        const doctorFilter = document.getElementById("doctorFilter").value;
+
+        document.querySelectorAll("table tbody tr").forEach((row) => {
+          const specialty = row.cells[0].textContent;
+          const doctor = row.cells[1].textContent;
+
+          const matchesSpecialty =
+            !specialtyFilter || specialty === specialtyFilter;
+          const matchesDoctor = !doctorFilter || doctor.includes(doctorFilter);
+
+          row.style.display = matchesSpecialty && matchesDoctor ? "" : "none";
+        });
+      }
+
+      function openEditScheduleModal(schedule) {
+        if (!schedule) return;
+
+        // Preencher dados do formulário
+        document.getElementById("editScheduleSpecialty").value =
+          schedule.specialty;
+        document.getElementById("editScheduleDoctor").value = schedule.doctorId;
+
+        // Marcar dias da semana
+        [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+        ].forEach((day, index) => {
+          const checkbox = document.getElementById(`edit${day}Check`);
+          if (checkbox) {
+            checkbox.checked = schedule.days.includes(index + 1);
+          }
+        });
+
+        // Preencher slots de horário
+        const container = document.getElementById("editTimeSlotsContainer");
+        container.innerHTML = "";
+        schedule.timeSlots.forEach((slot) => {
+          const slotElement = document.createElement("span");
+          slotElement.className = "time-slot";
+          slotElement.innerHTML = `
+            ${slot.start} - ${slot.end}
+            <span class="remove-slot">&times;</span>
+          `;
+          container.appendChild(slotElement);
+        });
+
+        // Armazenar ID do horário sendo editado
+        document.getElementById("editScheduleForm").dataset.scheduleId =
+          schedule.id;
+
+        // Abrir modal
+        new bootstrap.Modal(
+          document.getElementById("editScheduleModal")
+        ).show();
+      }
+
+      function openDeleteScheduleModal(schedule) {
+        if (!schedule) return;
+
+        const doctor = doctors.find((d) => d.id === schedule.doctorId) || {};
+        const modal = document.getElementById("deleteScheduleModal");
+
+        modal.querySelector(
+          "strong"
+        ).textContent = `${schedule.specialty} - ${doctor.name}`;
+        modal.dataset.scheduleId = schedule.id;
+
+        new bootstrap.Modal(modal).show();
+      }
+
+      async function handleCreateSchedule(e) {
+        e.preventDefault();
+        try {
+          const formData = getScheduleFormData("newScheduleForm");
+
+          const response = await fetch(`${API_BASE}/schedules`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+            body: JSON.stringify({
+              ...formData,
+              unitId: currentUser.id,
+            }),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Erro ao criar horário");
+          }
+
+          const newSchedule = await response.json();
+          schedules.push(newSchedule);
+          renderSchedules();
+
+          // Fechar modal e limpar formulário
+          bootstrap.Modal.getInstance(
+            document.getElementById("newScheduleModal")
+          ).hide();
+          e.target.reset();
+          document.getElementById("timeSlotsContainer").innerHTML = "";
+
+          showSuccess("Horário criado com sucesso!");
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      async function handleUpdateSchedule(e) {
+        e.preventDefault();
+
+        try {
+          const scheduleId = e.target.dataset.scheduleId;
+          if (!scheduleId) throw new Error("ID do horário não encontrado");
+
+          const formData = getScheduleFormData("editScheduleForm");
+
+          const response = await fetch(`${API_BASE}/schedules/${scheduleId}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+            body: JSON.stringify(formData),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Erro ao atualizar horário");
+          }
+
+          const updatedSchedule = await response.json();
+          const index = schedules.findIndex((s) => s.id == scheduleId);
+          if (index !== -1) {
+            schedules[index] = updatedSchedule;
+          }
+          renderSchedules();
+
+          // Fechar modal
+          bootstrap.Modal.getInstance(
+            document.getElementById("editScheduleModal")
+          ).hide();
+
+          showSuccess("Horário atualizado com sucesso!");
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      async function handleDeleteSchedule() {
+        try {
+          const scheduleId = document.getElementById("deleteScheduleModal")
+            .dataset.scheduleId;
+          if (!scheduleId) throw new Error("ID do horário não encontrado");
+
+          const response = await fetch(`${API_BASE}/schedules/${scheduleId}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Erro ao excluir horário");
+          }
+
+          // Remover da lista local
+          schedules = schedules.filter((s) => s.id != scheduleId);
+          renderSchedules();
+
+          // Fechar modal
+          bootstrap.Modal.getInstance(
+            document.getElementById("deleteScheduleModal")
+          ).hide();
+
+          showSuccess("Horário excluído com sucesso!");
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      function getScheduleFormData(formId) {
+        const form = document.getElementById(formId);
+        const isEdit = formId === "editScheduleForm";
+        const prefix = isEdit ? "edit" : "";
+
+        // Obter dias selecionados
+        const days = [];
+        for (let i = 1; i <= 7; i++) {
+          const checkbox = document.getElementById(
+            `${prefix}${getDayName(i)}Check`
+          );
+          if (checkbox?.checked) days.push(i);
+        }
+
+        if (days.length === 0) {
+          throw new Error("Selecione pelo menos um dia da semana");
+        }
+
+        // Obter slots de horário
+        const container = document.getElementById(
+          isEdit ? "editTimeSlotsContainer" : "timeSlotsContainer"
+        );
+        const timeSlots = Array.from(
+          container.querySelectorAll(".time-slot")
+        ).map((slot) => {
+          const text = slot.textContent.trim();
+          const [start, end] = text.split(" - ");
+          return { start, end };
+        });
+
+        if (timeSlots.length === 0) {
+          throw new Error("Adicione pelo menos um horário");
+        }
+
+        return {
+          specialty: form.querySelector(`#${prefix}ScheduleSpecialty`).value,
+          doctorId: form.querySelector(`#${prefix}ScheduleDoctor`).value,
+          days,
+          timeSlots,
+        };
+      }
+
+      function getDayName(dayNumber) {
+        const days = [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+        ];
+        return days[dayNumber - 1];
+      }
+
+      function showError(message) {
+        // Implementar lógica para exibir mensagens de erro (pode usar Toast, SweetAlert, etc.)
+        alert(`Erro: ${message}`);
+      }
+
+      function showSuccess(message) {
+        // Implementar lógica para exibir mensagens de sucesso
+        alert(`Sucesso: ${message}`);
+      }
+    </script>
+  </body>
+</html>

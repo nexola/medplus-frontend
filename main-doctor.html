@@ -420,45 +420,48 @@
     <!-- Bootstrap 5.3 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      const API_BASE = 'https://ubs-zxgf.onrender.com';
+      const API_BASE = "https://ubs-zxgf.onrender.com";
       let currentUser = null;
       let currentAppointments = [];
 
-      document.addEventListener('DOMContentLoaded', async () => {
+      document.addEventListener("DOMContentLoaded", async () => {
         await checkAuth();
         await loadAppointments();
         setupEventListeners();
       });
 
       async function checkAuth() {
-        const token = localStorage.getItem('access_token');
+        const token = localStorage.getItem("access_token");
         if (!token) {
-          window.location.href = 'index.html';
+          window.location.href = "index.html";
           return;
         }
 
         try {
           const response = await fetch(`${API_BASE}/users/me`, {
             headers: {
-              'Authorization': `Bearer ${token}`
-            }
+              Authorization: `Bearer ${token}`,
+            },
           });
 
-          if (!response.ok) throw new Error('Falha na autenticação');
+          if (!response.ok) throw new Error("Falha na autenticação");
           currentUser = await response.json();
 
-          if (!currentUser.roles?.includes('ROLE_DOCTOR')) {
-            throw new Error('Acesso não autorizado');
+          if (!currentUser.roles?.includes("ROLE_DOCTOR")) {
+            throw new Error("Acesso não autorizado");
           }
 
           // Atualiza os dados do médico no cabeçalho
-          document.querySelector('strong').textContent = currentUser.name;
-          document.querySelectorAll('small')[0].textContent = `CRM: ${currentUser.crm}`;
-          document.querySelectorAll('small')[1].textContent = `Especialidade: ${currentUser.specialization}`;
-
+          document.querySelector("strong").textContent = currentUser.name;
+          document.querySelectorAll(
+            "small"
+          )[0].textContent = `CRM: ${currentUser.crm}`;
+          document.querySelectorAll(
+            "small"
+          )[1].textContent = `Especialidade: ${currentUser.specialization}`;
         } catch (error) {
           localStorage.clear();
-          window.location.href = 'index.html';
+          window.location.href = "index.html";
         }
       }
 
@@ -466,8 +469,8 @@
         try {
           const response = await fetch(`${API_BASE}/appointments/doctor`, {
             headers: {
-              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
           });
 
           currentAppointments = await response.json();
@@ -478,14 +481,21 @@
       }
 
       function renderAppointments() {
-        const tbody = document.querySelector('table tbody');
-        tbody.innerHTML = currentAppointments.map(appointment => `
+        const tbody = document.querySelector("table tbody");
+        tbody.innerHTML = currentAppointments
+          .map(
+            (appointment) => `
           <tr>
             <td>${appointment.patient.name}</td>
-            <td>${new Date(appointment.date).toLocaleDateString('pt-BR')}</td>
-            <td>${new Date(appointment.date).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}</td>
+            <td>${new Date(appointment.date).toLocaleDateString("pt-BR")}</td>
+            <td>${new Date(appointment.date).toLocaleTimeString("pt-BR", {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}</td>
             <td>
-              <span class="status-badge status-${getStatusClass(appointment.state)}">
+              <span class="status-badge status-${getStatusClass(
+                appointment.state
+              )}">
                 ${appointment.state}
               </span>
             </td>
@@ -496,29 +506,38 @@
                 data-id="${appointment.id}">
                 <i class="bi bi-eye"></i>
               </button>
-              ${appointment.state === 'EM_ANDAMENTO' ? `
+              ${
+                appointment.state === "EM_ANDAMENTO"
+                  ? `
                 <button class="btn btn-sm btn-success"
                   data-bs-toggle="modal"
                   data-bs-target="#concluirFichaModal"
                   data-id="${appointment.id}">
                   <i class="bi bi-check-circle"></i>
                 </button>
-              ` : ''}
+              `
+                  : ""
+              }
             </td>
           </tr>
-        `).join('');
+        `
+          )
+          .join("");
       }
 
       async function handleConcludeAppointment(appointmentId, dto) {
         try {
-          const response = await fetch(`${API_BASE}/appointments/${appointmentId}/conclude`, {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-            },
-            body: JSON.stringify(dto)
-          });
+          const response = await fetch(
+            `${API_BASE}/appointments/${appointmentId}/conclude`,
+            {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+              },
+              body: JSON.stringify(dto),
+            }
+          );
 
           if (!response.ok) {
             const error = await response.json();
@@ -526,9 +545,8 @@
           }
 
           await loadAppointments();
-          showSuccess('Ficha concluída com sucesso!');
+          showSuccess("Ficha concluída com sucesso!");
           return true;
-
         } catch (error) {
           showError(error.message);
           return false;
@@ -537,86 +555,102 @@
 
       function setupEventListeners() {
         // Configura o modal de conclusão
-        document.getElementById('concluirFichaModal').addEventListener('show.bs.modal', function(event) {
-          const button = event.relatedTarget;
-          const appointmentId = button.getAttribute('data-id');
-          const appointment = currentAppointments.find(a => a.id == appointmentId);
+        document
+          .getElementById("concluirFichaModal")
+          .addEventListener("show.bs.modal", function (event) {
+            const button = event.relatedTarget;
+            const appointmentId = button.getAttribute("data-id");
+            const appointment = currentAppointments.find(
+              (a) => a.id == appointmentId
+            );
 
-          // Atualiza os dados no modal
-          const modalBody = this.querySelector('.modal-body');
-          modalBody.querySelector('strong').textContent = appointment.patient.name;
-          modalBody.querySelector('p').innerHTML = `
-              Você está concluindo a ficha de <strong>${appointment.patient.name}</strong>
-              (${new Date(appointment.date).toLocaleDateString('pt-BR')} -
-              ${new Date(appointment.date).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}).
+            // Atualiza os dados no modal
+            const modalBody = this.querySelector(".modal-body");
+            modalBody.querySelector("strong").textContent =
+              appointment.patient.name;
+            modalBody.querySelector("p").innerHTML = `
+              Você está concluindo a ficha de <strong>${
+                appointment.patient.name
+              }</strong>
+              (${new Date(appointment.date).toLocaleDateString("pt-BR")} -
+              ${new Date(appointment.date).toLocaleTimeString("pt-BR", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}).
           `;
 
-          // Reset dos campos
-          document.getElementById('observacoes').value = '';
-          document.getElementById('finalizarSemExame').checked = true;
-          document.getElementById('exameSelection').style.display = 'none';
-          document.getElementById('tipoExame').value = '';
-          document.getElementById('dataExame').value = '';
+            // Reset dos campos
+            document.getElementById("observacoes").value = "";
+            document.getElementById("finalizarSemExame").checked = true;
+            document.getElementById("exameSelection").style.display = "none";
+            document.getElementById("tipoExame").value = "";
+            document.getElementById("dataExame").value = "";
 
-          this.dataset.appointmentId = appointmentId;
-      });
+            this.dataset.appointmentId = appointmentId;
+          });
 
         // Submissão da conclusão
-        document.getElementById('confirmConcluir').addEventListener('click', async function() {
-          const modal = document.getElementById('concluirFichaModal');
-          const appointmentId = modal.dataset.appointmentId;
+        document
+          .getElementById("confirmConcluir")
+          .addEventListener("click", async function () {
+            const modal = document.getElementById("concluirFichaModal");
+            const appointmentId = modal.dataset.appointmentId;
 
-          const examOption = document.querySelector('input[name="exameOption"]:checked').value;
+            const examOption = document.querySelector(
+              'input[name="exameOption"]:checked'
+            ).value;
 
-          const dto = {
-              observations: document.getElementById('observacoes').value,
+            const dto = {
+              observations: document.getElementById("observacoes").value,
               examType: null,
-              examDate: null
-          };
+              examDate: null,
+            };
 
-          if (examOption === 'exame') {
-              dto.examType = document.getElementById('tipoExame').value;
-              dto.examDate = document.getElementById('dataExame').value;
+            if (examOption === "exame") {
+              dto.examType = document.getElementById("tipoExame").value;
+              dto.examDate = document.getElementById("dataExame").value;
 
               // Validação básica
               if (!dto.examType || !dto.examDate) {
-                  showError('Preencha todos os campos do exame');
-                  return;
+                showError("Preencha todos os campos do exame");
+                return;
               }
-          }
+            }
 
-          const success = await handleConcludeAppointment(appointmentId, dto);
-          if (success) {
+            const success = await handleConcludeAppointment(appointmentId, dto);
+            if (success) {
               bootstrap.Modal.getInstance(modal).hide();
-          }
-      });
+            }
+          });
 
         // Logout
-        document.getElementById('logoutButton').addEventListener('click', function(e) {
+        document
+          .getElementById("logoutButton")
+          .addEventListener("click", function (e) {
             e.preventDefault();
             localStorage.clear();
-            window.location.href = 'index.html';
-        });
+            window.location.href = "index.html";
+          });
 
         // ... outros listeners se necessário
-    }
-    function getStatusClass(state) {
-      const statusMap = {
-          'AGENDADO': 'agendado',
-          'EM_ANDAMENTO': 'em-andamento',
-          'CONCLUIDO': 'concluido'
-      };
-      return statusMap[state] || 'agendado';
-  }
+      }
+      function getStatusClass(state) {
+        const statusMap = {
+          AGENDADO: "agendado",
+          EM_ANDAMENTO: "em-andamento",
+          CONCLUIDO: "concluido",
+        };
+        return statusMap[state] || "agendado";
+      }
 
-  // Adicionar função para mostrar erros (se não existir)
-  function showError(message) {
-      alert('Erro: ' + message);
-  }
+      // Adicionar função para mostrar erros (se não existir)
+      function showError(message) {
+        alert("Erro: " + message);
+      }
 
-  function showSuccess(message) {
-      alert('Sucesso: ' + message);
-  }
+      function showSuccess(message) {
+        alert("Sucesso: " + message);
+      }
 
       // ... funções showError e showSuccess
     </script>

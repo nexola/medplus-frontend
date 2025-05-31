@@ -72,6 +72,27 @@
         font-weight: 500;
       }
 
+      /* Estilos para a seção de lembretes */
+      #configLembretes {
+        transition: all 0.3s;
+      }
+
+      #configLembretes:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-link[data-bs-toggle="collapse"]:after {
+        display: inline-block;
+        margin-left: auto;
+        content: "↓";
+        transition: all 0.3s;
+      }
+
+      .nav-link[data-bs-toggle="collapse"].collapsed:after {
+        content: "→";
+      }
+
       .status-ativo {
         background-color: #e8f5e9;
         color: #388e3c;
@@ -175,6 +196,11 @@
               <li class="nav-item">
                 <a class="nav-link active" href="unity-patients.html">
                   <i class="bi bi-people"></i> Pacientes
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="unity-schedule.html">
+                  <i class="bi bi-calendar-plus"></i> Horários
                 </a>
               </li>
             </ul>
@@ -439,6 +465,63 @@
               </nav> -->
             </div>
           </div>
+          <div class="card mt-4" id="configLembretes">
+  <div class="card-header bg-white">
+    <h5 class="mb-0"><i class="bi bi-bell"></i> Configuração de Lembretes</h5>
+  </div>
+  <div class="card-body">
+    <form id="lembreteForm">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="form-label">Enviar lembrete antes da consulta</label>
+          <div class="input-group">
+            <input 
+              type="number" 
+              class="form-control" 
+              id="lembreteTempo" 
+              min="1" 
+              max="168" 
+              value="24"
+              required
+            >
+            <select class="form-select" id="lembreteUnidade" style="max-width: 120px;">
+              <option value="horas">Horas</option>
+              <option value="minutos">Minutos</option>
+              <option value="dias">Dias</option>
+            </select>
+          </div>
+          <div class="form-text">Defina com quanto tempo de antecedência o lembrete será enviado</div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Modelo de E-mail</label>
+          <select class="form-select" id="lembreteModelo">
+            <option value="padrao">Modelo Padrão</option>
+            <option value="personalizado">Personalizado</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-3" id="modeloPersonalizadoContainer" style="display: none;">
+        <label for="lembreteMensagem" class="form-label">Mensagem Personalizada</label>
+        <textarea class="form-control" id="lembreteMensagem" rows="4" placeholder="Prezado [Paciente], sua consulta está agendada para [Data] às [Hora] na [Clínica]. Por favor, chegue com 15 minutos de antecedência."></textarea>
+        <div class="form-text">
+          Variáveis disponíveis: [Paciente], [Data], [Hora], [Clínica], [Médico], [Especialidade]
+        </div>
+      </div>
+
+      <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" id="lembreteAtivo" checked>
+        <label class="form-check-label" for="lembreteAtivo">Lembretes ativos</label>
+      </div>
+
+      <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-save"></i> Salvar Configurações
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
         </main>
       </div>
     </div>
@@ -927,8 +1010,9 @@ Paciente com histórico de hipertensão. Alergia a dipirona.</textarea
       let currentPatients = [];
 
       document.addEventListener('DOMContentLoaded', async () => {
-        await checkAuth();
+        <!-- await checkAuth(); -->
         await loadPatients();
+        loadReminderSettings()
         setupEventListeners();
       });
 
@@ -1110,6 +1194,62 @@ Paciente com histórico de hipertensão. Alergia a dipirona.</textarea
         document.querySelectorAll('.filter-card .display-6').forEach((el, index) => {
           el.textContent = [total, active, 0, 0][index]; // Atualize conforme sua lógica
         });
+      }
+
+      // Configuração de lembretes
+      document.getElementById('lembreteModelo').addEventListener('change', function() {
+        const personalizadoContainer = document.getElementById('modeloPersonalizadoContainer');
+        personalizadoContainer.style.display = this.value === 'personalizado' ? 'block' : 'none';
+      });
+
+      document.getElementById('lembreteForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const config = {
+          tempo: document.getElementById('lembreteTempo').value,
+          unidade: document.getElementById('lembreteUnidade').value,
+          modelo: document.getElementById('lembreteModelo').value,
+          mensagem: document.getElementById('lembreteMensagem').value,
+          ativo: document.getElementById('lembreteAtivo').checked,
+          sms: document.getElementById('lembreteSMS').checked
+        };
+
+        try {
+          // Simulação de salvamento - substitua por chamada real à API
+          console.log('Configurações salvas:', config);
+          
+          // Mostrar modal de sucesso
+          const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+          document.querySelector('#successModal .modal-body p').textContent = 
+            'Configurações de lembrete salvas com sucesso!';
+          successModal.show();
+          
+        } catch (error) {
+          showError('Erro ao salvar configurações: ' + error.message);
+        }
+      });
+
+      // Carregar configurações existentes (simulação)
+      async function loadReminderSettings() {
+        try {
+          // Substitua por chamada real à API
+          const response = { 
+            tempo: 24,
+            unidade: 'horas',
+            modelo: 'padrao',
+            ativo: true,
+            sms: false
+          };
+          
+          document.getElementById('lembreteTempo').value = response.tempo;
+          document.getElementById('lembreteUnidade').value = response.unidade;
+          document.getElementById('lembreteModelo').value = response.modelo;
+          document.getElementById('lembreteAtivo').checked = response.ativo;
+          document.getElementById('lembreteSMS').checked = response.sms;
+          
+        } catch (error) {
+          console.error('Erro ao carregar configurações:', error);
+        }
       }
     </script>
   </body>

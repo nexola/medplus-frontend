@@ -79,7 +79,7 @@
 
       .stat-card .card-title {
         font-size: 0.9rem;
-        color: #6c757d;
+        color: #fff;
         margin-bottom: 0.5rem;
       }
 
@@ -221,6 +221,11 @@
               <li class="nav-item">
                 <a class="nav-link" href="unity-patients.html">
                   <i class="bi bi-people"></i> Pacientes
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="unity-queue.html">
+                  <i class="bi bi-calendar-plus"></i> Horários
                 </a>
               </li>
             </ul>
@@ -959,7 +964,7 @@
 
       document.addEventListener('DOMContentLoaded', async () => {
         try {
-          await checkAuth();
+          <!-- await checkAuth(); -->
           await loadSpecializations();
           await loadData();
           setupEventListeners();

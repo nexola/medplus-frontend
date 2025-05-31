@@ -695,6 +695,15 @@
                   <option value="emergencia">Emergência</option>
                 </select>
               </div>
+              <div class="mb-3" id="subtypeContainer" style="display: none">
+                <label for="recordSubtype" class="form-label"
+                  >Sub-tipo de Ficha</label
+                >
+                <select class="form-select" id="recordSubtype">
+                  <option value="">Selecione o sub-tipo...</option>
+                  <!-- Opções serão preenchidas dinamicamente -->
+                </select>
+              </div>
             </form>
           </div>
           <div class="modal-footer">
@@ -715,6 +724,73 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // Controle do subtipo de ficha
+        document
+          .getElementById("recordType")
+          .addEventListener("change", function () {
+            const subtypeContainer =
+              document.getElementById("subtypeContainer");
+            const subtypeSelect = document.getElementById("recordSubtype");
+
+            // Tipos que mostram subtipos
+            const showSubtypes = ["consulta", "retorno", "emergencia"];
+
+            if (showSubtypes.includes(this.value)) {
+              subtypeContainer.style.display = "block";
+
+              // Definir subtipos disponíveis
+              const subtypes = [
+                { value: "odontologia", text: "Odontologia" },
+                { value: "pediatria", text: "Pediatria" },
+                { value: "cardiologia", text: "Cardiologia" },
+                { value: "pneumologia", text: "Pneumologia" },
+              ];
+
+              // Popular o select
+              subtypeSelect.innerHTML =
+                '<option value="">Selecione o sub-tipo...</option>' +
+                subtypes
+                  .map(
+                    (sub) => `<option value="${sub.value}">${sub.text}</option>`
+                  )
+                  .join("");
+            } else {
+              subtypeContainer.style.display = "none";
+              subtypeSelect.value = "";
+            }
+          });
+
+        // Atualize o handler de submissão do formulário
+        document
+          .querySelector("#newRecordModal .btn-primary")
+          .addEventListener("click", function () {
+            // Obter os valores do formulário
+            const patient = document.getElementById("recordPatient").value;
+            const doctor = document.getElementById("recordDoctor").value;
+            const type = document.getElementById("recordType").value;
+            const subtype =
+              document.getElementById("recordSubtype").value || null;
+
+            // Validar campos obrigatórios
+            if (!patient || !doctor || !type) {
+              alert("Por favor, preencha todos os campos obrigatórios!");
+              return;
+            }
+
+            // Aqui você faria a chamada à API para criar a ficha
+            console.log("Criando ficha com:", {
+              patient,
+              doctor,
+              type,
+              subtype,
+            });
+
+            alert("Ficha criada com sucesso!");
+            bootstrap.Modal.getInstance(
+              document.getElementById("newRecordModal")
+            ).hide();
+          });
+
         // Initialize appointments chart
         const appointmentsCtx = document
           .getElementById("appointmentsChart")
