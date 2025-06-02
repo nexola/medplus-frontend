@@ -668,7 +668,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
 
-      const API_BASE = 'https://ubs-zxgf.onrender.com';
+      const API_BASE = "https://ubs-zxgf.onrender.com";
       let currentUser = null;
       let currentAppointments = [];
 
@@ -803,14 +803,14 @@
             // Atualiza o status no modal
             modal.querySelector('.status-badge').className = 'status-badge status-cancelado';
             modal.querySelector('.status-badge').textContent = 'CANCELADO';
-            
+
             // Esconde os botões após o cancelamento
             this.style.display = 'none';
             document.getElementById('confirmAppointmentBtn').style.display = 'none';
-            
+
             // Atualiza a lista de fichas
             await loadAppointments();
-            
+
             showSuccess('Ficha cancelada com sucesso!');
 
           } catch (error) {
@@ -837,13 +837,13 @@
             // Atualiza o status no modal
             modal.querySelector('.status-badge').className = 'status-badge status-concluido';
             modal.querySelector('.status-badge').textContent = 'CONFIRMADO';
-            
+
             // Esconde o botão após a confirmação
             this.style.display = 'none';
-            
+
             // Atualiza a lista de fichas
             await loadAppointments();
-            
+
             showSuccess('Ficha confirmada com sucesso!');
 
           } catch (error) {
@@ -909,7 +909,7 @@
             // Mostra ou esconde os botões de ação
             const confirmBtn = document.getElementById('confirmAppointmentBtn');
             const cancelBtn = document.getElementById('cancelAppointmentBtn');
-            
+
             if (appointment.state === 'AGENDADO' && isAppointmentToday(appointment.date)) {
               confirmBtn.style.display = 'inline-block';
               cancelBtn.style.display = 'inline-block';
@@ -927,7 +927,7 @@
       function isAppointmentToday(appointmentDate) {
         const today = new Date();
         const appointment = new Date(appointmentDate);
-        
+
         return (
           appointment.getDate() === today.getDate() &&
           appointment.getMonth() === today.getMonth() &&
