@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Med+ | Dashboard collaborador</title>
+    <title>Med+ | Dashboard Colaborador</title>
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
     <!-- Bootstrap 5.3 CSS -->
@@ -24,141 +24,58 @@
         --med-dark: #2c5282;
         --med-light: #f5f9ff;
       }
-
-      body {
-        background-color: #f8f9fa;
-        color: #212529;
-      }
-
-      .navbar-brand {
-        font-weight: 700;
-        color: var(--med-primary);
-      }
-
-      .navbar-brand span {
-        color: var(--med-dark);
-      }
-
-      .sidebar {
-        background-color: white;
-        min-height: calc(100vh - 56px);
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-      }
-
-      .sidebar .nav-link {
-        color: #495057;
-        border-radius: 5px;
-        margin-bottom: 5px;
-      }
-
+      body { background-color: #f8f9fa; color: #212529; }
+      .navbar-brand { font-weight: 700; color: var(--med-primary); }
+      .navbar-brand span { color: var(--med-dark); }
+      .sidebar { background-color: white; min-height: calc(100vh - 56px); box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); }
+      .sidebar .nav-link { color: #495057; border-radius: 5px; margin-bottom: 5px; }
       .sidebar .nav-link:hover,
-      .sidebar .nav-link.active {
-        background-color: var(--med-light);
-        color: var(--med-primary);
-      }
-
-      .sidebar .nav-link i {
-        margin-right: 10px;
-      }
-
-      .card {
-        border: none;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
-        border-radius: 10px;
-        transition: transform 0.2s;
-      }
-
-      .card:hover {
-        transform: translateY(-5px);
-      }
-
-      .card-icon {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-      }
-
-      .stat-card .card-title {
-        font-size: 0.9rem;
-        color: #6c757d;
-        margin-bottom: 0.5rem;
-      }
-
-      .stat-card .card-value {
-        font-size: 1.8rem;
-        font-weight: 700;
-      }
-
-      .btn-primary {
-        background-color: var(--med-primary);
-        border-color: var(--med-primary);
-      }
-
-      .btn-primary:hover {
-        background-color: var(--med-dark);
-        border-color: var(--med-dark);
-      }
-
-      .action-btn {
-        width: 30px;
-        height: 30px;
-        padding: 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .badge-collab {
-        background-color: #6f42c1;
-      }
-
-      .appointment-badge {
-        font-size: 0.75rem;
-      }
-
-      .appointment-card {
-        border-left: 4px solid var(--med-primary);
-      }
-
-      .appointment-card.urgent {
-        border-left-color: #dc3545;
-      }
-
-      .appointment-card.completed {
-        border-left-color: #28a745;
-      }
+      .sidebar .nav-link.active { background-color: var(--med-light); color: var(--med-primary); }
+      .sidebar .nav-link i { margin-right: 10px; }
+      .card { border: none; box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); border-radius: 10px; transition: transform 0.2s; }
+      .card:hover { transform: translateY(-5px); }
+      .card-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+      .stat-card .card-title { font-size: 0.9rem; color: #6c757d; margin-bottom: 0.5rem; }
+      .stat-card .card-value { font-size: 1.8rem; font-weight: 700; }
+      .btn-primary { background-color: var(--med-primary); border-color: var(--med-primary); }
+      .btn-primary:hover { background-color: var(--med-dark); border-color: var(--med-dark); }
+      .appointment-badge { font-size: 0.75rem; }
+      .appointment-card { border-left: 4px solid var(--med-primary); }
+      .appointment-card.urgent { border-left-color: #dc3545; }
+      .appointment-card.pending { border-left-color: #ffc107; }
+      .appointment-card.confirmed { border-left-color: var(--med-primary); }
+      .appointment-card.completed { border-left-color: #28a745; }
+      .appointment-card.cancelled { border-left-color: #6c757d; }
+      #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.7); z-index: 10000; display: flex; justify-content: center; align-items: center; }
+      .action-btn { width: 30px; height: 30px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
     </style>
   </head>
   <body>
-    <!-- Top Navigation Bar -->
+    <div id="loading-overlay" style="display: none;">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Carregando...</span>
+        </div>
+    </div>
+
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <i class="bi bi-heart-pulse"></i> Med<span>+</span> collaborador
+          <i class="bi bi-heart-pulse"></i> Med<span>+</span> Colaborador
+          <span id="navbarUnitName" class="fs-6 text-muted ms-1"></span>
         </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-              >
-                <i class="bi bi-person-circle"></i> Maria Oliveira
+              <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown">
+                <i class="bi bi-person-circle"></i> <span id="userNamePlaceholder">Usuário</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li>
-                  <a class="dropdown-item" href="./profile-collab.html"
-                    ><i class="bi bi-person"></i> Perfil</a
-                  >
-                </li>
+                <li><a class="dropdown-item" href="./profile-collab.html"><i class="bi bi-person"></i> Perfil</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#"
-                    ><i class="bi bi-box-arrow-right"></i> Sair</a
-                  >
-                </li>
+                <li><a class="dropdown-item" href="#" id="logoutButton"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
               </ul>
             </li>
           </ul>
@@ -168,399 +85,77 @@
 
     <div class="container-fluid">
       <div class="row">
-        <!-- Sidebar -->
         <div class="col-md-3 col-lg-2 d-md-block sidebar bg-white">
           <div class="position-sticky pt-3">
             <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link active" href="./dashboard-collab.html">
-                  <i class="bi bi-speedometer2"></i> Dashboard
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./collab-patients.html">
-                  <i class="bi bi-people"></i> Pacientes
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./collab-records.html">
-                  <i class="bi bi-files"></i> Fichas
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./collab-schedule.html">
-                  <i class="bi bi-calendar-check"></i> Agenda
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./profile-collab.html">
-                  <i class="bi bi-person"></i> Meu Perfil
-                </a>
-              </li>
+              <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+              <li class="nav-item"><a class="nav-link" href="./collab-patients.html"><i class="bi bi-people"></i> Pacientes</a></li>
+              <li class="nav-item"><a class="nav-link" href="./collab-records.html"><i class="bi bi-files"></i> Fichas</a></li>
+              <li class="nav-item"><a class="nav-link" href="./collab-schedule.html"><i class="bi bi-calendar-check"></i> Agenda</a></li>
+              <li class="nav-item"><a class="nav-link" href="./profile-collab.html"><i class="bi bi-person"></i> Meu Perfil</a></li>
             </ul>
+             <hr>
+            <div class="px-3 py-2">
+                <!-- <button class="btn btn-primary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#newPatientModal" id="openNewPatientModalButton"><i class="bi bi-person-plus-fill"></i> Novo Paciente</button> -->
+                <!-- <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#newRecordModal" id="openNewRecordModalButton"><i class="bi bi-file-earmark-plus-fill"></i> Nova Ficha</button> -->
+            </div>
           </div>
         </div>
 
-        <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-          <div
-            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
-          >
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2"><i class="bi bi-speedometer2"></i> Dashboard</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
-              <span class="me-2">
-                <i class="bi bi-person-badge"></i> Atendente
-              </span>
-              <span class="badge bg-primary"> Unidade Centro </span>
+              <span class="me-2"><i class="bi bi-person-badge"></i> Atendente</span>
+              <span class="badge bg-primary" id="dashboardUnitNameBadge">Unidade...</span>
             </div>
           </div>
 
-          <!-- Stats Cards -->
           <div class="row mb-4">
-            <div class="col-md-3">
-              <div class="card stat-card">
-                <div class="card-body">
-                  <div class="card-icon text-primary">
-                    <i class="bi bi-people"></i>
-                  </div>
-                  <h5 class="card-title">Pacientes Cadastrados</h5>
-                  <p class="card-value">42</p>
-                  <p class="text-muted mb-0">
-                    <span class="text-success">+5</span> este mês
-                  </p>
-                </div>
-              </div>
+            <div class="col-md-6 col-lg-3 mb-3">
+              <div class="card stat-card h-100"><div class="card-body"><div class="card-icon text-primary"><i class="bi bi-people"></i></div><h5 class="card-title">Pacientes Cadastrados</h5><p class="card-value" id="statPacientesCadastrados">0</p></div></div>
             </div>
-            <div class="col-md-3">
-              <div class="card stat-card">
-                <div class="card-body">
-                  <div class="card-icon text-success">
-                    <i class="bi bi-file-earmark-text"></i>
-                  </div>
-                  <h5 class="card-title">Fichas Ativas</h5>
-                  <p class="card-value">28</p>
-                  <p class="text-muted mb-0">
-                    <span class="text-success">+3</span> hoje
-                  </p>
-                </div>
-              </div>
+            <div class="col-md-6 col-lg-3 mb-3">
+              <div class="card stat-card h-100"><div class="card-body"><div class="card-icon text-success"><i class="bi bi-file-earmark-text"></i></div><h5 class="card-title">Fichas (Agend.) Ativas</h5><p class="card-value" id="statFichasAtivas">0</p></div></div>
             </div>
-            <div class="col-md-3">
-              <div class="card stat-card">
-                <div class="card-body">
-                  <div class="card-icon text-warning">
-                    <i class="bi bi-calendar-check"></i>
-                  </div>
-                  <h5 class="card-title">Agendamentos Hoje</h5>
-                  <p class="card-value">9</p>
-                  <p class="text-muted mb-0">
-                    <span class="text-danger">2</span> urgentes
-                  </p>
-                </div>
-              </div>
+            <div class="col-md-6 col-lg-3 mb-3">
+              <div class="card stat-card h-100"><div class="card-body"><div class="card-icon text-warning"><i class="bi bi-calendar-check"></i></div><h5 class="card-title">Agendamentos Hoje</h5><p class="card-value" id="statAgendamentosHoje">0</p></div></div>
             </div>
-            <div class="col-md-3">
-              <div class="card stat-card">
-                <div class="card-body">
-                  <div class="card-icon text-info">
-                    <i class="bi bi-clock-history"></i>
-                  </div>
-                  <h5 class="card-title">Atividades</h5>
-                  <p class="card-value">56</p>
-                  <p class="text-muted mb-0">esta semana</p>
-                </div>
-              </div>
+            <div class="col-md-6 col-lg-3 mb-3">
+              <div class="card stat-card h-100"><div class="card-body"><div class="card-icon text-info"><i class="bi bi-activity"></i></div><h5 class="card-title">Atividades Hoje</h5><p class="card-value" id="statAtividadesHoje">0</p></div></div>
             </div>
           </div>
 
-          <!-- Main Content Row -->
           <div class="row">
-            <!-- Left Column -->
             <div class="col-lg-8">
-              <!-- Appointments Card -->
               <div class="card mb-4">
-                <div class="card-header bg-white">
-                  <h5 class="mb-0">
-                    <i class="bi bi-calendar-check"></i> Próximos Agendamentos
-                  </h5>
-                </div>
+                <div class="card-header bg-white"><h5 class="mb-0"><i class="bi bi-calendar-day"></i> Próximos Agendamentos (Hoje)</h5></div>
                 <div class="card-body">
-                  <div class="list-group">
-                    <a
-                      href="#"
-                      class="list-group-item list-group-item-action border-0 appointment-card urgent"
-                    >
-                      <div class="d-flex w-100 justify-content-between">
-                        <div>
-                          <h6 class="mb-1">Dr. Carlos Andrade</h6>
-                          <p class="mb-1">
-                            João da Silva - Consulta de emergência
-                          </p>
-                          <span class="badge bg-danger appointment-badge"
-                            >Urgente</span
-                          >
-                        </div>
-                        <div class="text-end">
-                          <small class="text-muted">Hoje</small>
-                          <p class="mb-0">09:30 - 10:00</p>
-                        </div>
-                      </div>
-                    </a>
-                    <a
-                      href="#"
-                      class="list-group-item list-group-item-action border-0 appointment-card"
-                    >
-                      <div class="d-flex w-100 justify-content-between">
-                        <div>
-                          <h6 class="mb-1">Dra. Ana Beatriz</h6>
-                          <p class="mb-1">Maria Oliveira - Acompanhamento</p>
-                          <span class="badge bg-primary appointment-badge"
-                            >Confirmado</span
-                          >
-                        </div>
-                        <div class="text-end">
-                          <small class="text-muted">Hoje</small>
-                          <p class="mb-0">11:15 - 11:45</p>
-                        </div>
-                      </div>
-                    </a>
-                    <a
-                      href="#"
-                      class="list-group-item list-group-item-action border-0 appointment-card"
-                    >
-                      <div class="d-flex w-100 justify-content-between">
-                        <div>
-                          <h6 class="mb-1">Dr. Roberto Santos</h6>
-                          <p class="mb-1">
-                            Carlos Ferreira - Consulta de rotina
-                          </p>
-                          <span class="badge bg-primary appointment-badge"
-                            >Confirmado</span
-                          >
-                        </div>
-                        <div class="text-end">
-                          <small class="text-muted">Hoje</small>
-                          <p class="mb-0">14:00 - 14:30</p>
-                        </div>
-                      </div>
-                    </a>
-                    <a
-                      href="#"
-                      class="list-group-item list-group-item-action border-0 appointment-card completed"
-                    >
-                      <div class="d-flex w-100 justify-content-between">
-                        <div>
-                          <h6 class="mb-1">Dra. Juliana Costa</h6>
-                          <p class="mb-1">Ana Paula - Retorno</p>
-                          <span class="badge bg-success appointment-badge"
-                            >Concluído</span
-                          >
-                        </div>
-                        <div class="text-end">
-                          <small class="text-muted">Hoje</small>
-                          <p class="mb-0">08:00 - 08:30</p>
-                        </div>
-                      </div>
-                    </a>
-                  </div>
-                  <div class="text-center mt-3">
-                    <a
-                      href="./collab-schedule.html"
-                      class="btn btn-sm btn-outline-primary"
-                    >
-                      Ver agenda completa <i class="bi bi-arrow-right"></i>
-                    </a>
-                  </div>
+                  <div class="list-group" id="proximosAgendamentosList"><p class="text-center text-muted">Nenhum agendamento para hoje.</p></div>
+                  <div class="text-center mt-3"><a href="./collab-schedule.html" class="btn btn-sm btn-outline-primary">Ver agenda completa <i class="bi bi-arrow-right"></i></a></div>
                 </div>
               </div>
-
-              <!-- Recent Patients Card -->
               <div class="card mb-4">
-                <div class="card-header bg-white">
-                  <h5 class="mb-0">
-                    <i class="bi bi-people"></i> Pacientes Recentes
-                  </h5>
-                </div>
+                <div class="card-header bg-white"><h5 class="mb-0"><i class="bi bi-people-fill"></i> Pacientes Recentes (Últimos 5 Adicionados)</h5></div>
                 <div class="card-body">
                   <div class="table-responsive">
                     <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th>Nome</th>
-                          <th>CPF</th>
-                          <th>Última Consulta</th>
-                          <th>Status</th>
-                          <th>Ações</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>João da Silva</td>
-                          <td>123.456.789-00</td>
-                          <td>Hoje</td>
-                          <td><span class="badge bg-success">Ativo</span></td>
-                          <td>
-                            <button
-                              class="btn btn-sm btn-outline-primary action-btn"
-                            >
-                              <i class="bi bi-eye"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Maria Oliveira</td>
-                          <td>987.654.321-00</td>
-                          <td>Ontem</td>
-                          <td><span class="badge bg-success">Ativo</span></td>
-                          <td>
-                            <button
-                              class="btn btn-sm btn-outline-primary action-btn"
-                            >
-                              <i class="bi bi-eye"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Carlos Ferreira</td>
-                          <td>456.123.789-00</td>
-                          <td>2 dias atrás</td>
-                          <td>
-                            <span class="badge bg-warning">Pendente</span>
-                          </td>
-                          <td>
-                            <button
-                              class="btn btn-sm btn-outline-primary action-btn"
-                            >
-                              <i class="bi bi-eye"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
+                      <thead><tr><th>Nome</th><th>CPF</th><th>Telefone</th><th>Data Cadastro</th><th>Ações</th></tr></thead>
+                      <tbody id="pacientesRecentesTableBody"><tr><td colspan="5" class="text-center text-muted">Nenhum paciente encontrado.</td></tr></tbody>
                     </table>
                   </div>
-                  <div class="text-center mt-2">
-                    <a
-                      href="./collab-patients.html"
-                      class="btn btn-sm btn-outline-primary"
-                    >
-                      Ver todos os pacientes <i class="bi bi-arrow-right"></i>
-                    </a>
-                  </div>
+                  <div class="text-center mt-2"><a href="./collab-patients.html" class="btn btn-sm btn-outline-primary">Ver todos os pacientes <i class="bi bi-arrow-right"></i></a></div>
                 </div>
               </div>
             </div>
-
-            <!-- Right Column -->
             <div class="col-lg-4">
-              <!-- Quick Actions Card -->
               <div class="card mb-4">
-                <div class="card-header bg-white">
-                  <h5 class="mb-0">
-                    <i class="bi bi-lightning"></i> Ações Rápidas
-                  </h5>
-                </div>
-                <div class="card-body">
-                  <div class="d-grid gap-2">
-                    <a
-                      href="#"
-                      class="btn btn-primary"
-                      data-bs-toggle="modal"
-                      data-bs-target="#newPatientModal"
-                    >
-                      <i class="bi bi-person-plus"></i> Novo Paciente
-                    </a>
-                    <a
-                      href="#"
-                      class="btn btn-outline-primary"
-                      data-bs-toggle="modal"
-                      data-bs-target="#newRecordModal"
-                    >
-                      <i class="bi bi-file-earmark-plus"></i> Nova Ficha
-                    </a>
-                    <a
-                      href="./collab-schedule.html"
-                      class="btn btn-outline-primary"
-                    >
-                      <i class="bi bi-calendar-plus"></i> Novo Agendamento
-                    </a>
-                  </div>
-                </div>
+                <div class="card-header bg-white"><h5 class="mb-0"><i class="bi bi-list-task"></i> Atividade Recente do Sistema</h5></div>
+                <div class="card-body"><div class="list-group list-group-flush" id="recentActivityList"><p class="text-center text-muted">Nenhuma atividade recente.</p></div></div>
               </div>
-
-              <!-- Recent Activity Card -->
-              <div class="card mb-4">
-                <div class="card-header bg-white">
-                  <h5 class="mb-0">
-                    <i class="bi bi-clock-history"></i> Atividade Recente
-                  </h5>
-                </div>
-                <div class="card-body">
-                  <div class="list-group list-group-flush">
-                    <div class="list-group-item border-0 px-0 py-2">
-                      <div class="d-flex">
-                        <div class="flex-shrink-0 text-primary">
-                          <i class="bi bi-person-plus"></i>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                          <small class="text-muted">15 minutos atrás</small>
-                          <p class="mb-0">
-                            Novo paciente cadastrado: João da Silva
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="list-group-item border-0 px-0 py-2">
-                      <div class="d-flex">
-                        <div class="flex-shrink-0 text-success">
-                          <i class="bi bi-file-earmark-text"></i>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                          <small class="text-muted">2 horas atrás</small>
-                          <p class="mb-0">Ficha atualizada: Maria Oliveira</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="list-group-item border-0 px-0 py-2">
-                      <div class="d-flex">
-                        <div class="flex-shrink-0 text-warning">
-                          <i class="bi bi-calendar-check"></i>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                          <small class="text-muted">Ontem</small>
-                          <p class="mb-0">Consulta agendada: Dr. Carlos</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="list-group-item border-0 px-0 py-2">
-                      <div class="d-flex">
-                        <div class="flex-shrink-0 text-info">
-                          <i class="bi bi-chat-left-text"></i>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                          <small class="text-muted">Ontem</small>
-                          <p class="mb-0">Mensagem enviada para Ana Beatriz</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="text-center mt-2">
-                    <a href="#" class="btn btn-sm btn-outline-primary">
-                      Ver todas as atividades
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Stats Chart Card -->
               <div class="card">
-                <div class="card-header bg-white">
-                  <h5 class="mb-0">
-                    <i class="bi bi-bar-chart"></i> Consultas Esta Semana
-                  </h5>
-                </div>
-                <div class="card-body">
-                  <canvas id="appointmentsChart" height="200"></canvas>
-                </div>
+                <div class="card-header bg-white"><h5 class="mb-0"><i class="bi bi-bar-chart-line-fill"></i> Consultas Esta Semana</h5></div>
+                <div class="card-body"><canvas id="appointmentsChart" height="200"></canvas></div>
               </div>
             </div>
           </div>
@@ -568,281 +163,576 @@
       </div>
     </div>
 
-    <!-- New Patient Modal -->
-    <div
-      class="modal fade"
-      id="newPatientModal"
-      tabindex="-1"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="newPatientModal" tabindex="-1" aria-labelledby="newPatientModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">
-              <i class="bi bi-person-plus"></i> Novo Paciente
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="mb-3">
-                <label for="patientName" class="form-label"
-                  >Nome Completo</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="patientName"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="patientCpf" class="form-label">CPF</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="patientCpf"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="patientBirth" class="form-label"
-                  >Data de Nascimento</label
-                >
-                <input
-                  type="date"
-                  class="form-control"
-                  id="patientBirth"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="patientPhone" class="form-label">Telefone</label>
-                <input
-                  type="tel"
-                  class="form-control"
-                  id="patientPhone"
-                  required
-                />
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancelar
-            </button>
-            <button type="button" class="btn btn-primary">Cadastrar</button>
-          </div>
+          <div class="modal-header"><h5 class="modal-title" id="newPatientModalLabel"><i class="bi bi-person-plus-fill"></i> Novo Paciente</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+          <form id="newPatientForm"><div class="modal-body">
+              <div class="mb-3"><label for="patientName" class="form-label">Nome Completo</label><input type="text" class="form-control" id="patientName" required /></div>
+              <div class="mb-3"><label for="patientCpf" class="form-label">CPF</label><input type="text" class="form-control" id="patientCpf" required /></div>
+              <div class="mb-3"><label for="patientBirth" class="form-label">Data de Nascimento</label><input type="date" class="form-control" id="patientBirth" required /></div>
+              <div class="mb-3"><label for="patientPhone" class="form-label">Telefone</label><input type="tel" class="form-control" id="patientPhone" /></div>
+              <div class="mb-3"><label for="patientEmail" class="form-label">Email</label><input type="email" class="form-control" id="patientEmail" required /></div>
+              <div class="mb-3"><label for="patientPassword" class="form-label">Senha (temporária)</label><input type="password" class="form-control" id="patientPassword" required /></div>
+              <div id="newPatientError" class="text-danger mt-2" style="display: none;"></div>
+          </div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button><button type="submit" class="btn btn-primary">Cadastrar Paciente</button></div></form>
         </div>
       </div>
     </div>
 
-    <!-- New Record Modal -->
-    <div
-      class="modal fade"
-      id="newRecordModal"
-      tabindex="-1"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
+    <div class="modal fade" id="newRecordModal" tabindex="-1" aria-labelledby="newRecordModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">
-              <i class="bi bi-file-earmark-plus"></i> Nova Ficha
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="mb-3">
-                <label for="recordPatient" class="form-label">Paciente</label>
-                <select class="form-select" id="recordPatient" required>
-                  <option value="">Selecione um paciente</option>
-                  <option value="1">João da Silva</option>
-                  <option value="2">Maria Oliveira</option>
-                  <option value="3">Carlos Ferreira</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="recordDoctor" class="form-label">Médico</label>
-                <select class="form-select" id="recordDoctor" required>
-                  <option value="">Selecione um médico</option>
-                  <option value="1">Dr. Carlos Andrade</option>
-                  <option value="2">Dra. Ana Beatriz</option>
-                  <option value="3">Dr. Roberto Santos</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="recordType" class="form-label">Tipo de Ficha</label>
-                <select class="form-select" id="recordType" required>
-                  <option value="">Selecione o tipo</option>
-                  <option value="consulta">Consulta</option>
-                  <option value="retorno">Retorno</option>
-                  <option value="emergencia">Emergência</option>
-                </select>
-              </div>
-              <div class="mb-3" id="subtypeContainer" style="display: none">
-                <label for="recordSubtype" class="form-label"
-                  >Sub-tipo de Ficha</label
-                >
-                <select class="form-select" id="recordSubtype">
-                  <option value="">Selecione o sub-tipo...</option>
-                  <!-- Opções serão preenchidas dinamicamente -->
-                </select>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancelar
-            </button>
-            <button type="button" class="btn btn-primary">Criar Ficha</button>
-          </div>
+          <div class="modal-header"><h5 class="modal-title" id="newRecordModalLabel"><i class="bi bi-file-earmark-plus-fill"></i> Nova Ficha (Agendamento)</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+          <form id="newRecordForm"><div class="modal-body">
+              <div class="mb-3"><label for="recordPatient" class="form-label">Paciente</label><select class="form-select" id="recordPatient" required><option value="">Carregando...</option></select></div>
+              <div class="mb-3"><label for="recordDoctor" class="form-label">Médico</label><select class="form-select" id="recordDoctor" required><option value="">Carregando...</option></select></div>
+              <div class="row"><div class="col-md-6 mb-3"><label for="recordDate" class="form-label">Data</label><input type="date" class="form-control" id="recordDate" required /></div><div class="col-md-6 mb-3"><label for="recordTime" class="form-label">Hora</label><input type="time" class="form-control" id="recordTime" required /></div></div>
+              <div class="mb-3"><label for="recordDescription" class="form-label">Descrição/Tipo Consulta</label><textarea class="form-control" id="recordDescription" rows="3" placeholder="Ex: Consulta de rotina, Retorno Cardiologia, etc." required></textarea></div>
+              <div id="newRecordError" class="text-danger mt-2" style="display: none;"></div>
+          </div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button><button type="submit" class="btn btn-primary">Criar Ficha</button></div></form>
         </div>
       </div>
     </div>
 
-    <!-- Bootstrap 5.3 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Controle do subtipo de ficha
-        document
-          .getElementById("recordType")
-          .addEventListener("change", function () {
-            const subtypeContainer =
-              document.getElementById("subtypeContainer");
-            const subtypeSelect = document.getElementById("recordSubtype");
+      const API_BASE = "https://ubs-zxgf.onrender.com";
+      // const API_BASE = "http://localhost:8080";
+      const DEFAULT_ZONE_ID = "America/Sao_Paulo";
 
-            // Tipos que mostram subtipos
-            const showSubtypes = ["consulta", "retorno", "emergencia"];
+      let currentUser = null;
+      let appointmentsChartInstance = null;
 
-            if (showSubtypes.includes(this.value)) {
-              subtypeContainer.style.display = "block";
+      function showLoading() { document.getElementById('loading-overlay').style.display = 'flex'; }
+      function hideLoading() { document.getElementById('loading-overlay').style.display = 'none'; }
 
-              // Definir subtipos disponíveis
-              const subtypes = [
-                { value: "odontologia", text: "Odontologia" },
-                { value: "pediatria", text: "Pediatria" },
-                { value: "cardiologia", text: "Cardiologia" },
-                { value: "pneumologia", text: "Pneumologia" },
-              ];
+      async function fetchAPI(endpoint, method = 'GET', body = null) {
+        const token = localStorage.getItem("access_token");
+        const headers = { 'Authorization': `Bearer ${token}` };
+        if (body && !(body instanceof FormData)) headers['Content-Type'] = 'application/json';
 
-              // Popular o select
-              subtypeSelect.innerHTML =
-                '<option value="">Selecione o sub-tipo...</option>' +
-                subtypes
-                  .map(
-                    (sub) => `<option value="${sub.value}">${sub.text}</option>`
-                  )
-                  .join("");
-            } else {
-              subtypeContainer.style.display = "none";
-              subtypeSelect.value = "";
+        const config = { method, headers };
+        if (body) config.body = (body instanceof FormData) ? body : JSON.stringify(body);
+
+        showLoading();
+        try {
+          const response = await fetch(`${API_BASE}${endpoint}`, config);
+          if (response.status === 401) {
+            localStorage.clear(); window.location.href = './index.html'; throw new Error("Sessão expirada.");
+          }
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: `Erro ${response.status}` }));
+            throw new Error(errorData.message || errorData.error_description || errorData.error || (errorData.errors && errorData.errors[0]) || `Erro ${response.status}.`);
+          }
+          if (response.status === 204 || response.headers.get("content-length") === "0") return null;
+          return await response.json();
+        } catch (error) {
+          showError(error.message); throw error;
+        } finally {
+          hideLoading();
+        }
+      }
+
+      function formatInstantToLocaleDateTime(instantStr, zoneId = DEFAULT_ZONE_ID) {
+        if (!instantStr) return { date: "N/A", time: "N/A" };
+        try {
+          const dateObj = new Date(instantStr);
+          return {
+            date: dateObj.toLocaleDateString('pt-BR', { timeZone: zoneId }),
+            time: dateObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: zoneId })
+          };
+        } catch (e) { return { date: "Inválida", time: "Inválida" }; }
+      }
+
+      function formatBirthDate(dateStr) { // Expects "YYYY-MM-DD" or Instant
+        if (!dateStr) return "N/A";
+        try {
+            // Check if it's an Instant string (contains 'T' and 'Z')
+            if (dateStr.includes('T') && dateStr.includes('Z')) {
+                return new Date(dateStr).toLocaleDateString('pt-BR', { timeZone: 'UTC' }); // Treat as UTC if Instant
             }
+            // Assume "YYYY-MM-DD"
+            const parts = dateStr.split('-');
+            if (parts.length !== 3) return dateStr; // Return original if not in expected format
+            return new Date(Date.UTC(parts[0], parts[1] - 1, parts[2])).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+        } catch (e) { return dateStr; }
+      }
+
+
+      function getTodayDateStringForAPI() { // YYYY-MM-DD
+        const today = new Date();
+        // Format to YYYY-MM-DD for API query if needed for "today's appointments" more precisely.
+        // However, the current logic for filtering "today" happens client-side after fetching all appointments.
+        // This function might be useful if you add a backend filter for today's appointments.
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+
+
+      function updateRecentActivity(message, type = 'info') {
+        const activityList = document.getElementById('recentActivityList');
+        if (activityList.querySelector('.text-muted') && activityList.children.length === 1) {
+            activityList.innerHTML = ''; // Clear "Nenhuma atividade"
+        }
+        const item = document.createElement('div');
+        item.className = 'list-group-item border-0 px-0 py-2';
+        let iconClass = 'bi-info-circle text-info';
+        if (type === 'success') iconClass = 'bi-check-circle-fill text-success';
+        if (type === 'error') iconClass = 'bi-exclamation-triangle-fill text-danger';
+        if (type === 'patient') iconClass = 'bi-person-plus-fill text-primary';
+        if (type === 'appointment') iconClass = 'bi-calendar-plus-fill text-warning';
+
+        item.innerHTML = `
+            <div class="d-flex"><div class="flex-shrink-0"><i class="bi ${iconClass}"></i></div>
+            <div class="flex-grow-1 ms-3"><small class="text-muted">${new Date().toLocaleTimeString('pt-BR')}</small>
+            <p class="mb-0">${message}</p></div></div>`;
+        activityList.prepend(item);
+        if (activityList.children.length > 5) activityList.removeChild(activityList.lastChild);
+      }
+
+      function getStateClassForAppointment(statusEnum) {
+        if (!statusEnum) return "confirmed"; // Default
+        const statusMap = { SCHEDULED: "confirmed", IN_PROGRESS: "pending", CONCLUDED: "completed", CANCELLED: "cancelled", PENDING: "pending", URGENT: "urgent" };
+        return statusMap[statusEnum.toUpperCase()] || "confirmed";
+      }
+
+      async function loadDashboardData() {
+        try {
+          currentUser = JSON.parse(localStorage.getItem('user'));
+          if (!currentUser) { // Fallback if not in localStorage (should have been caught by checkAuth)
+             currentUser = await fetchAPI('/users/me');
+             localStorage.setItem('user', JSON.stringify(currentUser));
+          }
+
+          document.getElementById('userNamePlaceholder').textContent = currentUser.name.split(' ')[0];
+          const unitName = currentUser.healthUnitName || 'N/A';
+          console.log(currentUser)
+          document.getElementById('navbarUnitName').textContent = `- Unidade ${unitName}`;
+          document.getElementById('dashboardUnitNameBadge').textContent = `Unidade ${unitName}`;
+
+          const [patients, appointments, weeklySummary] = await Promise.all([
+            fetchAPI('/patients'),      // Fetches patients for the staff's unit
+            fetchAPI('/appointments'),  // Fetches appointments for the staff's unit
+            fetchAPI('/appointments/week-summary') // Fetches weekly summary for the chart
+          ]);
+
+          populateStats(patients || [], appointments || []);
+          populateProximosAgendamentos(appointments || []);
+          populatePacientesRecentes(patients || []);
+          updateAppointmentsChart(weeklySummary || {});
+          updateRecentActivity('Dashboard carregado com sucesso.', 'success');
+        } catch (error) {
+          updateRecentActivity(`Falha ao carregar dashboard: ${error.message}`, 'error');
+        }
+      }
+
+      function populateStats(patients, appointments) {
+        document.getElementById('statPacientesCadastrados').textContent = patients.length;
+
+        const today = new Date();
+        today.setHours(0,0,0,0); // For day comparison
+
+        const agendamentosHoje = appointments.filter(app => {
+            const appDate = new Date(app.date);
+            appDate.setHours(0,0,0,0);
+            return appDate.getTime() === today.getTime() && app.status !== 'CANCELLED' && app.status !== 'CONCLUDED';
+        }).length;
+        document.getElementById('statAgendamentosHoje').textContent = agendamentosHoje;
+
+        const fichasAtivas = appointments.filter(app => app.status === 'SCHEDULED' || app.status === 'IN_PROGRESS' || app.status === 'PENDING').length;
+        document.getElementById('statFichasAtivas').textContent = fichasAtivas;
+
+        // Atividades Hoje: soma de novos pacientes hoje + novos agendamentos para hoje
+        // Esta é uma métrica simples, pode ser aprimorada.
+        const newPatientsToday = patients.filter(p => {
+            const creationDate = p.createdAt ? new Date(p.createdAt) : new Date(p.idTimestamp || 0); // Assuming createdAt or similar
+            creationDate.setHours(0,0,0,0);
+            return creationDate.getTime() === today.getTime();
+        }).length;
+        document.getElementById('statAtividadesHoje').textContent = agendamentosHoje + newPatientsToday;
+      }
+
+      function populateProximosAgendamentos(appointments) {
+        const listElement = document.getElementById('proximosAgendamentosList');
+        listElement.innerHTML = '';
+        const today = new Date();
+        today.setHours(0,0,0,0);
+
+        const todayAppointments = appointments
+          .filter(app => {
+            const appDate = new Date(app.date);
+            appDate.setHours(0,0,0,0);
+            return appDate.getTime() === today.getTime() && (app.status === 'SCHEDULED' || app.status === 'PENDING' || app.status === 'IN_PROGRESS');
+          })
+          .sort((a,b) => {
+            const timeA = formatInstantToLocaleDateTime(a.date).time;
+            const timeB = formatInstantToLocaleDateTime(b.date).time;
+            return timeA.localeCompare(timeB);
           });
 
-        // Atualize o handler de submissão do formulário
-        document
-          .querySelector("#newRecordModal .btn-primary")
-          .addEventListener("click", function () {
-            // Obter os valores do formulário
-            const patient = document.getElementById("recordPatient").value;
-            const doctor = document.getElementById("recordDoctor").value;
-            const type = document.getElementById("recordType").value;
-            const subtype =
-              document.getElementById("recordSubtype").value || null;
+        if (todayAppointments.length === 0) {
+          listElement.innerHTML = '<p class="text-center text-muted">Nenhum agendamento para hoje.</p>';
+          return;
+        }
 
-            // Validar campos obrigatórios
-            if (!patient || !doctor || !type) {
-              alert("Por favor, preencha todos os campos obrigatórios!");
-              return;
-            }
+        todayAppointments.forEach(app => {
+          const item = document.createElement('a');
+          item.href = '#';
+          const {time: appTime} = formatInstantToLocaleDateTime(app.date);
+          const cardClass = `appointment-card ${getStateClassForAppointment(app.status)}`;
+          const statusText = app.status ? sapp.status.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase()) : "Agendado";
+          let badgeClass = "bg-primary";
+          if (app.status === "PENDING" || app.status === "IN_PROGRESS") badgeClass = "bg-warning text-dark";
+          else if (app.status === "URGENT") badgeClass = "bg-danger";
 
-            // Aqui você faria a chamada à API para criar a ficha
-            console.log("Criando ficha com:", {
-              patient,
-              doctor,
-              type,
-              subtype,
-            });
 
-            alert("Ficha criada com sucesso!");
-            bootstrap.Modal.getInstance(
-              document.getElementById("newRecordModal")
-            ).hide();
-          });
+          item.className = `list-group-item list-group-item-action border-0 ${cardClass}`;
+          item.innerHTML = `
+            <div class="d-flex w-100 justify-content-between">
+              <div>
+                <h6 class="mb-1">${app.doctor.name || 'Dr(a). Desconhecido(a)'}</h6>
+                <p class="mb-1 small">${app.patient.name || 'Paciente Desconhecido'} - ${app.description || 'Consulta'}</p>
+                <span class="badge ${badgeClass} appointment-badge">${statusText}</span>
+              </div>
+              <div class="text-end"><small class="text-muted">Hoje</small><p class="mb-0 fw-bold">${appTime}</p></div>
+            </div>`;
+          listElement.appendChild(item);
+        });
+      }
 
-        // Initialize appointments chart
-        const appointmentsCtx = document
-          .getElementById("appointmentsChart")
-          .getContext("2d");
-        const appointmentsChart = new Chart(appointmentsCtx, {
+      function populatePacientesRecentes(patients) {
+        const tableBody = document.getElementById('pacientesRecentesTableBody');
+        tableBody.innerHTML = '';
+        const recentPatients = patients.sort((a,b) => (b.id || 0) - (a.id || 0)).slice(0, 5); // Sort by ID or a creation timestamp if available
+
+        if (recentPatients.length === 0) {
+          tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Nenhum paciente cadastrado recentemente.</td></tr>';
+          return;
+        }
+        recentPatients.forEach(patient => {
+          const row = tableBody.insertRow();
+          // Assuming PatientResponseDTO has `createdAt` or similar. If not, this field will be less meaningful.
+          const lastModified = patient.updatedAt || patient.createdAt || patient.idTimestamp; // Prioritize update, then create, then ID as fallback
+          row.innerHTML = `
+            <td>${patient.name || 'N/A'}</td>
+            <td>${patient.cpf || 'N/A'}</td>
+            <td>${patient.phone || 'N/A'}</td>
+            <td>${lastModified ? formatInstantToLocaleDateTime(lastModified).date : formatBirthDate(patient.birthDate)}</td>
+            <td><button class="btn btn-sm btn-outline-primary action-btn" title="Ver Detalhes do Paciente" onclick="viewPatientDetails(${patient.id})"><i class="bi bi-eye"></i></button></td>`;
+        });
+      }
+
+      function viewPatientDetails(patientId) {
+          showError(`Visualização de detalhes do paciente #${patientId} ainda não implementada.`);
+          // window.location.href = `./collab-patient-detail.html?id=${patientId}`; // Example redirect
+      }
+
+      function updateAppointmentsChart(weeklySummary) {
+        const appointmentsCtx = document.getElementById('appointmentsChart').getContext('2d');
+        const defaultLabels = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
+        let chartData = Array(7).fill(0);
+        let chartLabels = defaultLabels;
+
+        if (weeklySummary && Object.keys(weeklySummary).length > 0) {
+            chartLabels = Object.keys(weeklySummary); // Should be ["Seg", "Ter", ...] from backend
+            chartData = Object.values(weeklySummary);
+        }
+
+        if (appointmentsChartInstance) appointmentsChartInstance.destroy();
+        appointmentsChartInstance = new Chart(appointmentsCtx, {
           type: "bar",
-          data: {
-            labels: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
-            datasets: [
-              {
-                label: "Consultas",
-                data: [8, 12, 6, 10, 15, 4],
-                backgroundColor: "rgba(49, 130, 206, 0.7)",
-                borderColor: "rgba(49, 130, 206, 1)",
-                borderWidth: 1,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: {
-                display: false,
-              },
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-              },
-            },
-          },
+          data: { labels: chartLabels, datasets: [{ label: "Consultas", data: chartData, backgroundColor: "rgba(49, 130, 206, 0.7)", borderColor: "rgba(49, 130, 206, 1)", borderWidth: 1 }] },
+          options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } } } },
+        });
+      }
+
+      async function populateModalDropdowns() {
+        try {
+            const [patientsData, doctorsData] = await Promise.all([
+                fetchAPI('/patients'), // Should be filtered by staff's unit on backend
+                fetchAPI('/doctors')   // Should be filtered by staff's unit on backend
+            ]);
+            currentPatients = patientsData || []; // Update global list
+            currentDoctors = doctorsData || [];   // Update global list
+
+            const patientSelect = document.getElementById('recordPatient');
+            patientSelect.innerHTML = '<option value="">Selecione um paciente...</option>';
+            currentPatients.forEach(p => patientSelect.innerHTML += `<option value="${p.id}">${p.name} (${p.cpf || 'CPF não inf.'})</option>`);
+
+            const doctorSelect = document.getElementById('recordDoctor');
+            doctorSelect.innerHTML = '<option value="">Selecione um médico...</option>';
+            currentDoctors.forEach(d => doctorSelect.innerHTML += `<option value="${d.id}">${d.name} (${d.specialty || 'Clínica Geral'})</option>`);
+        } catch (error) {
+            document.getElementById('recordPatient').innerHTML = '<option value="">Erro ao carregar</option>';
+            document.getElementById('recordDoctor').innerHTML = '<option value="">Erro ao carregar</option>';
+            updateRecentActivity(`Erro ao carregar dados para nova ficha: ${error.message}`, 'error');
+        }
+      }
+
+      function showError(message) {
+        const existingAlert = document.querySelector('.custom-alert-dashboard');
+        if(existingAlert) existingAlert.remove();
+
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3 custom-alert-dashboard';
+        alertDiv.style.zIndex = "10050";
+        alertDiv.setAttribute('role', 'alert');
+        alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+        document.body.appendChild(alertDiv);
+        setTimeout(() => { bootstrap.Alert.getOrCreateInstance(alertDiv).close(); }, 5000);
+      }
+
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+            await checkAuthAndLoadUser(); // Authenticates and loads currentUser
+            if (currentUser) { // Proceed only if user is authenticated and authorized
+                await loadDashboardData(); // Loads all dashboard specific data
+                setupFormEventListeners();
+                updateRecentActivity('Página carregada.', 'info');
+            }
+        } catch (error) {
+            // Errors are handled and shown by fetchAPI or checkAuthAndLoadUser
+            // Page will redirect if auth fails critically
+        }
+      });
+
+      function checkAuthAndLoadUser() {
+        return new Promise(async (resolve, reject) => {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+                window.location.href = './index.html';
+                return reject(new Error("Token não encontrado."));
+            }
+            try {
+                currentUser = await fetchAPI('/users/me');
+                if (!currentUser || !currentUser.roles?.includes("ROLE_STAFF")) {
+                    localStorage.clear();
+                    showError("Acesso não autorizado (Requer ROLE_STAFF).");
+                    setTimeout(() => window.location.href = './index.html', 2500);
+                    return reject(new Error("Não autorizado."));
+                }
+                 // UserFullDTO for Staff should have relatedEntityId (healthUnitId) and relatedEntityName
+                if (!currentUser.healthUnitId) {
+                     localStorage.clear();
+                     showError("Staff não associado a uma unidade de saúde.");
+                     setTimeout(() => window.location.href = './index.html', 2500);
+                     return reject(new Error("Unidade não associada."));
+                }
+                localStorage.setItem('user', JSON.stringify(currentUser)); // Store/update user
+                resolve();
+            } catch (error) {
+                // fetchAPI already shows error and handles 401 redirect
+                reject(error);
+            }
+        });
+      }
+
+      function setupFormEventListeners() {
+        document.getElementById('logoutButton').addEventListener('click', (e) => {
+          e.preventDefault(); localStorage.removeItem('access_token'); localStorage.removeItem('user'); window.location.href = './index.html';
         });
 
-        // Form submission handlers
-        document
-          .querySelector("#newPatientModal .btn-primary")
-          .addEventListener("click", function () {
-            alert("Paciente cadastrado com sucesso!");
-            bootstrap.Modal.getInstance(
-              document.getElementById("newPatientModal")
-            ).hide();
-          });
+        document.getElementById('openNewRecordModalButton').addEventListener('click', populateModalDropdowns);
 
-        document
-          .querySelector("#newRecordModal .btn-primary")
-          .addEventListener("click", function () {
-            alert("Ficha criada com sucesso!");
-            bootstrap.Modal.getInstance(
-              document.getElementById("newRecordModal")
-            ).hide();
-          });
-      });
+        const newPatientForm = document.getElementById('newPatientForm');
+        const newPatientErrorDiv = document.getElementById('newPatientError');
+        newPatientForm.addEventListener('submit', async function (e) {
+          e.preventDefault(); newPatientErrorDiv.style.display = 'none';
+          const patientData = {
+            name: document.getElementById('patientName').value, cpf: document.getElementById('patientCpf').value,
+            birthDate: document.getElementById('patientBirth').value, // Backend expects "YYYY-MM-DD" for PatientCreateDTO
+            phone: document.getElementById('patientPhone').value, email: document.getElementById('patientEmail').value,
+            password: document.getElementById('patientPassword').value,
+            // healthUnitId is set by backend based on staff's unit
+          };
+          try {
+            const createdPatient = await fetchAPI('/patients', 'POST', patientData);
+            bootstrap.Modal.getInstance(document.getElementById('newPatientModal')).hide(); newPatientForm.reset();
+            await loadDashboardData(); // Refresh all dashboard data
+            updateRecentActivity(`Novo paciente cadastrado: ${createdPatient.name}`, 'patient');
+          } catch (error) { newPatientErrorDiv.textContent = `Erro: ${error.message}`; newPatientErrorDiv.style.display = 'block'; }
+        });
+
+        const newRecordForm = document.getElementById('newRecordForm');
+        const newRecordErrorDiv = document.getElementById('newRecordError');
+        newRecordForm.addEventListener('submit', async function(e) {
+            e.preventDefault(); newRecordErrorDiv.style.display = 'none';
+            const localDate = document.getElementById('recordDate').value;
+            const localTime = document.getElementById('recordTime').value;
+            if (!localDate || !localTime) { newRecordErrorDiv.textContent = 'Data e Hora são obrigatórias.'; newRecordErrorDiv.style.display = 'block'; return; }
+            const appointmentInstant = new Date(`${localDate}T${localTime}:00`).toISOString();
+
+            const appointmentData = {
+                patientId: document.getElementById('recordPatient').value, doctorId: document.getElementById('recordDoctor').value,
+                date: appointmentInstant, description: document.getElementById('recordDescription').value
+            };
+            if (!appointmentData.patientId || !appointmentData.doctorId || !appointmentData.description) {
+                 newRecordErrorDiv.textContent = 'Paciente, Médico e Descrição são obrigatórios.'; newRecordErrorDiv.style.display = 'block'; return;
+            }
+            try {
+                const createdAppointment = await fetchAPI('/appointments', 'POST', appointmentData);
+                bootstrap.Modal.getInstance(document.getElementById('newRecordModal')).hide(); newRecordForm.reset();
+                await loadDashboardData(); // Refresh
+                updateRecentActivity(`Nova ficha/agendamento ID ${createdAppointment.id} criada.`, 'appointment');
+            } catch (error) { newRecordErrorDiv.textContent = `Erro: ${error.message}`; newRecordErrorDiv.style.display = 'block'; }
+        });
+      }
+    </script>
+
+
+    <script>
+
+    (function() {
+
+        setTimeout(async () => {
+            if (typeof fetchAPI !== 'function' || typeof showError !== 'function' || typeof getStateClassForAppointment !== 'function' || typeof formatInstantToLocaleDateTime !== 'function') {
+                console.error("Funções essenciais do script principal não encontradas. A seção 'Agendamentos de Hoje' pode não funcionar.");
+                return;
+            }
+
+            const originalLoadDashboardData = window.loadDashboardData;
+            const originalPopulateProximosAgendamentos = window.populateProximosAgendamentos;
+
+            // Nova função para popular "Próximos Agendamentos" usando o novo endpoint
+            async function newPopulateProximosAgendamentos() {
+                const listElement = document.getElementById('proximosAgendamentosList');
+                if (!listElement) {
+                    console.error("Elemento proximosAgendamentosList não encontrado.");
+                    return;
+                }
+                listElement.innerHTML = '<p class="text-center">Carregando agendamentos de hoje...</p>';
+
+                try {
+                    const todaysAppointments = await fetchAPI('/appointments/today');
+
+                    if (!todaysAppointments || todaysAppointments.length === 0) {
+                        listElement.innerHTML = '<p class="text-center text-muted">Nenhum agendamento para hoje.</p>';
+                        return;
+                    }
+
+                    listElement.innerHTML = '';
+
+                    console.log(todaysAppointments)
+                    todaysAppointments.forEach(app => {
+                        const item = document.createElement('a');
+                        item.href = '#'; // Ou link para detalhes do agendamento
+                        const { time: appTime } = formatInstantToLocaleDateTime(app.date);
+                        // Usa a função getStateClassForAppointment já definida no script principal
+                        const cardClass = `appointment-card ${getStateClassForAppointment(app.status)}`;
+                        const statusText = app.status ? app.status.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase()) : "Agendado";
+
+                        let badgeClass = "bg-primary"; // Default for SCHEDULED
+                        if (app.status === "PENDING" || app.status === "IN_PROGRESS") badgeClass = "bg-warning text-dark";
+                        else if (app.status === "URGENT") badgeClass = "bg-danger"; // Supondo um status URGENT
+
+                        item.className = `list-group-item list-group-item-action border-0 py-2 ${cardClass}`;
+                        item.innerHTML = `
+                            <div class="d-flex w-100 justify-content-between">
+                                <div>
+                                    <h6 class="mb-1">${app.doctor.name || 'Dr(a). Desconhecido(a)'}</h6>
+                                    <p class="mb-1 small text-muted">${app.patient.name || 'Paciente Desconhecido'}</p>
+                                    <p class="mb-1 small">${app.description || 'Consulta'}</p>
+                                    <span class="badge ${badgeClass} appointment-badge">${statusText}</span>
+                                </div>
+                                <div class="text-end">
+                                    <p class="mb-0 fw-bold fs-5">${appTime}</p>
+                                    <small class="text-muted">Hoje</small>
+                                </div>
+                            </div>`;
+                        listElement.appendChild(item);
+                    });
+
+                } catch (error) {
+                    listElement.innerHTML = '<p class="text-center text-danger">Erro ao carregar agendamentos de hoje.</p>';
+                    // showError já é chamado por fetchAPI
+                    console.error("Erro ao buscar agendamentos de hoje:", error);
+                }
+            }
+
+
+            if (typeof window.populateProximosAgendamentos === 'function') {
+                window.populateProximosAgendamentos = newPopulateProximosAgendamentos;
+            } else {
+                console.warn("Função global populateProximosAgendamentos não encontrada para sobrescrita direta.");
+            }
+
+
+
+            if (typeof window.loadDashboardData === 'function') {
+                window.loadDashboardData = async function() {
+
+
+                    if(originalLoadDashboardData){
+
+                    }
+
+                    // A lógica abaixo replica o que `originalLoadDashboardData` fazia, mas chama a `newPopulateProximosAgendamentos`
+                    // e remove a chamada explícita para `populateProximosAgendamentos(appointments || [])` de dentro dela.
+
+                    try {
+                        // Reutiliza currentUser se já carregado pelo checkAuthAndLoadUser do script principal
+                        if (!window.currentUser) { // window.currentUser é o currentUser global do script principal
+                            window.currentUser = JSON.parse(localStorage.getItem('user'));
+                            if (!window.currentUser) {
+                                 window.currentUser = await fetchAPI('/users/me'); // fetchAPI é global
+                                 localStorage.setItem('user', JSON.stringify(window.currentUser));
+                            }
+                        }
+
+                        document.getElementById('userNamePlaceholder').textContent = window.currentUser.name.split(' ')[0];
+                        const unitName = window.currentUser.healthUnitName || 'N/A';
+                        const navbarUnitNameEl = document.getElementById('navbarUnitName');
+                        if (navbarUnitNameEl) navbarUnitNameEl.textContent = `- Unidade ${unitName}`;
+                        const dashboardUnitNameBadgeEl = document.getElementById('dashboardUnitNameBadge');
+                        if (dashboardUnitNameBadgeEl) dashboardUnitNameBadgeEl.textContent = `Unidade ${unitName}`;
+
+                        const [patients, allAppointments, weeklySummary] = await Promise.all([
+                            fetchAPI('/patients'),
+                            fetchAPI('/appointments'), // Para stats e pacientes recentes
+                            fetchAPI('/appointments/week-summary')
+                        ]);
+
+                        if (typeof window.populateStats === 'function') {
+                           window.populateStats(patients || [], allAppointments || []);
+                        }
+                        if (typeof window.populatePacientesRecentes === 'function') {
+                            window.populatePacientesRecentes(patients || []);
+                        }
+                        if (typeof window.updateAppointmentsChart === 'function') {
+                            window.updateAppointmentsChart(weeklySummary || {});
+                        }
+
+                        await newPopulateProximosAgendamentos();
+
+                        if(typeof window.updateRecentActivity === 'function') {
+                           window.updateRecentActivity('Dashboard carregado com sucesso (com agendamentos de hoje atualizados).', 'success');
+                        }
+
+                    } catch (error) {
+                         if(typeof window.updateRecentActivity === 'function') {
+                            window.updateRecentActivity(`Falha ao carregar dashboard (com agendamentos de hoje): ${error.message}`, 'error');
+                         }
+                    }
+                }
+
+
+                if (document.readyState === 'complete' && window.currentUser && typeof window.loadDashboardData === 'function') {
+                    console.log("Forçando recarga do dashboard com nova lógica de agendamentos de hoje.");
+                    window.loadDashboardData();
+                }
+
+
+            } else {
+                console.error("Função global loadDashboardData não encontrada para modificação. A seção 'Agendamentos de Hoje' pode não usar o endpoint otimizado.");
+            }
+
+
+        }, 100); // Pequeno delay para garantir que o script principal carregue suas funções globais.
+    })();
     </script>
   </body>
 </html>
