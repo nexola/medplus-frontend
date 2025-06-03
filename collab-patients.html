@@ -22,131 +22,55 @@
         --med-dark: #2c5282;
         --med-light: #f5f9ff;
       }
+      body { background-color: #f8f9fa; color: #212529; }
+      .navbar-brand { font-weight: 700; color: var(--med-primary); }
+      .navbar-brand span.med-plus-text { color: var(--med-dark); } /* Para o '+' do Med+ */
+      .navbar-brand span.user-role-display { font-size: 0.9rem; color: #6c757d; margin-left: 5px; }
 
-      body {
-        background-color: #f8f9fa;
-        color: #212529;
-      }
-
-      .navbar-brand {
-        font-weight: 700;
-        color: var(--med-primary);
-      }
-
-      .navbar-brand span {
-        color: var(--med-dark);
-      }
-
-      .sidebar {
-        background-color: white;
-        min-height: calc(100vh - 56px);
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-      }
-
-      .sidebar .nav-link {
-        color: #495057;
-        border-radius: 5px;
-        margin-bottom: 5px;
-      }
-
+      .sidebar { background-color: white; min-height: calc(100vh - 56px); box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); }
+      .sidebar .nav-link { color: #495057; border-radius: 5px; margin-bottom: 5px; }
       .sidebar .nav-link:hover,
-      .sidebar .nav-link.active {
-        background-color: var(--med-light);
-        color: var(--med-primary);
-      }
-
-      .sidebar .nav-link i {
-        margin-right: 10px;
-      }
-
-      .card {
-        border: none;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
-        border-radius: 10px;
-      }
-
-      .btn-primary {
-        background-color: var(--med-primary);
-        border-color: var(--med-primary);
-      }
-
-      .btn-primary:hover {
-        background-color: var(--med-dark);
-        border-color: var(--med-dark);
-      }
-
-      .action-btn {
-        width: 30px;
-        height: 30px;
-        padding: 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .badge-collab {
-        background-color: #6f42c1;
-      }
-
-      .patient-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
-      }
-
-      .search-box {
-        position: relative;
-      }
-
-      .search-box .form-control {
-        padding-left: 40px;
-      }
-
-      .search-box i {
-        position: absolute;
-        left: 15px;
-        top: 12px;
-        color: #6c757d;
-      }
-
-      .filter-dropdown .dropdown-menu {
-        width: 300px;
-        padding: 15px;
-      }
+      .sidebar .nav-link.active { background-color: var(--med-light); color: var(--med-primary); }
+      .sidebar .nav-link i { margin-right: 10px; }
+      .card { border: none; box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); border-radius: 10px; }
+      .btn-primary { background-color: var(--med-primary); border-color: var(--med-primary); }
+      .btn-primary:hover { background-color: var(--med-dark); border-color: var(--med-dark); }
+      .action-btn { width: 35px; height: 35px; padding: 0; display: inline-flex; align-items: center; justify-content: center; margin: 0 2px;}
+      .patient-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background-color: var(--med-light); color: var(--med-primary); display: flex; align-items: center; justify-content: center; font-weight: bold; }
+      .search-box { position: relative; }
+      .search-box .form-control { padding-left: 40px; }
+      .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #6c757d; }
+      .filter-dropdown .dropdown-menu { min-width: 280px; padding: 1rem; }
+      .badge.bg-status-active { background-color: #d1e7dd; color: #0f5132; }
+      .badge.bg-status-inactive { background-color: #f8d7da; color: #842029; }
+      .badge.bg-status-pending { background-color: #fff3cd; color: #664d03; }
+       #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.7); z-index: 10000; display: flex; justify-content: center; align-items: center; }
     </style>
   </head>
   <body>
-    <!-- Top Navigation Bar -->
+    <div id="loading-overlay" style="display: none;">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"><span class="visually-hidden">Carregando...</span></div>
+    </div>
+
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <i class="bi bi-heart-pulse"></i> Med<span>+</span> Collab
+          <i class="bi bi-heart-pulse"></i> Med<span class="med-plus-text">+</span>
+          <span class="user-role-display">Colaborador</span>
         </a>
+         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-              >
-                <i class="bi bi-person-circle"></i> Maria Oliveira
+              <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown">
+                <i class="bi bi-person-circle"></i> <span id="userNamePlaceholder">Colaborador</span>
               </a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li>
-                  <a class="dropdown-item" href="./profile-collab.html"
-                    ><i class="bi bi-person"></i> Perfil</a
-                  >
-                </li>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
+                <li><a class="dropdown-item" href="./profile-collab.html"><i class="bi bi-person"></i> Perfil</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#"
-                    ><i class="bi bi-box-arrow-right"></i> Sair</a
-                  >
-                </li>
+                <li><a class="dropdown-item" href="#" id="logoutButton"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
               </ul>
             </li>
           </ul>
@@ -156,111 +80,70 @@
 
     <div class="container-fluid">
       <div class="row">
-        <!-- Sidebar -->
         <div class="col-md-3 col-lg-2 d-md-block sidebar bg-white">
           <div class="position-sticky pt-3">
             <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link" href="./dashboard-collab.html">
-                  <i class="bi bi-speedometer2"></i> Dashboard
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="./collab-patients.html">
-                  <i class="bi bi-people"></i> Pacientes
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./collab-records.html">
-                  <i class="bi bi-files"></i> Fichas
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./collab-schedule.html">
-                  <i class="bi bi-calendar-check"></i> Agenda
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./profile-collab.html">
-                  <i class="bi bi-person"></i> Meu Perfil
-                </a>
-              </li>
+              <li class="nav-item"><a class="nav-link" href="./dashboard-collab.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+              <li class="nav-item"><a class="nav-link active" href="./collab-patients.html"><i class="bi bi-people"></i> Pacientes</a></li>
+              <li class="nav-item"><a class="nav-link" href="./collab-records.html"><i class="bi bi-files"></i> Fichas</a></li>
+              <li class="nav-item"><a class="nav-link" href="./collab-schedule.html"><i class="bi bi-calendar-check"></i> Agenda</a></li>
+              <li class="nav-item"><a class="nav-link" href="./profile-collab.html"><i class="bi bi-person"></i> Meu Perfil</a></li>
             </ul>
           </div>
         </div>
 
-        <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-          <div
-            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
-          >
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2"><i class="bi bi-people"></i> Pacientes</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
-              <button
-                class="btn btn-primary me-2"
-                data-bs-toggle="modal"
-                data-bs-target="#newPatientModal"
-              >
+              <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#newPatientModal">
                 <i class="bi bi-plus-lg"></i> Novo Paciente
               </button>
-              <div class="btn-group">
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary dropdown-toggle filter-dropdown"
-                  data-bs-toggle="dropdown"
-                >
+              <div class="btn-group filter-dropdown">
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="bi bi-funnel"></i> Filtros
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
-                  <div class="mb-3">
-                    <label class="form-label">Status</label>
-                    <select class="form-select">
-                      <option>Todos</option>
-                      <option>Ativo</option>
-                      <option>Inativo</option>
-                      <option>Pendente</option>
+                  <div class="mb-3 px-3">
+                    <label for="filterStatus" class="form-label">Status</label>
+                    <select id="filterStatus" class="form-select form-select-sm">
+                      <option value="">Todos</option>
+                      <option value="ACTIVE">Ativo</option>
+                      <option value="INACTIVE">Inativo</option>
                     </select>
                   </div>
-                  <div class="mb-3">
-                    <label class="form-label">Data de Cadastro</label>
-                    <select class="form-select">
-                      <option>Todos</option>
-                      <option>Últimos 7 dias</option>
-                      <option>Últimos 30 dias</option>
-                      <option>Últimos 90 dias</option>
+                  <div class="mb-3 px-3">
+                    <label for="filterDateRegistered" class="form-label">Data de Cadastro</label>
+                    <select id="filterDateRegistered" class="form-select form-select-sm">
+                      <option value="">Todas</option>
+                      <option value="7">Últimos 7 dias</option>
+                      <option value="30">Últimos 30 dias</option>
+                      <option value="90">Últimos 90 dias</option>
                     </select>
                   </div>
-                  <div class="d-grid">
-                    <button class="btn btn-sm btn-primary">
-                      Aplicar Filtros
-                    </button>
+                  <div class="d-grid px-3">
+                    <button id="applyFiltersButton" class="btn btn-sm btn-primary">Aplicar Filtros</button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Search and Stats -->
           <div class="row mb-4">
             <div class="col-md-8">
               <div class="search-box">
                 <i class="bi bi-search"></i>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Buscar pacientes por nome, CPF ou email..."
-                />
+                <input type="text" class="form-control" id="searchInput" placeholder="Buscar pacientes por nome, CPF ou email..."/>
               </div>
             </div>
             <div class="col-md-4">
               <div class="d-flex justify-content-end align-items-center h-100">
                 <span class="text-muted me-2">Total:</span>
-                <span class="fw-bold">42 pacientes</span>
+                <span class="fw-bold" id="totalPatientsCount">0 pacientes</span>
               </div>
             </div>
           </div>
 
-          <!-- Patients Table -->
           <div class="card">
             <div class="card-body">
               <div class="table-responsive">
@@ -271,160 +154,20 @@
                       <th>Nome</th>
                       <th>CPF</th>
                       <th>Telefone</th>
-                      <th>Última Consulta</th>
+                      <th>Email</th>
                       <th>Status</th>
                       <th>Ações</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <img
-                          src="https://randomuser.me/api/portraits/men/32.jpg"
-                          alt="Patient"
-                          class="patient-avatar"
-                        />
-                      </td>
-                      <td>João da Silva</td>
-                      <td>123.456.789-00</td>
-                      <td>(11) 98765-4321</td>
-                      <td>Hoje</td>
-                      <td><span class="badge bg-success">Ativo</span></td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary action-btn"
-                        >
-                          <i class="bi bi-eye"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-secondary action-btn"
-                        >
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <img
-                          src="https://randomuser.me/api/portraits/women/44.jpg"
-                          alt="Patient"
-                          class="patient-avatar"
-                        />
-                      </td>
-                      <td>Maria Oliveira</td>
-                      <td>987.654.321-00</td>
-                      <td>(11) 91234-5678</td>
-                      <td>Ontem</td>
-                      <td><span class="badge bg-success">Ativo</span></td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary action-btn"
-                        >
-                          <i class="bi bi-eye"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-secondary action-btn"
-                        >
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <img
-                          src="https://randomuser.me/api/portraits/men/75.jpg"
-                          alt="Patient"
-                          class="patient-avatar"
-                        />
-                      </td>
-                      <td>Carlos Ferreira</td>
-                      <td>456.123.789-00</td>
-                      <td>(11) 99876-5432</td>
-                      <td>2 dias atrás</td>
-                      <td><span class="badge bg-warning">Pendente</span></td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary action-btn"
-                        >
-                          <i class="bi bi-eye"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-secondary action-btn"
-                        >
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <img
-                          src="https://randomuser.me/api/portraits/women/68.jpg"
-                          alt="Patient"
-                          class="patient-avatar"
-                        />
-                      </td>
-                      <td>Ana Paula Santos</td>
-                      <td>789.456.123-00</td>
-                      <td>(11) 92345-6789</td>
-                      <td>5 dias atrás</td>
-                      <td><span class="badge bg-success">Ativo</span></td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary action-btn"
-                        >
-                          <i class="bi bi-eye"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-secondary action-btn"
-                        >
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <img
-                          src="https://randomuser.me/api/portraits/men/55.jpg"
-                          alt="Patient"
-                          class="patient-avatar"
-                        />
-                      </td>
-                      <td>Roberto Almeida</td>
-                      <td>321.654.987-00</td>
-                      <td>(11) 93456-7890</td>
-                      <td>1 semana atrás</td>
-                      <td><span class="badge bg-secondary">Inativo</span></td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary action-btn"
-                        >
-                          <i class="bi bi-eye"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-secondary action-btn"
-                        >
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                      </td>
-                    </tr>
+                  <tbody id="patientsTableBody">
+                    <!-- Linhas de pacientes serão inseridas aqui pelo JavaScript -->
+                    <tr><td colspan="7" class="text-center">Carregando pacientes...</td></tr>
                   </tbody>
                 </table>
               </div>
-
-              <!-- Pagination -->
-              <nav aria-label="Page navigation" class="mt-4">
+              <nav id="paginationNav" aria-label="Page navigation" class="mt-4" style="display: none;">
                 <ul class="pagination justify-content-center">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Anterior</a>
-                  </li>
-                  <li class="page-item active">
-                    <a class="page-link" href="#">1</a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">Próxima</a>
-                  </li>
+                  <!-- Paginação será inserida aqui -->
                 </ul>
               </nav>
             </div>
@@ -433,151 +176,590 @@
       </div>
     </div>
 
-    <!-- New Patient Modal -->
-    <div
-      class="modal fade"
-      id="newPatientModal"
-      tabindex="-1"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="newPatientModal" tabindex="-1" aria-labelledby="newPatientModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">
-              <i class="bi bi-person-plus"></i> Novo Paciente
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <h5 class="modal-title" id="newPatientModalLabel"><i class="bi bi-person-plus-fill"></i> Novo Paciente</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
-            <form id="newPatientForm">
+          <form id="newPatientForm"><div class="modal-body">
               <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="patientFirstName" class="form-label">Nome</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="patientFirstName"
-                    required
-                  />
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="patientLastName" class="form-label"
-                    >Sobrenome</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="patientLastName"
-                    required
-                  />
+                <div class="col-md-12 mb-3">
+                  <label for="patientFullName" class="form-label">Nome Completo</label>
+                  <input type="text" class="form-control" id="patientFullName" required />
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="patientCpf" class="form-label">CPF</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="patientCpf"
-                    required
-                  />
+                  <input type="text" class="form-control" id="patientCpf" placeholder="000.000.000-00" required />
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="patientBirth" class="form-label"
-                    >Data de Nascimento</label
-                  >
-                  <input
-                    type="date"
-                    class="form-control"
-                    id="patientBirth"
-                    required
-                  />
+                  <label for="patientBirth" class="form-label">Data de Nascimento</label>
+                  <input type="date" class="form-control" id="patientBirth" required />
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="patientEmail" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="patientEmail" />
+                  <input type="email" class="form-control" id="patientEmail" required />
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="patientPhone" class="form-label">Telefone</label>
-                  <input
-                    type="tel"
-                    class="form-control"
-                    id="patientPhone"
-                    required
-                  />
+                  <input type="tel" class="form-control" id="patientPhone" placeholder="(00) 00000-0000" />
                 </div>
+              </div>
+               <div class="mb-3">
+                  <label for="patientPassword" class="form-label">Senha (mínimo 6 caracteres)</label>
+                  <input type="password" class="form-control" id="patientPassword" required minlength="6" />
               </div>
               <div class="mb-3">
-                <label for="patientAddress" class="form-label">Endereço</label>
+                <label for="patientAddress" class="form-label">Endereço (Opcional)</label>
                 <input type="text" class="form-control" id="patientAddress" />
               </div>
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label for="patientCity" class="form-label">Cidade</label>
-                  <input type="text" class="form-control" id="patientCity" />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="patientState" class="form-label">Estado</label>
-                  <select class="form-select" id="patientState">
-                    <option value="">Selecione</option>
-                    <option value="SP">São Paulo</option>
-                    <option value="RJ">Rio de Janeiro</option>
-                    <option value="MG">Minas Gerais</option>
-                  </select>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="patientZip" class="form-label">CEP</label>
-                  <input type="text" class="form-control" id="patientZip" />
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancelar
-            </button>
-            <button type="submit" form="newPatientForm" class="btn btn-primary">
-              Cadastrar Paciente
-            </button>
-          </div>
+              <!-- Campos de Cidade, Estado, CEP removidos para simplificar, mas podem ser adicionados se necessário -->
+              <div id="newPatientError" class="text-danger mt-2" style="display: none;"></div>
+          </div><div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Cadastrar Paciente</button>
+          </div></form>
         </div>
       </div>
     </div>
 
-    <!-- Bootstrap 5.3 JS Bundle with Popper -->
+    <!-- Modais de Editar, Desativar, Detalhes (ainda não implementados funcionalmente) -->
+    <div class="modal fade" id="editPatientModal" tabindex="-1" aria-labelledby="editPatientModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editPatientModalLabel"><i class="bi bi-pencil-square"></i> Editar Paciente</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form id="editPatientForm">
+            <div class="modal-body">
+              <input type="hidden" id="editPatientId" />
+
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <label for="editPatientFullName" class="form-label">Nome Completo</label>
+                  <input type="text" class="form-control" id="editPatientFullName" required />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="editPatientCpf" class="form-label">CPF (Não editável)</label>
+                  <input type="text" class="form-control" id="editPatientCpf" readonly />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="editPatientBirth" class="form-label">Data de Nascimento</label>
+                  <input type="date" class="form-control" id="editPatientBirth" required />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="editPatientEmail" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="editPatientEmail" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="editPatientPhone" class="form-label">Telefone</label>
+                  <input type="tel" class="form-control" id="editPatientPhone" placeholder="(00) 00000-0000" />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="editPatientAddress" class="form-label">Endereço (Opcional)</label>
+                <input type="text" class="form-control" id="editPatientAddress" />
+              </div>
+              <div class="mb-3" style="display: none;">
+                <label for="editPatientStatus" class="form-label">Status do Paciente</label>
+                <select class="form-select" id="editPatientStatus">
+                    <option value="true">Ativo</option>
+                    <option value="false">Inativo</option>
+                </select>
+              </div>
+              <div id="editPatientError" class="text-danger mt-2" style="display: none;"></div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="viewPatientModal" tabindex="-1"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Detalhes do Paciente</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p>Funcionalidade de detalhes em desenvolvimento.</p></div></div></div></div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Form submission handler
-        document
-          .getElementById("newPatientForm")
-          .addEventListener("submit", function (e) {
-            e.preventDefault();
-            alert("Paciente cadastrado com sucesso!");
-            bootstrap.Modal.getInstance(
-              document.getElementById("newPatientModal")
-            ).hide();
-            this.reset();
-          });
+      const API_BASE = "https://ubs-zxgf.onrender.com";
+      // const API_BASE = "http://localhost:8080";
+      const DEFAULT_ZONE_ID = "America/Sao_Paulo"; // Ajuste para seu fuso
 
-        // Search functionality
-        const searchInput = document.querySelector(".search-box input");
-        searchInput.addEventListener("input", function () {
-          // In a real app, you would filter the table here
-          console.log("Searching for:", this.value);
-        });
+      let currentUser = null;
+      let allPatients = []; // Guarda todos os pacientes carregados
+      let displayedPatients = []; // Pacientes atualmente na tabela (após filtros)
+
+      function showLoading() { document.getElementById('loading-overlay').style.display = 'flex'; }
+      function hideLoading() { document.getElementById('loading-overlay').style.display = 'none'; }
+
+      async function fetchAPI(endpoint, method = 'GET', body = null) {
+        const token = localStorage.getItem("access_token");
+        const headers = { 'Authorization': `Bearer ${token}` };
+        if (body && !(body instanceof FormData)) headers['Content-Type'] = 'application/json';
+
+        const config = { method, headers };
+        if (body) config.body = (body instanceof FormData) ? body : JSON.stringify(body);
+
+        showLoading();
+        try {
+          const response = await fetch(`${API_BASE}${endpoint}`, config);
+          if (response.status === 401) {
+            localStorage.clear(); window.location.href = './index.html'; throw new Error("Sessão expirada.");
+          }
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: `Erro ${response.status}` }));
+            throw new Error(errorData.message || errorData.error_description || errorData.error || (errorData.errors && errorData.errors[0]) || `Erro ${response.status}.`);
+          }
+          if (response.status === 204 || response.headers.get("content-length") === "0") return null;
+          return await response.json();
+        } catch (error) {
+          showError(error.message); throw error;
+        } finally {
+          hideLoading();
+        }
+      }
+
+      function formatCPF(cpf) {
+        if (!cpf) return 'N/A';
+        const cleaned = cpf.replace(/\D/g, '');
+        if (cleaned.length !== 11) return cpf; // Retorna original se não tiver 11 dígitos
+        return cleaned.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+      }
+
+      function formatPhone(phone) {
+          if (!phone) return 'N/A';
+          const cleaned = phone.replace(/\D/g, '');
+          if (cleaned.length === 11) return cleaned.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+          if (cleaned.length === 10) return cleaned.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+          return phone; // Retorna original se não corresponder
+      }
+
+
+      function getInitials(name) {
+        if (!name) return '?';
+        const parts = name.split(' ');
+        if (parts.length > 1) return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+        return name.substring(0, 2).toUpperCase();
+      }
+
+      function calculateAge(birthDateStr) { // Espera "YYYY-MM-DD" ou Instant
+        if (!birthDateStr) return 'N/A';
+        try {
+            let dateOfBirth;
+            if (birthDateStr.includes('T') && birthDateStr.includes('Z')) { // É um Instant
+                dateOfBirth = new Date(birthDateStr);
+            } else { // Assume "YYYY-MM-DD"
+                const parts = birthDateStr.split('-');
+                if (parts.length !== 3) return 'Inválida';
+                dateOfBirth = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]));
+            }
+            const ageDifMs = Date.now() - dateOfBirth.getTime();
+            const ageDate = new Date(ageDifMs);
+            return Math.abs(ageDate.getUTCFullYear() - 1970);
+        } catch (e) { return 'Inválida'; }
+      }
+
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+            await checkAuthAndLoadUser();
+            if (currentUser) {
+                await loadPatientsData();
+                setupPageEventListeners();
+            }
+        } catch (error) {
+            // Erros já são tratados e exibidos
+        }
       });
+
+      function checkAuthAndLoadUser() {
+        return new Promise(async (resolve, reject) => {
+            const token = localStorage.getItem("access_token");
+            if (!token) { window.location.href = './index.html'; return reject(new Error("Token não encontrado.")); }
+            try {
+                currentUser = await fetchAPI('/users/me');
+                if (!currentUser || !currentUser.roles?.includes("ROLE_STAFF")) {
+                    localStorage.clear(); showError("Acesso não autorizado (Requer ROLE_STAFF).");
+                    setTimeout(() => window.location.href = './index.html', 2500);
+                    return reject(new Error("Não autorizado."));
+                }
+                if (!currentUser.healthUnitId) { // relatedEntityId é o healthUnitId para Staff
+                     localStorage.clear(); showError("Staff não associado a uma unidade de saúde.");
+                     setTimeout(() => window.location.href = './index.html', 2500);
+                     return reject(new Error("Unidade não associada."));
+                }
+                localStorage.setItem('user', JSON.stringify(currentUser));
+                updateUserDisplayInfo();
+                resolve();
+            } catch (error) { reject(error); }
+        });
+      }
+
+      function updateUserDisplayInfo() {
+        if (currentUser && currentUser.name) {
+            document.getElementById('userNamePlaceholder').textContent = currentUser.name.split(' ')[0];
+             const navbarBrand = document.querySelector('.navbar-brand');
+             let userRoleDisplay = navbarBrand.querySelector('span.user-role-display');
+             if (!userRoleDisplay) {
+                 userRoleDisplay = document.createElement('span');
+                 userRoleDisplay.className = 'user-role-display';
+                 navbarBrand.appendChild(userRoleDisplay);
+             }
+             userRoleDisplay.textContent = `Colaborador (${currentUser.relatedEntityName || 'Unidade'})`;
+        }
+      }
+
+      async function loadPatientsData() {
+        try {
+            allPatients = await fetchAPI('/patients'); // Backend deve filtrar por unidade do Staff
+            displayedPatients = [...allPatients];
+            renderPatientsTable();
+            updateTotalPatientsCount();
+        } catch (error) {
+            document.getElementById('patientsTableBody').innerHTML = `<tr><td colspan="7" class="text-center text-danger">Falha ao carregar pacientes.</td></tr>`;
+        }
+      }
+
+      function renderPatientsTable() {
+        const tbody = document.getElementById('patientsTableBody');
+        tbody.innerHTML = '';
+
+        if (displayedPatients.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" class="text-center">Nenhum paciente encontrado com os filtros atuais.</td></tr>`;
+            return;
+        }
+
+        displayedPatients.forEach(patient => {
+            // PatientResponseDTO do backend: id, name, email, cpf, birthDate (String YYYY-MM-DD), phone, active (boolean)
+            const patientStatus = patient.active === false ? 'Inativo' : 'Ativo'; // Se 'active' for boolean. Se for String, ajuste.
+            const statusClass = patient.active === false ? 'bg-status-inactive' : 'bg-status-active';
+
+            const row = `
+                <tr>
+                    <td><div class="patient-avatar">${getInitials(patient.name)}</div></td>
+                    <td>${patient.name || 'N/A'}</td>
+                    <td>${formatCPF(patient.cpf)}</td>
+                    <td>${formatPhone(patient.phone)}</td>
+                    <td>${patient.email || 'N/A'}</td>
+                    <td><span class="badge ${statusClass}">${patientStatus}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-secondary action-btn" data-bs-toggle="modal" data-bs-target="#editPatientModal" data-patient-id="${patient.id}" title="Editar"><i class="bi bi-pencil"></i></button>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+      }
+
+      function updateTotalPatientsCount() {
+        document.getElementById('totalPatientsCount').textContent = `${allPatients.length} pacientes`;
+      }
+
+      function applyAllFilters() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+        const statusFilter = document.getElementById('filterStatus').value; // "ACTIVE", "INACTIVE", ""
+        const dateRegisteredFilter = document.getElementById('filterDateRegistered').value; // "7", "30", "90", ""
+
+        displayedPatients = allPatients.filter(patient => {
+            const matchesSearch = !searchTerm ||
+                (patient.name || "").toLowerCase().includes(searchTerm) ||
+                (patient.cpf || "").replace(/\D/g,'').includes(searchTerm.replace(/\D/g,'')) ||
+                (patient.email || "").toLowerCase().includes(searchTerm);
+
+            let matchesStatus = true;
+            if (statusFilter) {
+                 // Assuming backend 'active' is boolean. If it's a string like "ACTIVE", adjust.
+                matchesStatus = (statusFilter === "ACTIVE" && (patient.active !== false)) || (statusFilter === "INACTIVE" && patient.active === false);
+            }
+
+            let matchesDate = true;
+            if (dateRegisteredFilter && patient.createdAt) { // Assuming PatientResponseDTO has 'createdAt' (Instant string)
+                const days = parseInt(dateRegisteredFilter);
+                const registeredDate = new Date(patient.createdAt);
+                const today = new Date();
+                const diffTime = Math.abs(today - registeredDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                matchesDate = diffDays <= days;
+            }
+
+            return matchesSearch && matchesStatus && matchesDate;
+        });
+        renderPatientsTable();
+      }
+
+      async function loadPatientDataForEdit(patientId) {
+        try {
+            const patient = await fetchAPI(`/patients/${patientId}`); // Busca dados do paciente específico
+            if (!patient) {
+                showError("Paciente não encontrado para edição.");
+                return;
+            }
+
+            document.getElementById('editPatientId').value = patient.id;
+            document.getElementById('editPatientFullName').value = patient.name || '';
+            document.getElementById('editPatientCpf').value = formatCPF(patient.cpf || ''); // Formatado e readonly
+
+            // PatientResponseDTO deve retornar birthDate como string "YYYY-MM-DD" ou Instant
+            // Se for Instant, o input type="date" precisa de "YYYY-MM-DD"
+            let birthDateForInput = '';
+            if (patient.birthDate) { // Se PatientResponseDTO.birthDate é "YYYY-MM-DD"
+                birthDateForInput = patient.birthDate;
+            } else if (patient.birth_date) { // Se PatientResponseDTO.birth_date é Instant
+                // Convert Instant to "YYYY-MM-DD" for the input field
+                const dateObj = new Date(patient.birth_date);
+                const year = dateObj.getUTCFullYear();
+                const month = String(dateObj.getUTCMonth() + 1).padStart(2, '0');
+                const day = String(dateObj.getUTCDate()).padStart(2, '0');
+                birthDateForInput = `${year}-${month}-${day}`;
+            }
+            document.getElementById('editPatientBirth').value = birthDateForInput;
+
+            document.getElementById('editPatientEmail').value = patient.email || '';
+            document.getElementById('editPatientPhone').value = patient.phone ? formatPhone(patient.phone) : '';
+            document.getElementById('editPatientAddress').value = patient.address || '';
+
+            const statusSelect = document.getElementById('editPatientStatus');
+            statusSelect.value = (patient.active === false) ? "false" : "true";
+
+            const editModalEl = document.getElementById('editPatientModal');
+            const editModal = bootstrap.Modal.getOrCreateInstance(editModalEl);
+            editModal.show();
+        } catch (error) {
+            console.error(`Erro ao carregar paciente ${patientId} para edição:`, error);
+        }
+    }
+
+    // Função para lidar com a submissão do formulário de edição
+    async function handleEditPatientSubmit(event) {
+        event.preventDefault();
+        const errorDiv = document.getElementById('editPatientError');
+        errorDiv.style.display = 'none'; errorDiv.textContent = '';
+
+        const patientId = document.getElementById('editPatientId').value;
+        const birthDateValue = document.getElementById('editPatientBirth').value; // "YYYY-MM-DD"
+
+        let birthDateISO = null;
+        if (birthDateValue) {
+            // Converte "YYYY-MM-DD" para um Instant no início do dia UTC
+            // O backend espera Instant para birth_date no PatientUpdateDTO
+            const dateObj = new Date(birthDateValue + "T00:00:00.000Z"); // Adiciona T00:00:00.000Z para indicar UTC
+            if (!isNaN(dateObj.getTime())) {
+                birthDateISO = dateObj.toISOString();
+            } else {
+                errorDiv.textContent = "Data de Nascimento inválida.";
+                errorDiv.style.display = 'block';
+                return;
+            }
+        } else {
+            errorDiv.textContent = "Data de Nascimento é obrigatória.";
+            errorDiv.style.display = 'block';
+            return;
+        }
+
+        // Montando o objeto para PatientUpdateDTO
+        const patientUpdateData = {
+            name: document.getElementById('editPatientFullName').value,
+            email: document.getElementById('editPatientEmail').value,
+            birth_date: birthDateISO, // Envia como Instant (ISO String UTC)
+            address: document.getElementById('editPatientAddress').value || null,
+            phone: document.getElementById('editPatientPhone').value.replace(/\D/g, ''), // Envia apenas números
+            healthUnitId: currentUser.healthUnitId
+        };
+
+        // Adicionando 'active' se UserUpdateDTO o suportar (verifique seu UserUpdateDTO)
+        // Se UserUpdateDTO tiver um campo boolean 'active':
+        // patientUpdateData.active = document.getElementById('editPatientStatus').value === "true";
+
+        if (!patientUpdateData.name || !patientUpdateData.email) {
+            errorDiv.textContent = "Nome e Email são obrigatórios.";
+            errorDiv.style.display = 'block';
+            return;
+        }
+
+        try {
+            // Se o campo 'active' for gerenciado pelo UserUpdateDTO e, por conseguinte, pelo PatientUpdateDTO
+            // E se você tiver o campo 'editPatientStatus' no seu modal:
+            const statusValue = document.getElementById('editPatientStatus').value;
+            if (statusValue === "true" || statusValue === "false") {
+                 // Supondo que UserUpdateDTO tem um campo 'active' e PatientUpdateDTO o herda.
+                 // Se não, este campo deve ser removido ou o backend ajustado.
+                 // Verifique a definição de UserUpdateDTO.
+                 // patientUpdateData.active = (statusValue === "true");
+                 // Por enquanto, vou comentar isso, pois não sabemos se UserUpdateDTO tem 'active'.
+            }
+
+
+            const updatedPatient = await fetchAPI(`/patients/${patientId}`, 'PUT', patientUpdateData);
+            showSuccess(`Paciente ${updatedPatient.name} atualizado com sucesso!`);
+            const editModalEl = document.getElementById('editPatientModal');
+            const modalInstance = bootstrap.Modal.getInstance(editModalEl);
+
+            const index = allPatients.findIndex(p => p.id == patientId);
+            if (index !== -1) {
+                allPatients[index] = updatedPatient;
+            }
+            applyAllFilters();
+            updateTotalPatientsCount();
+
+        } catch (error) {
+            errorDiv.textContent = `Erro: ${error.message}`;
+            errorDiv.style.display = 'block';
+        }
+    }
+
+
+
+      function setupPageEventListeners() {
+        document.getElementById('logoutButton').addEventListener('click', (e) => {
+          e.preventDefault(); localStorage.clear(); window.location.href = './index.html';
+        });
+
+        const editPatientFormEl = document.getElementById('editPatientForm');
+        if (editPatientFormEl && !editPatientFormEl.dataset.listenerAttached) {
+            editPatientFormEl.addEventListener('submit', handleEditPatientSubmit);
+            editPatientFormEl.dataset.listenerAttached = 'true';
+        }
+
+        const newPatientFormEl = document.getElementById('newPatientForm');
+        newPatientFormEl.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const errorDiv = document.getElementById('newPatientError');
+            errorDiv.style.display = 'none'; errorDiv.textContent = '';
+
+            const fullName = document.getElementById('patientFullName').value;
+
+            const birthDateValue = document.getElementById('patientBirth').value;
+
+            let birthDateISO = null;
+            if (birthDateValue) {
+                const dateObj = new Date(birthDateValue + "T00:00:00Z"); // Adiciona T00:00:00Z para indicar UTC
+                birthDateISO = dateObj.toISOString();
+            }
+
+            const patientData = {
+                name: fullName,
+                cpf: document.getElementById('patientCpf').value.replace(/\D/g, ''),
+                birth_date: birthDateISO,
+                email: document.getElementById('patientEmail').value,
+                phone: document.getElementById('patientPhone').value.replace(/\D/g, ''),
+                password: document.getElementById('patientPassword').value,
+                address: document.getElementById('patientAddress').value || null,
+                healthUnitId: currentUser.healthUnitId
+              };
+
+            if (!patientData.name || !patientData.cpf || !patientData.birth_date || !patientData.email || !patientData.password) {
+                errorDiv.textContent = "Nome, CPF, Data de Nascimento, Email e Senha são obrigatórios.";
+                errorDiv.style.display = 'block';
+                return;
+            }
+            if(patientData.password.length < 6) {
+                errorDiv.textContent = "A senha deve ter no mínimo 6 caracteres.";
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            try {
+                const createdPatient = await fetchAPI('/patients', 'POST', patientData);
+                showSuccess(`Paciente ${createdPatient.name} cadastrado com sucesso!`);
+                bootstrap.Modal.getInstance(document.getElementById('newPatientModal')).hide();
+                newPatientFormEl.reset();
+                await loadPatientsData(); // Recarrega a lista de pacientes
+            } catch (error) {
+                errorDiv.textContent = `Erro: ${error.message}`;
+                errorDiv.style.display = 'block';
+            }
+        });
+
+        // Input masks for CPF and Phone in the modal
+        document.getElementById('patientCpf').addEventListener('input', function(e) {
+          this.value = formatCPF(this.value);
+        });
+        document.getElementById('patientPhone').addEventListener('input', function(e) {
+          this.value = formatPhone(this.value);
+        });
+
+        // Event listener para busca enquanto digita
+        document.getElementById('searchInput').addEventListener('input', applyAllFilters);
+        // Event listener para o botão de aplicar filtros do dropdown
+        document.getElementById('applyFiltersButton').addEventListener('click', applyAllFilters);
+        // Também aplicar filtros quando os selects do dropdown mudam
+        document.getElementById('filterStatus').addEventListener('change', applyAllFilters);
+        document.getElementById('filterDateRegistered').addEventListener('change', applyAllFilters);
+
+        // DENTRO de setupPageEventListeners():
+
+        const patientsTableBody = document.getElementById('patientsTableBody');
+        if (patientsTableBody) {
+            patientsTableBody.addEventListener('click', function(event) {
+                const targetButton = event.target.closest('button.action-btn'); // Encontra o botão mais próximo que foi clicado
+                if (!targetButton) return; // Sai se o clique não foi em um botão de ação
+
+                const patientId = targetButton.dataset.patientId; // Pega o ID do paciente do atributo data-patient-id
+
+                if (targetButton.dataset.bsTarget === "#editPatientModal") {
+                    if (patientId) {
+                        loadPatientDataForEdit(patientId); // CHAMA A FUNÇÃO CORRETA
+                    } else {
+                        console.error("Botão de editar clicado, mas data-patient-id não encontrado.");
+                    }
+                } else if (targetButton.dataset.bsTarget === "#viewPatientModal") {
+                    if (patientId) {
+                        console.log(`Abrir detalhes para paciente ID: ${patientId} (funcionalidade de visualização não implementada).`);
+                        // Aqui você implementaria a lógica para buscar e exibir detalhes do paciente
+                        // new bootstrap.Modal(document.getElementById('viewPatientModal')).show(); // Abre o modal placeholder
+                    } else {
+                        console.error("Botão de ver detalhes clicado, mas data-patient-id não encontrado.");
+                    }
+                }
+            });
+        }
+
+      }
+
+      function showError(message) {
+        const existingAlert = document.querySelector('.custom-alert-page');
+        if(existingAlert) existingAlert.remove();
+
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3 custom-alert-page';
+        alertDiv.style.zIndex = "10050";
+        alertDiv.setAttribute('role', 'alert');
+        alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+        document.body.appendChild(alertDiv);
+        setTimeout(() => {
+            const instance = bootstrap.Alert.getOrCreateInstance(alertDiv);
+            if (instance) instance.close();
+            else if (alertDiv.parentElement) alertDiv.remove(); // Fallback se a instância não for encontrada
+        }, 5000);
+      }
+      function showSuccess(message) {
+        const existingAlert = document.querySelector('.custom-alert-page');
+        if(existingAlert) existingAlert.remove();
+
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3 custom-alert-page';
+        alertDiv.style.zIndex = "10050";
+        alertDiv.setAttribute('role', 'alert');
+        alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+        document.body.appendChild(alertDiv);
+        setTimeout(() => {
+            const instance = bootstrap.Alert.getOrCreateInstance(alertDiv);
+            if (instance) instance.close();
+            else if (alertDiv.parentElement) alertDiv.remove();
+        }, 3000);
+      }
+
     </script>
   </body>
 </html>
