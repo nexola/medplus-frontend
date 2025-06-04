@@ -1103,7 +1103,7 @@
           tbody.innerHTML = currentStaff.map(staff => `
             <tr>
               <td>${staff.name}</td>
-              <td><span class="badge bg-primary">${staff.role}</span></td>
+              <td><span class="badge bg-primary">${staff.type}</span></td>
               <td>${staff.email}</td>
               <td>
                 <button class="btn btn-sm btn-outline-primary action-btn edit-staff" data-id="${staff.id}">
@@ -1281,11 +1281,13 @@
         e.preventDefault();
         const formData = {
           name: document.getElementById('colaboradorNome').value,
-          role: document.getElementById('colaboradorTipo').value,
+          type: document.getElementById('colaboradorTipo').value,
           email: document.getElementById('colaboradorEmail').value,
           password: document.getElementById('colaboradorSenha').value,
           healthUnitId: currentUser.id
         };
+
+        console.log("tipo: " + formData.type)
 
         try {
           const response = await fetch(`${API_BASE}/staffs`, {
@@ -1311,12 +1313,11 @@
           e.preventDefault();
           const formData = {
             name: document.getElementById('editColaboradorNome').value,
-            role: document.getElementById('editColaboradorTipo').value,
+            type: document.getElementById('editColaboradorTipo').value,
             email: document.getElementById('editColaboradorEmail').value,
             password: document.getElementById('editColaboradorSenha').value || undefined,
             healthUnitId: currentUser.id
           };
-
 
 
         try {
@@ -1430,7 +1431,7 @@
 
           case 'editColaboradorModal':
             modal.querySelector('#editColaboradorNome').value = data.name;
-            modal.querySelector('#editColaboradorTipo').value = data.role;
+            modal.querySelector('#editColaboradorTipo').value = data.type;
             modal.querySelector('#editColaboradorEmail').value = data.email;
             break;
         }
