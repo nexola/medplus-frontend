@@ -292,31 +292,11 @@
                           />
                         </div>
                         <div class="col-md-6 mb-3">
-                          <label for="phone" class="form-label">Telefone</label>
-                          <input
-                            type="tel"
-                            class="form-control"
-                            id="phone"
-                            value="(11) 98765-4321"
-                          />
-                        </div>
-                        <div class="col-md-6 mb-3">
-                          <label for="birthDate" class="form-label"
-                            >Data de Nascimento</label
-                          >
-                          <input
-                            type="date"
-                            class="form-control"
-                            id="birthDate"
-                            value="1985-05-15"
-                          />
-                        </div>
-                        <div class="col-md-6 mb-3">
                           <label for="position" class="form-label">Cargo</label>
                           <input
                             type="text"
                             class="form-control"
-                            id="position"
+                            id="type"
                             value="Atendente"
                             disabled
                           />
@@ -343,21 +323,6 @@
                       <div class="row mb-4">
                         <div class="col-md-12 mb-4">
                           <h5 class="mb-3">Alterar Senha</h5>
-                          <div class="mb-3">
-                            <label for="currentPassword" class="form-label"
-                              >Senha Atual</label
-                            >
-                            <div class="input-group">
-                              <input
-                                type="password"
-                                class="form-control"
-                                id="currentPassword"
-                              />
-                              <span class="input-group-text">
-                                <i class="bi bi-eye-slash"></i>
-                              </span>
-                            </div>
-                          </div>
                           <div class="mb-3">
                             <label for="newPassword" class="form-label"
                               >Nova Senha</label
@@ -410,94 +375,302 @@
                 </div>
               </div>
             </div>
-
-            <!-- Recent Activity -->
-            <div class="card mt-4">
-              <div class="card-header">
-                <h5 class="mb-0">
-                  <i class="bi bi-clock-history"></i> Atividade Recente
-                </h5>
-              </div>
-              <div class="card-body">
-                <div class="list-group">
-                  <a
-                    href="#"
-                    class="list-group-item list-group-item-action border-0"
-                  >
-                    <div class="d-flex w-100 justify-content-between">
-                      <h6 class="mb-1">Novo paciente cadastrado</h6>
-                      <small class="text-muted">15 minutos atrás</small>
-                    </div>
-                    <p class="mb-1">João da Silva</p>
-                  </a>
-                  <a
-                    href="#"
-                    class="list-group-item list-group-item-action border-0"
-                  >
-                    <div class="d-flex w-100 justify-content-between">
-                      <h6 class="mb-1">Ficha médica atualizada</h6>
-                      <small class="text-muted">2 horas atrás</small>
-                    </div>
-                    <p class="mb-1">Ana Beatriz - Consulta de rotina</p>
-                  </a>
-                  <a
-                    href="#"
-                    class="list-group-item list-group-item-action border-0"
-                  >
-                    <div class="d-flex w-100 justify-content-between">
-                      <h6 class="mb-1">Consulta agendada</h6>
-                      <small class="text-muted">Ontem</small>
-                    </div>
-                    <p class="mb-1">Dr. Carlos - Cardiologia</p>
-                  </a>
-                </div>
-              </div>
-            </div>
           </div>
         </main>
       </div>
     </div>
 
-    <!-- Bootstrap 5.3 JS Bundle with Popper -->
+            <!-- Bootstrap 5.3 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Toggle password visibility
+      // const API_BASE_PROFILE_STAFF = "http://localhost:8080"; // Ou seu URL de produção
+      const API_BASE_PROFILE_STAFF = "https://ubs-zxgf.onrender.com";
+
+      let currentStaffUser = null;
+      let staffIdForUpdate = null;
+
+      function showLoading_ProfileStaff() {
+        console.log("PROFILE_STAFF: Loading...");
+      }
+      function hideLoading_ProfileStaff() {
+        console.log("PROFILE_STAFF: Loading complete.");
+      }
+
+      async function fetchAPI_ProfileStaff(endpoint, method = 'GET', body = null, customHeaders = {}) {
+        const token = localStorage.getItem("access_token");
+        // Não verifica token para o endpoint de login/token
+        if (!token && !endpoint.includes('/oauth2/token')) {
+            showError_ProfileStaff("Token de acesso não encontrado. Você será redirecionado para o login.");
+            setTimeout(() => { window.location.href = './index.html'; }, 2500);
+            throw new Error("Token não encontrado.");
+        }
+
+        const headers = { ...customHeaders }; // Inicia com customHeaders (para Basic Auth)
+        if (token && !headers['Authorization']) { // Adiciona Bearer token se não for sobrescrito
+             headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        if (body && !(body instanceof FormData) && !(body instanceof URLSearchParams)) {
+            if(!headers['Content-Type']) headers['Content-Type'] = 'application/json';
+        } else if (body instanceof URLSearchParams && !headers['Content-Type']) {
+            headers['Content-Type'] = 'application/x-www-form-urlencoded';
+        }
+
+        const config = { method, headers };
+        if (body) {
+            config.body = (body instanceof FormData || body instanceof URLSearchParams) ? body : JSON.stringify(body);
+        }
+
+        showLoading_ProfileStaff();
+        try {
+          const response = await fetch(`${API_BASE_PROFILE_STAFF}${endpoint}`, config);
+          if (response.status === 401 && !endpoint.includes('/oauth2/token')) {
+            throw new Error("Sessão expirada ou não autorizada (401).");
+          }
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: `Erro HTTP ${response.status}` }));
+            const mainError = errorData.error_description || errorData.message || errorData.error || (errorData.errors && errorData.errors[0]) || `Erro ${response.status}.`;
+            throw new Error(mainError);
+          }
+          if (response.status === 204 || response.headers.get("content-length") === "0") return null;
+          return await response.json();
+        } catch (error) {
+          showError_ProfileStaff(error.message); throw error;
+        } finally {
+          hideLoading_ProfileStaff();
+        }
+      }
+
+      function showError_ProfileStaff(message) {
+        console.error("PROFILE_STAFF_ERROR:", message);
+        alert(`Erro: ${message}`);
+      }
+      function showSuccess_ProfileStaff(message) {
+        console.log("PROFILE_STAFF_SUCCESS:", message);
+        alert(message);
+      }
+
+      function logout_ProfileStaff() {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('user');
+        window.location.href = 'index.html';
+      }
+
+      async function getNewTokens_ProfileStaff(email, password) {
+        console.log(`PROFILE_STAFF: Tentando obter novos tokens para ${email}`);
+        try {
+          const tokenData = await fetchAPI_ProfileStaff(
+            '/oauth2/token',
+            'POST',
+            new URLSearchParams({ username: email, password: password, grant_type: 'password'}),
+            { 'Authorization': 'Basic ' + btoa('myclientid:myclientsecret') }
+          );
+          console.log("PROFILE_STAFF: Novos tokens obtidos.");
+          return tokenData;
+        } catch (error) {
+          console.error('PROFILE_STAFF: Erro ao obter novos tokens:', error);
+          throw new Error(`Falha ao re-autenticar: ${error.message}`); // Propaga um erro mais específico
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        const logoutButton = document.getElementById('logoutButton');
+        if(logoutButton) logoutButton.addEventListener('click', function(e) { e.preventDefault(); logout_ProfileStaff(); });
+
+        try {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+                showError_ProfileStaff("Usuário não autenticado!");
+                setTimeout(() => window.location.href = "index.html", 1500);
+                return;
+            }
+
+            currentStaffUser = await fetchAPI_ProfileStaff('/users/me');
+            if (!currentStaffUser || !currentStaffUser.roles?.includes("ROLE_STAFF")) {
+                logout_ProfileStaff(); // Se não for staff, desloga
+                throw new Error("Dados do colaborador não carregados ou perfil inválido.");
+            }
+            staffIdForUpdate = currentStaffUser.id;
+
+            // Preencher UI
+            const nameParts = (currentStaffUser.name || "").split(" ");
+            const firstName = nameParts[0] || "";
+            const lastName = nameParts.slice(1).join(" ") || "";
+
+            // Header do Perfil
+            const profileHeaderName = document.querySelector('.profile-header h3');
+            const profileHeaderEmail = document.querySelector('.profile-header p');
+            const profileHeaderRole = document.querySelector('.profile-header .badge');
+            const navbarUsername = document.querySelector('#navbarUserDropdown span'); // Target span in navbar
+
+            if(profileHeaderName) profileHeaderName.textContent = currentStaffUser.name || "Colaborador";
+            if(profileHeaderEmail) profileHeaderEmail.textContent = currentStaffUser.email || "";
+            if(navbarUsername) navbarUsername.textContent = firstName || "Usuário"; // Update navbar name
+
+            if(profileHeaderRole) {
+                const roleDisplay = currentStaffUser.type || (currentStaffUser.roles?.includes("ROLE_STAFF") ? "Colaborador" : "Usuário");
+                profileHeaderRole.textContent = roleDisplay.charAt(0).toUpperCase() + roleDisplay.slice(1).toLowerCase();
+            }
+
+            document.getElementById("firstName").value = firstName;
+            document.getElementById("lastName").value = lastName;
+            document.getElementById("email").value = currentStaffUser.email || "";
+
+            const typeField = document.getElementById("type");
+            if (typeField && currentStaffUser.type) { // Se UserFullDTO trouxer 'type'
+                typeField.value = currentStaffUser.type;
+            } else if (typeField) {
+                const roleForType = currentStaffUser.roles?.includes("ROLE_STAFF") ? "Colaborador" : "Desconhecido";
+                typeField.value = roleForType;
+            }
+
+        } catch (error) {
+          console.error("PROFILE_STAFF: Erro ao carregar dados iniciais:", error.message);
+          if (error.message.includes("401")) {
+            logout_ProfileStaff();
+          }
+        }
+
+        const profileForm = document.getElementById("profileForm");
+        if (profileForm) profileForm.addEventListener("submit", handleProfileUpdate_ProfileStaff);
+
+        const securityForm = document.getElementById("securityForm");
+        if (securityForm) securityForm.addEventListener("submit", handlePasswordChange_ProfileStaff);
+
         document.querySelectorAll(".input-group-text").forEach((icon) => {
           icon.addEventListener("click", function () {
             const input = this.previousElementSibling;
-            const type =
-              input.getAttribute("type") === "password" ? "text" : "password";
-            input.setAttribute("type", type);
-
-            // Toggle eye icon
-            const eyeIcon = this.querySelector("i");
-            if (type === "password") {
-              eyeIcon.classList.remove("bi-eye");
-              eyeIcon.classList.add("bi-eye-slash");
-            } else {
-              eyeIcon.classList.remove("bi-eye-slash");
-              eyeIcon.classList.add("bi-eye");
+            if (input?.getAttribute) {
+                const type = input.getAttribute("type") === "password" ? "text" : "password";
+                input.setAttribute("type", type);
+                const eyeIcon = this.querySelector("i");
+                if (eyeIcon) {
+                    eyeIcon.classList.toggle("bi-eye", type !== "password");
+                    eyeIcon.classList.toggle("bi-eye-slash", type === "password");
+                }
             }
           });
         });
-
-        // Form submission handlers
-        document
-          .getElementById("profileForm")
-          .addEventListener("submit", function (e) {
-            e.preventDefault();
-            alert("Perfil atualizado com sucesso!");
-          });
-
-        document
-          .getElementById("securityForm")
-          .addEventListener("submit", function (e) {
-            e.preventDefault();
-            alert("Senha alterada com sucesso!");
-            this.reset();
-          });
       });
+
+      async function handleProfileUpdate_ProfileStaff(event) {
+        event.preventDefault();
+        if (!staffIdForUpdate || !currentStaffUser) {
+            showError_ProfileStaff("Dados do usuário não carregados. Tente recarregar a página.");
+            return;
+        }
+
+        const firstName = document.getElementById("firstName").value;
+        const lastName = document.getElementById("lastName").value;
+        const newEmail = document.getElementById("email").value;
+        const fullName = `${firstName} ${lastName}`.trim();
+
+        const emailChanged = newEmail.toLowerCase() !== (currentStaffUser.email || "").toLowerCase();
+
+        const updateData = { name: fullName, email: newEmail };
+
+        try {
+            const updatedStaffResponse = await fetchAPI_ProfileStaff(`/staffs/${staffIdForUpdate}`, 'PUT', updateData);
+
+            const updatedUserData = updatedStaffResponse || { ...currentStaffUser, ...updateData }; // Fallback
+
+            currentStaffUser = updatedUserData;
+            localStorage.setItem('user', JSON.stringify(currentStaffUser));
+            updateUserDisplayInfo_CollabRecords(); // Função para atualizar nome na navbar, etc.
+
+            // Atualiza os campos do formulário por segurança, caso o backend modifique algo (ex: trim)
+            const nameParts = (currentStaffUser.name || "").split(" ");
+            document.getElementById("firstName").value = nameParts[0] || "";
+            document.getElementById("lastName").value = nameParts.slice(1).join(" ") || "";
+            document.getElementById("email").value = currentStaffUser.email || "";
+
+
+            if (emailChanged) {
+                showSuccess_ProfileStaff("Perfil atualizado! Seu email foi alterado. Para sua segurança, você será deslogado. Por favor, faça login novamente com seu novo email e senha atual.");
+                setTimeout(() => {
+                    logout_ProfileStaff();
+                }, 4000);
+            } else {
+                showSuccess_ProfileStaff("Perfil atualizado com sucesso!");
+            }
+
+        } catch (error) {
+            console.error("PROFILE_STAFF: Erro ao atualizar perfil:", error);
+        }
+      }
+
+      async function handlePasswordChange_ProfileStaff(event) {
+        event.preventDefault();
+        if (!staffIdForUpdate || !currentStaffUser) {
+            showError_ProfileStaff("Dados do usuário não carregados. Tente recarregar a página.");
+            return;
+        }
+
+
+
+        const newPassword = document.getElementById("newPassword").value;
+        const confirmNewPassword = document.getElementById("confirmPassword").value;
+
+        if (!newPassword) { // Se deixou em branco, não faz nada
+            showError_ProfileStaff("Para alterar a senha, preencha o campo 'Nova Senha'.");
+            return;
+        }
+        if (newPassword !== confirmNewPassword) {
+            showError_ProfileStaff("A nova senha e a confirmação não coincidem.");
+            return;
+        }
+        if (newPassword.length < 6) { // Sincronize com o minlength do HTML (que é 8 no seu HTML)
+            showError_ProfileStaff("A nova senha deve ter pelo menos 6 caracteres.");
+            return;
+        }
+
+        const updatePasswordData = {
+            name: currentStaffUser.name,
+            email: currentStaffUser.email,
+            password: newPassword, // A NOVA senha
+            // type: currentStaffUser.type || "STAFF" // Se 'type' for obrigatório no DTO e não nulo
+        };
+
+        try {
+            await fetchAPI_ProfileStaff(`/staffs/${staffIdForUpdate}`, 'PUT', updatePasswordData);
+
+            showSuccess_ProfileStaff("Senha alterada com sucesso! Você será deslogado. Por favor, faça login com sua nova senha.");
+            setTimeout(() => {
+                logout_ProfileStaff();
+            }, 3000);
+            document.getElementById("securityForm").reset();
+
+        } catch (error) {
+            console.error("PROFILE_STAFF: Erro ao tentar alterar senha:", error);
+        }
+      }
+
+      function updateUserDisplayInfo_CollabRecords() {
+        if (currentStaffUser && currentStaffUser.name) {
+            const userNameEl = document.getElementById('userNamePlaceholder');
+            if(userNameEl) userNameEl.textContent = currentStaffUser.name.split(' ')[0];
+
+            const profileHeaderName = document.querySelector('.profile-header h3');
+            const profileHeaderEmail = document.querySelector('.profile-header p');
+            const profileHeaderRole = document.querySelector('.profile-header .badge');
+            const navbarBrand = document.querySelector('.navbar-brand');
+            let userRoleDisplay = navbarBrand.querySelector('span.user-role-display');
+
+
+            if(profileHeaderName) profileHeaderName.textContent = currentStaffUser.name;
+            if(profileHeaderEmail) profileHeaderEmail.textContent = currentStaffUser.email;
+            if(navbarBrand && userRoleDisplay) {
+                const unitName = currentStaffUser.relatedEntityName || currentStaffUser.healthUnitName || '';
+                userRoleDisplay.textContent = `Colaborador ${unitName ? '(' + unitName + ')' : '' }`;
+            }
+            if(profileHeaderRole) {
+                 const roleDisplay = currentStaffUser.type || (currentStaffUser.roles?.includes("ROLE_STAFF") ? "Colaborador" : "Usuário");
+                 profileHeaderRole.textContent = roleDisplay.charAt(0).toUpperCase() + roleDisplay.slice(1).toLowerCase();
+            }
+        }
+      }
+
     </script>
   </body>
 </html>
