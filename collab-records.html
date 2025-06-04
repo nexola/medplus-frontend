@@ -3,172 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Med+ | Fichas</title>
-    <!-- Favicon -->
+    <title>Med+ | Gerenciamento de Fichas (Colaborador)</title>
     <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
-    <!-- Bootstrap 5.3 CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Bootstrap Icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"/>
     <style>
-      :root {
-        --med-primary: #3182ce;
-        --med-dark: #2c5282;
-        --med-light: #f5f9ff;
-      }
-
-      body {
-        background-color: #f8f9fa;
-        color: #212529;
-      }
-
-      .navbar-brand {
-        font-weight: 700;
-        color: var(--med-primary);
-      }
-
-      .navbar-brand span {
-        color: var(--med-dark);
-      }
-
-      .sidebar {
-        background-color: white;
-        min-height: calc(100vh - 56px);
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-      }
-
-      .sidebar .nav-link {
-        color: #495057;
-        border-radius: 5px;
-        margin-bottom: 5px;
-      }
-
+      :root { --med-primary: #3182ce; --med-dark: #2c5282; --med-light: #f5f9ff; }
+      body { background-color: #f8f9fa; color: #212529; }
+      .navbar-brand { font-weight: 700; color: var(--med-primary); }
+      .navbar-brand span.med-plus-text { color: var(--med-dark); }
+      .navbar-brand span.user-role-display { font-size: 0.9rem; color: #6c757d; margin-left: 5px; }
+      .sidebar { background-color: white; min-height: calc(100vh - 56px); box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); }
+      .sidebar .nav-link { color: #495057; border-radius: 5px; margin-bottom: 5px; }
       .sidebar .nav-link:hover,
-      .sidebar .nav-link.active {
-        background-color: var(--med-light);
-        color: var(--med-primary);
-      }
-
-      .sidebar .nav-link i {
-        margin-right: 10px;
-      }
-
-      .card {
-        border: none;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
-        border-radius: 10px;
-      }
-
-      .btn-primary {
-        background-color: var(--med-primary);
-        border-color: var(--med-primary);
-      }
-
-      .btn-primary:hover {
-        background-color: var(--med-dark);
-        border-color: var(--med-dark);
-      }
-
-      .action-btn {
-        width: 30px;
-        height: 30px;
-        padding: 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .badge-collab {
-        background-color: #6f42c1;
-      }
-
-      .search-box {
-        position: relative;
-      }
-
-      .search-box .form-control {
-        padding-left: 40px;
-      }
-
-      .search-box i {
-        position: absolute;
-        left: 15px;
-        top: 12px;
-        color: #6c757d;
-      }
-
-      .filter-dropdown .dropdown-menu {
-        width: 300px;
-        padding: 15px;
-      }
-
-      .ficha-card {
-        border-left: 4px solid var(--med-primary);
-        transition: all 0.2s;
-      }
-
-      .ficha-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      }
-
-      .ficha-card.urgent {
-        border-left-color: #dc3545;
-      }
-
-      .ficha-card.completed {
-        border-left-color: #28a745;
-      }
-
-      .ficha-card.pending {
-        border-left-color: #ffc107;
-      }
-
-      .patient-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
-      }
+      .sidebar .nav-link.active { background-color: var(--med-light); color: var(--med-primary); }
+      .sidebar .nav-link i { margin-right: 10px; }
+      .card { border: none; box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); border-radius: 10px; }
+      .status-badge { padding: 0.3em 0.6em; border-radius: 0.25rem; font-size: 0.8rem; font-weight: 500; display: inline-block; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; }
+      .status-agendado { background-color: #e3f2fd; color: #1976d2; } /* SCHEDULED / AGENDADO */
+      .status-concluido { background-color: #e8f5e9; color: #388e3c; } /* CONCLUDED / CONCLUIDO */
+      .status-cancelado { background-color: #ffebee; color: #d32f2f; } /* CANCELLED / CANCELADO */
+      .status-em_andamento { background-color: #fff8e1; color: #ffa000; } /* IN_PROGRESS (se existir) */
+      .status-pendente { background-color: #fff3cd; color: #664d03; } /* PENDING (se existir) */
+      .action-btn { width: 35px; height: 35px; padding: 0; display: inline-flex; align-items: center; justify-content: center; margin:0 2px; }
+      .filter-card { transition: all 0.3s; }
+      .filter-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+      .patient-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background-color: var(--med-light); color: var(--med-primary); display: flex; align-items: center; justify-content: center; font-weight: bold; }
+      #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); z-index: 10050; display: flex; justify-content: center; align-items: center; }
+      @media (max-width: 768px) { .table-responsive { overflow-x: auto;} .modal-lg { max-width: 95%;} }
     </style>
   </head>
   <body>
-    <!-- Top Navigation Bar -->
+    <div id="loading-overlay" style="display: none;">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"><span class="visually-hidden">Carregando...</span></div>
+    </div>
+
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <i class="bi bi-heart-pulse"></i> Med<span>+</span> Collab
+          <i class="bi bi-heart-pulse"></i> Med<span class="med-plus-text">+</span>
+          <span class="user-role-display"></span>
         </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-              >
-                <i class="bi bi-person-circle"></i> Maria Oliveira
+              <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle"></i> <span id="userNamePlaceholder"></span>
               </a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li>
-                  <a class="dropdown-item" href="./profile-collab.html"
-                    ><i class="bi bi-person"></i> Perfil</a
-                  >
-                </li>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
+                <li><a class="dropdown-item" href="./profile-collab.html"><i class="bi bi-person"></i> Perfil</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#"
-                    ><i class="bi bi-box-arrow-right"></i> Sair</a
-                  >
-                </li>
+                <li><a class="dropdown-item" href="#" id="logoutButton"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
               </ul>
             </li>
           </ul>
@@ -178,477 +66,620 @@
 
     <div class="container-fluid">
       <div class="row">
-        <!-- Sidebar -->
         <div class="col-md-3 col-lg-2 d-md-block sidebar bg-white">
           <div class="position-sticky pt-3">
             <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link" href="./main-collab.html">
-                  <i class="bi bi-speedometer2"></i> Dashboard
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./collab-patients.html">
-                  <i class="bi bi-people"></i> Pacientes
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="./collab-records.html">
-                  <i class="bi bi-files"></i> Fichas
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./collab-schedule.html">
-                  <i class="bi bi-calendar-check"></i> Agenda
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./profile-collab.html">
-                  <i class="bi bi-person"></i> Meu Perfil
-                </a>
-              </li>
+              <li class="nav-item"><a class="nav-link" href="./main-collab.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+              <li class="nav-item"><a class="nav-link" href="./collab-patients.html"><i class="bi bi-people"></i> Pacientes</a></li>
+              <li class="nav-item"><a class="nav-link active" href="./collab-records.html"><i class="bi bi-files"></i> Fichas</a></li>
+              <li class="nav-item"><a class="nav-link" href="./collab-schedule.html"><i class="bi bi-calendar-check"></i> Agenda</a></li>
+              <li class="nav-item"><a class="nav-link" href="./profile-collab.html"><i class="bi bi-person"></i> Meu Perfil</a></li>
             </ul>
           </div>
         </div>
 
-        <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-          <div
-            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
-          >
-            <h1 class="h2"><i class="bi bi-files"></i> Fichas Médicas</h1>
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2"><i class="bi bi-files"></i> Gerenciamento de Fichas</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
-              <button
-                class="btn btn-primary me-2"
-                data-bs-toggle="modal"
-                data-bs-target="#newFichaModal"
-              >
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newRecordModal">
                 <i class="bi bi-plus-lg"></i> Nova Ficha
               </button>
-              <div class="btn-group">
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary dropdown-toggle filter-dropdown"
-                  data-bs-toggle="dropdown"
-                >
-                  <i class="bi bi-funnel"></i> Filtros
-                </button>
-                <div class="dropdown-menu dropdown-menu-end">
-                  <div class="mb-3">
-                    <label class="form-label">Status</label>
-                    <select class="form-select">
-                      <option>Todas</option>
-                      <option>Ativas</option>
-                      <option>Concluídas</option>
-                      <option>Urgentes</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Tipo</label>
-                    <select class="form-select">
-                      <option>Todos</option>
-                      <option>Consulta</option>
-                      <option>Retorno</option>
-                      <option>Emergência</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Médico</label>
-                    <select class="form-select">
-                      <option>Todos</option>
-                      <option>Dr. Carlos Andrade</option>
-                      <option>Dra. Ana Beatriz</option>
-                      <option>Dr. Roberto Santos</option>
-                    </select>
-                  </div>
-                  <div class="d-grid">
-                    <button class="btn btn-sm btn-primary">
-                      Aplicar Filtros
-                    </button>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
-          <!-- Search and Stats -->
           <div class="row mb-4">
-            <div class="col-md-8">
-              <div class="search-box">
-                <i class="bi bi-search"></i>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Buscar fichas por paciente, médico ou código..."
-                />
-              </div>
+            <div class="col-md-4 col-lg-3 mb-3">
+              <div class="card filter-card h-100"><div class="card-body text-center"><h6 class="card-title">Total de Fichas</h6><p class="display-6 mb-0" id="statTotalRecords">0</p></div></div>
             </div>
-            <div class="col-md-4">
-              <div class="d-flex justify-content-end align-items-center h-100">
-                <span class="text-muted me-2">Total:</span>
-                <span class="fw-bold">28 fichas</span>
-                <span class="badge bg-success ms-2">15 ativas</span>
-                <span class="badge bg-secondary ms-2">10 concluídas</span>
-                <span class="badge bg-danger ms-2">3 urgentes</span>
-              </div>
+            <div class="col-md-4 col-lg-3 mb-3">
+              <div class="card filter-card h-100"><div class="card-body text-center"><h6 class="card-title">Agendadas</h6><p class="display-6 mb-0" id="statScheduled">0</p></div></div>
+            </div>
+            <div class="col-md-4 col-lg-3 mb-3">
+              <div class="card filter-card h-100"><div class="card-body text-center"><h6 class="card-title">Concluídas</h6><p class="display-6 mb-0" id="statConcluded">0</p></div></div>
+            </div>
+             <div class="col-md-4 col-lg-3 mb-3">
+              <div class="card filter-card h-100"><div class="card-body text-center"><h6 class="card-title">Canceladas</h6><p class="display-6 mb-0" id="statCancelled">0</p></div></div>
             </div>
           </div>
 
-          <!-- Fichas List -->
-          <div class="row">
-            <!-- Ficha Card -->
-            <div class="col-lg-6 mb-4">
-              <div class="card ficha-card urgent h-100">
-                <div class="card-body">
-                  <div
-                    class="d-flex justify-content-between align-items-start mb-3"
-                  >
-                    <div>
-                      <span class="badge bg-danger">Urgente</span>
-                      <h5 class="mt-2">#FCH-2023-0042</h5>
-                    </div>
-                    <small class="text-muted">Criada: 15/11/2023</small>
-                  </div>
+          <div class="card mb-4">
 
-                  <div class="d-flex align-items-center mb-3">
-                    <img
-                      src="https://randomuser.me/api/portraits/men/32.jpg"
-                      alt="Patient"
-                      class="patient-avatar me-3"
-                    />
-                    <div>
-                      <h6 class="mb-0">João da Silva</h6>
-                      <small class="text-muted">45 anos • Masculino</small>
-                    </div>
-                  </div>
+          </div>
 
-                  <div class="mb-3">
-                    <p class="mb-1">
-                      <strong>Médico:</strong> Dr. Carlos Andrade
-                    </p>
-                    <p class="mb-1"><strong>Tipo:</strong> Emergência</p>
-                    <p class="mb-1">
-                      <strong>Descrição:</strong> Dor no peito e falta de ar
-                    </p>
-                  </div>
-
-                  <div
-                    class="d-flex justify-content-between align-items-center"
-                  >
-                    <div>
-                      <span class="badge bg-primary">Cardiologia</span>
-                    </div>
-                    <div>
-                      <button class="btn btn-sm btn-outline-primary">
-                        <i class="bi bi-eye"></i> Visualizar
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Ficha Card -->
-            <div class="col-lg-6 mb-4">
-              <div class="card ficha-card h-100">
-                <div class="card-body">
-                  <div
-                    class="d-flex justify-content-between align-items-start mb-3"
-                  >
-                    <div>
-                      <span class="badge bg-success">Ativa</span>
-                      <h5 class="mt-2">#FCH-2023-0038</h5>
-                    </div>
-                    <small class="text-muted">Criada: 10/11/2023</small>
-                  </div>
-
-                  <div class="d-flex align-items-center mb-3">
-                    <img
-                      src="https://randomuser.me/api/portraits/women/44.jpg"
-                      alt="Patient"
-                      class="patient-avatar me-3"
-                    />
-                    <div>
-                      <h6 class="mb-0">Maria Oliveira</h6>
-                      <small class="text-muted">32 anos • Feminino</small>
-                    </div>
-                  </div>
-
-                  <div class="mb-3">
-                    <p class="mb-1">
-                      <strong>Médico:</strong> Dra. Ana Beatriz
-                    </p>
-                    <p class="mb-1"><strong>Tipo:</strong> Consulta</p>
-                    <p class="mb-1">
-                      <strong>Descrição:</strong> Acompanhamento pré-natal
-                    </p>
-                  </div>
-
-                  <div
-                    class="d-flex justify-content-between align-items-center"
-                  >
-                    <div>
-                      <span class="badge bg-success">Obstetrícia</span>
-                    </div>
-                    <div>
-                      <button class="btn btn-sm btn-outline-primary">
-                        <i class="bi bi-eye"></i> Visualizar
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Ficha Card -->
-            <div class="col-lg-6 mb-4">
-              <div class="card ficha-card completed h-100">
-                <div class="card-body">
-                  <div
-                    class="d-flex justify-content-between align-items-start mb-3"
-                  >
-                    <div>
-                      <span class="badge bg-secondary">Concluída</span>
-                      <h5 class="mt-2">#FCH-2023-0029</h5>
-                    </div>
-                    <small class="text-muted">Criada: 05/11/2023</small>
-                  </div>
-
-                  <div class="d-flex align-items-center mb-3">
-                    <img
-                      src="https://randomuser.me/api/portraits/men/75.jpg"
-                      alt="Patient"
-                      class="patient-avatar me-3"
-                    />
-                    <div>
-                      <h6 class="mb-0">Carlos Ferreira</h6>
-                      <small class="text-muted">28 anos • Masculino</small>
-                    </div>
-                  </div>
-
-                  <div class="mb-3">
-                    <p class="mb-1">
-                      <strong>Médico:</strong> Dr. Roberto Santos
-                    </p>
-                    <p class="mb-1"><strong>Tipo:</strong> Retorno</p>
-                    <p class="mb-1">
-                      <strong>Descrição:</strong> Avaliação pós-cirúrgica
-                    </p>
-                  </div>
-
-                  <div
-                    class="d-flex justify-content-between align-items-center"
-                  >
-                    <div>
-                      <span class="badge bg-warning text-dark">Ortopedia</span>
-                    </div>
-                    <div>
-                      <button class="btn btn-sm btn-outline-primary">
-                        <i class="bi bi-eye"></i> Visualizar
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Ficha Card -->
-            <div class="col-lg-6 mb-4">
-              <div class="card ficha-card pending h-100">
-                <div class="card-body">
-                  <div
-                    class="d-flex justify-content-between align-items-start mb-3"
-                  >
-                    <div>
-                      <span class="badge bg-warning text-dark">Pendente</span>
-                      <h5 class="mt-2">#FCH-2023-0045</h5>
-                    </div>
-                    <small class="text-muted">Criada: 18/11/2023</small>
-                  </div>
-
-                  <div class="d-flex align-items-center mb-3">
-                    <img
-                      src="https://randomuser.me/api/portraits/women/68.jpg"
-                      alt="Patient"
-                      class="patient-avatar me-3"
-                    />
-                    <div>
-                      <h6 class="mb-0">Ana Paula Santos</h6>
-                      <small class="text-muted">50 anos • Feminino</small>
-                    </div>
-                  </div>
-
-                  <div class="mb-3">
-                    <p class="mb-1">
-                      <strong>Médico:</strong> Dra. Juliana Costa
-                    </p>
-                    <p class="mb-1"><strong>Tipo:</strong> Consulta</p>
-                    <p class="mb-1">
-                      <strong>Descrição:</strong> Exames de rotina
-                    </p>
-                  </div>
-
-                  <div
-                    class="d-flex justify-content-between align-items-center"
-                  >
-                    <div>
-                      <span class="badge bg-info">Clínico Geral</span>
-                    </div>
-                    <div>
-                      <button class="btn btn-sm btn-outline-primary">
-                        <i class="bi bi-eye"></i> Visualizar
-                      </button>
-                    </div>
-                  </div>
-                </div>
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Paciente</th>
+                      <th>Médico</th>
+                      <th>Data</th>
+                      <th>Horário</th>
+                      <th>Estado</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recordsTableBody">
+                    <tr><td colspan="7" class="text-center">Carregando fichas...</td></tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
-
-          <!-- Pagination -->
-          <nav aria-label="Page navigation" class="mt-4">
-            <ul class="pagination justify-content-center">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">Anterior</a>
-              </li>
-              <li class="page-item active">
-                <a class="page-link" href="#">1</a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#">Próxima</a>
-              </li>
-            </ul>
-          </nav>
         </main>
       </div>
     </div>
 
-    <!-- New Ficha Modal -->
-    <div class="modal fade" id="newFichaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="newRecordModal" tabindex="-1" aria-labelledby="newRecordModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">
-              <i class="bi bi-file-earmark-plus"></i> Nova Ficha Médica
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
+          <div class="modal-header"><h5 class="modal-title" id="newRecordModalLabel"><i class="bi bi-file-earmark-plus"></i> Nova Ficha (Agendamento)</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+          <form id="newRecordForm"><div class="modal-body">
+              <div class="mb-3"><label for="recordPatientSelect" class="form-label">Paciente</label><select class="form-select" id="recordPatientSelect" required><option value="">Carregando...</option></select></div>
+              <div class="mb-3"><label for="recordDoctorSelect" class="form-label">Médico</label><select class="form-select" id="recordDoctorSelect" required><option value="">Carregando...</option></select></div>
+              <div class="row"><div class="col-md-6 mb-3"><label for="recordDateInput" class="form-label">Data</label><input type="date" class="form-control" id="recordDateInput" required /></div><div class="col-md-6 mb-3"><label for="recordTimeInput" class="form-label">Hora</label><input type="time" class="form-control" id="recordTimeInput" required /></div></div>
+              <div class="mb-3"><label for="recordTypeSelect" class="form-label">Tipo da Consulta</label>
+                <select class="form-select" id="recordTypeSelect" required>
+                    <option value="">Selecione o tipo...</option>
+                    <option value="CONSULTA_ROTINA">Consulta de Rotina</option>
+                    <option value="RETORNO">Retorno</option>
+                    <option value="EMERGENCIA">Emergência</option>
+                    <option value="ACOMPANHAMENTO_EXAME">Acompanhamento de Exame</option>
+                    <option value="OUTRO">Outro (descrever abaixo)</option>
+                </select>
+              </div>
+              <div class="mb-3"><label for="recordDescriptionText" class="form-label">Observações / Descrição Adicional</label><textarea class="form-control" id="recordDescriptionText" rows="3" placeholder="Detalhes adicionais, motivo da consulta se 'Outro'"></textarea></div>
+              <div id="newRecordError" class="text-danger mt-2" style="display: none;"></div>
+          </div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button><button type="submit" class="btn btn-primary">Criar Ficha</button></div></form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="viewRecordModal" tabindex="-1" aria-labelledby="viewRecordModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header"><h5 class="modal-title" id="viewRecordModalLabel"><i class="bi bi-file-earmark-text-fill"></i> Detalhes da Ficha <span id="viewRecordIdBadge" class="badge bg-secondary ms-2"></span></h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
           <div class="modal-body">
-            <form id="newFichaForm">
-              <div class="row mb-4">
-                <div class="col-md-6">
-                  <label for="fichaPatient" class="form-label">Paciente</label>
-                  <select class="form-select" id="fichaPatient" required>
-                    <option value="">Selecione um paciente</option>
-                    <option value="1">João da Silva</option>
-                    <option value="2">Maria Oliveira</option>
-                    <option value="3">Carlos Ferreira</option>
-                    <option value="4">Ana Paula Santos</option>
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <label for="fichaDoctor" class="form-label">Médico</label>
-                  <select class="form-select" id="fichaDoctor" required>
-                    <option value="">Selecione um médico</option>
-                    <option value="1">Dr. Carlos Andrade</option>
-                    <option value="2">Dra. Ana Beatriz</option>
-                    <option value="3">Dr. Roberto Santos</option>
-                    <option value="4">Dra. Juliana Costa</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="row mb-4">
-                <div class="col-md-6">
-                  <label for="fichaType" class="form-label"
-                    >Tipo de Ficha</label
-                  >
-                  <select class="form-select" id="fichaType" required>
-                    <option value="">Selecione o tipo</option>
-                    <option value="consulta">Consulta</option>
-                    <option value="retorno">Retorno</option>
-                    <option value="emergencia">Emergência</option>
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <label for="fichaPriority" class="form-label"
-                    >Prioridade</label
-                  >
-                  <select class="form-select" id="fichaPriority">
-                    <option value="normal">Normal</option>
-                    <option value="urgente">Urgente</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="mb-4">
-                <label for="fichaDescription" class="form-label"
-                  >Descrição</label
-                >
-                <textarea
-                  class="form-control"
-                  id="fichaDescription"
-                  rows="3"
-                  required
-                ></textarea>
-              </div>
-
-              <div class="mb-3">
-                <label for="fichaSymptoms" class="form-label">Sintomas</label>
-                <textarea
-                  class="form-control"
-                  id="fichaSymptoms"
-                  rows="2"
-                ></textarea>
-              </div>
-            </form>
+            <div class="row mb-3">
+              <div class="col-md-6"><strong>Paciente:</strong> <span id="viewPatientName"></span> (<span id="viewPatientCpf"></span>)</div>
+              <div class="col-md-6"><strong>Médico:</strong> <span id="viewDoctorName"></span> (<span id="viewDoctorSpecialty"></span>)</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6"><strong>Data e Hora:</strong> <span id="viewRecordDateTime"></span></div>
+              <div class="col-md-6"><strong>Estado:</strong> <span id="viewRecordState" class="status-badge"></span></div>
+            </div>
+            <div class="mb-3"><strong>Tipo:</strong> <span id="viewRecordType"></span></div>
+            <div class="mb-3">
+                <strong>Diagnóstico/Observações:</strong>
+                <p class="bg-light p-2 rounded" id="viewRecordDiagnosis" style="min-height: 50px; white-space: pre-wrap;"></p>
+            </div>
+            <hr/>
+            <div id="recordActions" class="mt-3 d-flex justify-content-end">
+                 {/* Botões de ação serão adicionados aqui se o estado permitir */}
+            </div>
+             <div id="updateRecordError" class="text-danger mt-2" style="display: none;"></div> {/* Div de erro para o modal de detalhes */}
           </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancelar
-            </button>
-            <button type="submit" form="newFichaForm" class="btn btn-primary">
-              Criar Ficha
-            </button>
+              <button type="button" class="btn btn-outline-secondary" id="printRecordButton" disabled><i class="bi bi-printer"></i> Imprimir (Em breve)</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Bootstrap 5.3 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Form submission handler
-        document
-          .getElementById("newFichaForm")
-          .addEventListener("submit", function (e) {
-            e.preventDefault();
-            alert("Ficha médica criada com sucesso!");
-            bootstrap.Modal.getInstance(
-              document.getElementById("newFichaModal")
-            ).hide();
-            this.reset();
-          });
+      const API_BASE_RECORDS= "https://ubs-zxgf.onrender.com";
+      // const API_BASE_RECORDS = "http://localhost:8080";
+      const DEFAULT_ZONE_ID_RECORDS = "America/Sao_Paulo";
 
-        // Search functionality
-        const searchInput = document.querySelector(".search-box input");
-        searchInput.addEventListener("input", function () {
-          // In a real app, you would filter the fichas here
-          console.log("Searching for:", this.value);
-        });
+      let currentUser_Records = null;
+      let allAppointments_Records = [];
+      let displayedAppointments_Records = [];
+      let patientsForSelect_Records = [];
+      let doctorsForSelect_Records = [];
+
+      function showLoading_Records() {
+        const el = document.getElementById('loading-overlay');
+        if (el) el.style.display = 'flex';
+      }
+      function hideLoading_Records() {
+        const el = document.getElementById('loading-overlay');
+        if (el) el.style.display = 'none';
+      }
+
+      async function fetchAPI_Records(endpoint, method = 'GET', body = null) {
+        const token = localStorage.getItem("access_token");
+        if (!token && endpoint !== '/oauth2/token') {
+            showError_Records("Token de acesso não encontrado. Redirecionando para login.");
+            setTimeout(() => { window.location.href = './index.html'; }, 2000);
+            throw new Error("Token não encontrado.");
+        }
+
+        const headers = { 'Authorization': `Bearer ${token}` };
+        if (body && !(body instanceof FormData) && !(body instanceof URLSearchParams)) {
+            headers['Content-Type'] = 'application/json';
+        } else if (body instanceof URLSearchParams) {
+            headers['Content-Type'] = 'application/x-www-form-urlencoded';
+        }
+
+        const config = { method, headers };
+        if (body) {
+            config.body = (body instanceof FormData || body instanceof URLSearchParams) ? body : JSON.stringify(body);
+        }
+
+        showLoading_Records();
+        try {
+          const response = await fetch(`${API_BASE_RECORDS}${endpoint}`, config);
+          if (response.status === 401 && endpoint !== '/oauth2/token') {
+            localStorage.clear(); window.location.href = './index.html'; throw new Error("Sessão expirada.");
+          }
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: `Erro HTTP ${response.status}` }));
+            const mainError = errorData.error_description || errorData.message || errorData.error || (errorData.errors && errorData.errors[0]) || `Erro ${response.status}.`;
+            throw new Error(mainError);
+          }
+          if (response.status === 204 || response.headers.get("content-length") === "0") return null;
+          return await response.json();
+        } catch (error) {
+          showError_Records(error.message); throw error;
+        } finally {
+          hideLoading_Records();
+        }
+      }
+
+      function formatCPF_Records(cpf) {
+        if (!cpf) return 'N/A';
+        const cleaned = String(cpf).replace(/\D/g, '');
+        return cleaned.length === 11 ? cleaned.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4') : cpf;
+      }
+
+      function formatInstantToLocaleDateTime_Records(instantStr, zoneId = DEFAULT_ZONE_ID_RECORDS) {
+        if (!instantStr) return { date: "N/A", time: "N/A" };
+        try {
+          const dateObj = new Date(instantStr);
+          return {
+            date: dateObj.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: zoneId }),
+            time: dateObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: zoneId })
+          };
+        } catch (e) { return { date: "Data Inválida", time: "" }; }
+      }
+
+      function getInitials_Records(name) {
+        if (!name || typeof name !== 'string') return '?';
+        const parts = name.trim().split(' ').filter(p => p);
+        if (parts.length > 1 && parts[0].length > 0 && parts[parts.length - 1].length > 0) {
+             return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+        }
+        if (parts.length === 1 && parts[0].length > 0) return parts[0].substring(0, 2).toUpperCase();
+        return '?';
+      }
+
+      function getStateClass_Records(stateEnum) {
+        if (!stateEnum) return "agendado";
+        const stateMap = { "AGENDADO": "agendado", "CONCLUIDO": "concluido", "CANCELADO": "cancelado" };
+        return stateMap[String(stateEnum).toUpperCase()] || "agendado";
+      }
+
+      function showError_Records(message) {
+        const existingAlert = document.querySelector('.custom-alert-collab-records');
+        if(existingAlert) existingAlert.remove();
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3 custom-alert-collab-records';
+        alertDiv.style.zIndex = "10055";
+        alertDiv.setAttribute('role', 'alert');
+        alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+        document.body.appendChild(alertDiv);
+        setTimeout(() => {
+            const instance = bootstrap.Alert.getOrCreateInstance(alertDiv);
+            if (instance) instance.close(); else if (alertDiv.parentElement) alertDiv.remove();
+        }, 7000);
+      }
+      function showSuccess_Records(message) {
+        const existingAlert = document.querySelector('.custom-alert-collab-records');
+        if(existingAlert) existingAlert.remove();
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3 custom-alert-collab-records';
+        alertDiv.style.zIndex = "10055";
+        alertDiv.setAttribute('role', 'alert');
+        alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+        document.body.appendChild(alertDiv);
+        setTimeout(() => {
+            const instance = bootstrap.Alert.getOrCreateInstance(alertDiv);
+            if (instance) instance.close(); else if (alertDiv.parentElement) alertDiv.remove();
+        }, 4000);
+      }
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+            await authenticateAndLoadUser_CollabRecords();
+            if (currentUser_Records) {
+                await loadPageData_CollabRecords();
+                attachPageEventListeners_CollabRecords();
+            }
+        } catch (error) {
+            console.error("RCRDS: Erro crítico na inicialização da página de fichas:", error.message);
+        }
       });
+
+      async function authenticateAndLoadUser_CollabRecords() {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+            window.location.href = './index.html';
+            throw new Error("Token não encontrado, redirecionando.");
+        }
+        try {
+            currentUser_Records = await fetchAPI_Records('/users/me');
+            if (!currentUser_Records || !currentUser_Records.roles?.includes("ROLE_STAFF")) {
+                throw new Error("Acesso não autorizado (Requer ROLE_STAFF).");
+            }
+            const unitId = currentUser_Records.healthUnitId || currentUser_Records.relatedEntityId;
+            if (!unitId) {
+                 throw new Error("Staff não associado a uma unidade de saúde.");
+            }
+            currentUser_Records.activeUnitId = unitId;
+            localStorage.setItem('user', JSON.stringify(currentUser_Records));
+            updateUserDisplayInfo_CollabRecords();
+        } catch (error) {
+            localStorage.clear();
+            showError_Records(error.message || "Falha na autenticação.");
+            setTimeout(() => window.location.href = './index.html', 3000);
+            throw error;
+        }
+      }
+
+      function updateUserDisplayInfo_CollabRecords() {
+        if (currentUser_Records && currentUser_Records.name) {
+            const userNameEl = document.getElementById('userNamePlaceholder');
+            if(userNameEl) userNameEl.textContent = currentUser_Records.name.split(' ')[0];
+
+            const navbarBrand = document.querySelector('.navbar-brand');
+            if(navbarBrand) {
+                let userRoleDisplay = navbarBrand.querySelector('span.user-role-display');
+                if (!userRoleDisplay) {
+                     userRoleDisplay = document.createElement('span');
+                     userRoleDisplay.className = 'user-role-display';
+                     navbarBrand.appendChild(userRoleDisplay);
+                }
+                const unitName = currentUser_Records.relatedEntityName || currentUser_Records.healthUnitName || 'Unidade';
+                userRoleDisplay.textContent = `Colaborador (${unitName})`;
+            }
+        }
+      }
+
+      async function loadPageData_CollabRecords() {
+        try {
+            const appointmentsData = await fetchAPI_Records('/appointments');
+            allAppointments_Records = appointmentsData || [];
+            displayedAppointments_Records = [...allAppointments_Records];
+            renderRecordsTable_CollabRecords();
+            updateRecordStatsCards_CollabRecords();
+        } catch (error) {
+            const tbody = document.getElementById('recordsTableBody');
+            if (tbody) tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Falha ao carregar fichas.</td></tr>`;
+        }
+      }
+
+      function renderRecordsTable_CollabRecords() {
+        const tbody = document.getElementById('recordsTableBody');
+        if(!tbody) { console.error("Elemento recordsTableBody não encontrado!"); return; }
+        tbody.innerHTML = '';
+
+        if (displayedAppointments_Records.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" class="text-center">Nenhuma ficha encontrada.</td></tr>`;
+            return;
+        }
+
+        displayedAppointments_Records.forEach(app => {
+            const {date: localeDate, time: localeTime} = formatInstantToLocaleDateTime_Records(app.date);
+            const patientName = app.patient?.name || 'Paciente Desconhecido';
+            const patientCpf = app.patient?.cpf ? `(${formatCPF_Records(app.patient.cpf)})` : '';
+            const doctorName = app.doctor?.name || 'Médico Desconhecido';
+            const stateOriginal = app.state || "AGENDADO";
+            const stateText = String(stateOriginal).replace(/_/g, " ");
+
+            const row = `
+                <tr>
+                    <td>#${String(app.id).padStart(4, "0")}</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="patient-avatar">${getInitials_Records(patientName)}</div>
+                            <div class="ms-2">
+                                <div>${patientName}</div>
+                                <small class="text-muted">${patientCpf}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${doctorName}</td>
+                    <td>${localeDate}</td>
+                    <td>${localeTime}</td>
+                    <td><span class="status-badge status-${getStateClass_Records(stateOriginal)}">${stateText}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary action-btn"
+                                data-bs-toggle="modal" data-bs-target="#viewRecordModal"
+                                data-record-id="${app.id}" title="Ver Detalhes">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+      }
+
+      function updateRecordStatsCards_CollabRecords() {
+        const statTotalEl = document.getElementById('statTotalRecords');
+        const statScheduledEl = document.getElementById('statScheduled');
+        const statConcludedEl = document.getElementById('statConcluded');
+        const statCancelledEl = document.getElementById('statCancelled');
+
+        if(statTotalEl) statTotalEl.textContent = allAppointments_Records.length;
+        if(statScheduledEl) statScheduledEl.textContent = allAppointments_Records.filter(a => a.state === "AGENDADO").length;
+        if(statConcludedEl) statConcludedEl.textContent = allAppointments_Records.filter(a => a.state === "CONCLUIDO").length;
+        if(statCancelledEl) statCancelledEl.textContent = allAppointments_Records.filter(a => a.state === "CANCELADO").length;
+      }
+
+      async function populateNewRecordModalSelects_CollabRecords() {
+          try {
+              if (patientsForSelect_Records.length === 0 || doctorsForSelect_Records.length === 0) {
+                  const [patientsData, doctorsData] = await Promise.all([
+                      fetchAPI_Records('/patients'),
+                      fetchAPI_Records('/doctors')
+                  ]);
+                  patientsForSelect_Records = patientsData || [];
+                  doctorsForSelect_Records = doctorsData || [];
+              }
+
+              const patientSelect = document.getElementById('recordPatientSelect');
+              if(patientSelect) {
+                patientSelect.innerHTML = '<option value="">Selecione um paciente...</option>';
+                patientsForSelect_Records.forEach(p => patientSelect.innerHTML += `<option value="${p.id}">${p.name} (${formatCPF_Records(p.cpf)})</option>`);
+              }
+
+              const doctorSelect = document.getElementById('recordDoctorSelect');
+              if(doctorSelect) {
+                doctorSelect.innerHTML = '<option value="">Selecione um médico...</option>';
+                doctorsForSelect_Records.forEach(d => doctorSelect.innerHTML += `<option value="${d.id}">${d.name} (${d.specialty || 'N/A'})</option>`);
+              }
+          } catch (error) {
+              const patientSelect = document.getElementById('recordPatientSelect');
+              const doctorSelect = document.getElementById('recordDoctorSelect');
+              if(patientSelect) patientSelect.innerHTML = '<option value="">Erro ao carregar pacientes</option>';
+              if(doctorSelect) doctorSelect.innerHTML = '<option value="">Erro ao carregar médicos</option>';
+          }
+      }
+
+      function applyRecordFilters_CollabRecords() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+        const stateFilter = document.getElementById('stateFilter').value;
+        const dateFilterValue = document.getElementById('dateFilterSingle').value;
+
+        displayedAppointments_Records = allAppointments_Records.filter(app => {
+            const matchesSearch = !searchTerm ||
+                (app.patient?.name || "").toLowerCase().includes(searchTerm) ||
+                (app.doctor?.name || "").toLowerCase().includes(searchTerm) ||
+                String(app.id).includes(searchTerm);
+
+            const matchesState = !stateFilter || app.state === stateFilter;
+
+            let matchesDate = true;
+            if (dateFilterValue) {
+                const filterDate = new Date(dateFilterValue + "T00:00:00Z");
+                const appDateOnly = new Date(new Date(app.date).toISOString().substring(0, 10) + "T00:00:00Z");
+                matchesDate = appDateOnly.getTime() === filterDate.getTime();
+            }
+            return matchesSearch && matchesState && matchesDate;
+        });
+        renderRecordsTable_CollabRecords();
+      }
+
+      function attachPageEventListeners_CollabRecords() {
+        const logoutBtn = document.getElementById('logoutButton');
+        if (logoutBtn) logoutBtn.addEventListener('click', (e) => {
+          e.preventDefault(); localStorage.clear(); window.location.href = './index.html';
+        });
+
+        const newRecordFormEl = document.getElementById('newRecordForm');
+        if(newRecordFormEl) newRecordFormEl.addEventListener('submit', handleCreateNewRecord_CollabRecords);
+
+        const searchInputEl = document.getElementById('searchInput');
+        if(searchInputEl) searchInputEl.addEventListener('input', applyRecordFilters_CollabRecords);
+
+        const stateFilterEl = document.getElementById('stateFilter');
+        if(stateFilterEl) stateFilterEl.addEventListener('change', applyRecordFilters_CollabRecords);
+
+        const dateFilterEl = document.getElementById('dateFilterSingle');
+        if(dateFilterEl) dateFilterEl.addEventListener('change', applyRecordFilters_CollabRecords);
+
+        const applyFiltersBtn = document.getElementById('applyRecordFiltersButton');
+        if(applyFiltersBtn) applyFiltersBtn.addEventListener('click', applyRecordFilters_CollabRecords);
+
+        const newRecordModalEl = document.getElementById('newRecordModal');
+        if(newRecordModalEl) {
+            newRecordModalEl.addEventListener('show.bs.modal', populateNewRecordModalSelects_CollabRecords);
+        }
+
+        const viewRecordModalEl = document.getElementById('viewRecordModal');
+        if(viewRecordModalEl) {
+            viewRecordModalEl.addEventListener('show.bs.modal', async function(event) {
+                const button = event.relatedTarget;
+                const recordId = button.dataset.recordId;
+                if(recordId) await loadAndShowRecordDetails_CollabRecords(recordId);
+            });
+        }
+      }
+
+      async function handleCreateNewRecord_CollabRecords(event) {
+          event.preventDefault();
+          const errorDiv = document.getElementById('newRecordError');
+          if(errorDiv) { errorDiv.style.display = 'none'; errorDiv.textContent = ''; }
+
+          const localDate = document.getElementById('recordDateInput').value;
+          const localTime = document.getElementById('recordTimeInput').value;
+
+          if (!localDate || !localTime) {
+              if(errorDiv){ errorDiv.textContent = 'Data e Hora são obrigatórias.'; errorDiv.style.display = 'block';}
+              else { showError_Records('Data e Hora são obrigatórias.'); }
+              return;
+          }
+          // Cria o Instant assumindo que a data/hora são no fuso local do navegador e converte para UTC (ISO string)
+          const localDateTime = new Date(`${localDate}T${localTime}:00`);
+          if (isNaN(localDateTime.getTime())) {
+              if(errorDiv){ errorDiv.textContent = 'Data ou Hora inválida.'; errorDiv.style.display = 'block'; }
+              else { showError_Records('Data ou Hora inválida.'); }
+              return;
+          }
+          const appointmentInstant = localDateTime.toISOString();
+
+          const recordType = document.getElementById('recordTypeSelect').value;
+          const descriptionText = document.getElementById('recordDescriptionText').value;
+          let fullDescription = String(recordType).replace(/_/g, " ");
+          if (descriptionText.trim()) {
+            fullDescription += (fullDescription && recordType !== 'OUTRO' ? " - " : (recordType === 'OUTRO' ? ": " : "")) + descriptionText.trim();
+          }
+
+
+          const recordData = {
+              patientId: document.getElementById('recordPatientSelect').value,
+              doctorId: document.getElementById('recordDoctorSelect').value,
+              date: appointmentInstant,
+              description: fullDescription,
+              type: recordType,
+              state: "AGENDADO",
+              diagnosis: document.getElementById('recordDescriptionText').value
+            }
+
+          if (!recordData.patientId || !recordData.doctorId || !recordData.type) {
+              if(errorDiv){ errorDiv.textContent = 'Paciente, Médico e Tipo da Consulta são obrigatórios.'; errorDiv.style.display = 'block'; }
+              else { showError_Records('Paciente, Médico e Tipo da Consulta são obrigatórios.'); }
+              return;
+          }
+
+          try {
+              const createdRecord = await fetchAPI_Records('/appointments', 'POST', recordData);
+              showSuccess_Records(`Nova ficha #${createdRecord.id} criada com sucesso!`);
+              const newRecordModalInstance = bootstrap.Modal.getInstance(document.getElementById('newRecordModal'));
+              if (newRecordModalInstance) newRecordModalInstance.hide();
+              event.target.reset();
+              await loadPageData_CollabRecords();
+          } catch (error) {
+              if(errorDiv){ errorDiv.textContent = `Erro ao criar ficha: ${error.message}`; errorDiv.style.display = 'block'; }
+              // showError_Records já é chamado por fetchAPI_Records
+          }
+      }
+
+      async function loadAndShowRecordDetails_CollabRecords(recordId) {
+          try {
+            const appointment = await fetchAPI_Records(`/appointments/${recordId}`);
+            if (!appointment) { showError_Records("Ficha não encontrada."); return; }
+
+            const viewRecordIdBadgeEl = document.getElementById('viewRecordIdBadge');
+            if(viewRecordIdBadgeEl) viewRecordIdBadgeEl.textContent = `#${String(appointment.id).padStart(4, "0")}`;
+
+            const viewPatientNameEl = document.getElementById('viewPatientName');
+            if(viewPatientNameEl) viewPatientNameEl.textContent = appointment.patient?.name || 'N/A';
+
+            const viewPatientCpfEl = document.getElementById('viewPatientCpf');
+            if(viewPatientCpfEl) viewPatientCpfEl.textContent = formatCPF_Records(appointment.patient?.cpf);
+
+            const viewDoctorNameEl = document.getElementById('viewDoctorName');
+            if(viewDoctorNameEl) viewDoctorNameEl.textContent = appointment.doctor?.name || 'N/A';
+
+            const viewDoctorSpecialtyEl = document.getElementById('viewDoctorSpecialty');
+            if(viewDoctorSpecialtyEl) viewDoctorSpecialtyEl.textContent = appointment.doctor?.specialization || 'N/A';
+
+            const {date, time} = formatInstantToLocaleDateTime_Records(appointment.date);
+            const viewRecordDateTimeEl = document.getElementById('viewRecordDateTime');
+            if(viewRecordDateTimeEl) viewRecordDateTimeEl.textContent = `${date} às ${time}`;
+
+            const stateOriginal = appointment.state || "AGENDADO";
+            const stateText = String(stateOriginal).replace(/_/g, " ");
+            const stateBadge = document.getElementById('viewRecordState');
+            if(stateBadge){
+                 stateBadge.textContent = stateText;
+                 stateBadge.className = `status-badge status-${getStateClass_Records(stateOriginal)}`;
+            }
+
+            const viewRecordTypeEl = document.getElementById('viewRecordType');
+            if(viewRecordTypeEl) viewRecordTypeEl.textContent = String(appointment.type).replace(/_/g, " ") || 'Não especificado';
+
+            const viewRecordDiagnosisEl = document.getElementById('viewRecordDiagnosis');
+            if(viewRecordDiagnosisEl) viewRecordDiagnosisEl.textContent = appointment.diagnosis || appointment.description || 'Nenhuma observação ou diagnóstico.';
+
+            const actionsContainer = document.getElementById('recordActions');
+            actionsContainer.innerHTML = '';
+
+            if (stateOriginal === 'AGENDADO') {
+                // Para STAFF, apenas CANCELAR é uma ação provável. Concluir é para Médico.
+                const cancelBtn = document.createElement('button');
+                cancelBtn.className = 'btn btn-sm btn-danger';
+                cancelBtn.innerHTML = '<i class="bi bi-x-circle"></i> Cancelar Agendamento';
+                cancelBtn.onclick = () => handleUpdateRecordState_CollabRecords(recordId, 'CANCELADO');
+                actionsContainer.appendChild(cancelBtn);
+            }
+
+            const printBtn = document.getElementById('printRecordButton');
+            if(printBtn) printBtn.onclick = () => { showError_Records("Impressão não implementada."); };
+
+          } catch (error) {
+            showError_Records("Erro ao carregar detalhes da ficha.");
+          }
+      }
+
+      async function handleUpdateRecordState_CollabRecords(recordId, newState) {
+          const errorDiv = document.getElementById('updateRecordError');
+          if(errorDiv) { errorDiv.style.display = 'none'; errorDiv.textContent = ''; }
+
+          // Envia APENAS o novo estado. O backend precisa aceitar isso no PUT /appointments/{id}
+          // ou ter um endpoint PATCH específico.
+          const updateData = { state: newState };
+
+          try {
+              const updatedRecord = await fetchAPI_Records(`/appointments/${recordId}`, 'PUT', updateData);
+              showSuccess_Records(`Estado da ficha #${recordId} atualizado para ${newState}!`);
+
+              const viewModalInstance = bootstrap.Modal.getInstance(document.getElementById('viewRecordModal'));
+              if(viewModalInstance) viewModalInstance.hide();
+
+              const index = allAppointments_Records.findIndex(app => app.id == recordId);
+              if (index !== -1) {
+                  if(updatedRecord) {
+                    allAppointments_Records[index] = updatedRecord;
+                  } else {
+                    allAppointments_Records[index].state = newState;
+                  }
+              }
+              applyRecordFilters_CollabRecords();
+              updateRecordStatsCards_CollabRecords();
+
+          } catch (error) {
+              if(errorDiv){ errorDiv.textContent = `Erro ao atualizar estado: ${error.message}`; errorDiv.style.display = 'block';}
+              else { showError_Records(`Erro ao atualizar estado: ${error.message}`); }
+          }
+      }
     </script>
   </body>
 </html>
