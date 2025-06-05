@@ -238,35 +238,6 @@
             </div>
           </div>
 
-          <!-- Filtros -->
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label for="specialtyFilter" class="form-label"
-                    >Especialidade</label
-                  >
-                  <select class="form-select" id="specialtyFilter">
-                    <option value="">Todas especialidades</option>
-                    <option value="1">Cardiologia</option>
-                    <option value="2">Pediatria</option>
-                    <option value="3">Ortopedia</option>
-                    <option value="4">Clínico Geral</option>
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <label for="doctorFilter" class="form-label">Médico</label>
-                  <select class="form-select" id="doctorFilter">
-                    <option value="">Todos médicos</option>
-                    <option value="1">Dr. Carlos Andrade</option>
-                    <option value="2">Dra. Ana Beatriz</option>
-                    <option value="3">Dr. Roberto Santos</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!-- Grade de Horários -->
           <div class="card mb-4">
             <div class="card-header bg-white">
@@ -284,7 +255,7 @@
                       <th>Ações</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="scheduleTableBody">
                     <tr>
                       <td>Cardiologia</td>
                       <td>Dr. Carlos Andrade</td>
@@ -453,7 +424,7 @@
                   <label for="scheduleSpecialty" class="form-label"
                     >Especialidade</label
                   >
-                  <select class="form-select" id="scheduleSpecialty" required>
+                  <select class="form-select" id="addscheduleSpecialty" required>
                     <option value="">Selecione uma especialidade</option>
                     <option value="1">Cardiologia</option>
                     <option value="2">Pediatria</option>
@@ -462,8 +433,8 @@
                   </select>
                 </div>
                 <div class="col-md-6">
-                  <label for="scheduleDoctor" class="form-label">Médico</label>
-                  <select class="form-select" id="scheduleDoctor" required>
+                  <label for="addscheduleDoctor" class="form-label">Médico</label>
+                  <select class="form-select" id="addscheduleDoctor" required>
                     <option value="">Selecione um médico</option>
                     <option value="1">Dr. Carlos Andrade</option>
                     <option value="2">Dra. Ana Beatriz</option>
@@ -479,10 +450,10 @@
                     <input
                       class="form-check-input"
                       type="checkbox"
-                      id="mondayCheck"
+                      id="addMondayCheck"
                       value="1"
                     />
-                    <label class="form-check-label" for="mondayCheck"
+                    <label class="form-check-label" for="addMondayCheck"
                       >Segunda</label
                     >
                   </div>
@@ -490,10 +461,10 @@
                     <input
                       class="form-check-input"
                       type="checkbox"
-                      id="tuesdayCheck"
+                      id="addTuesdayCheck"
                       value="2"
                     />
-                    <label class="form-check-label" for="tuesdayCheck"
+                    <label class="form-check-label" for="addTuesdayCheck"
                       >Terça</label
                     >
                   </div>
@@ -501,10 +472,10 @@
                     <input
                       class="form-check-input"
                       type="checkbox"
-                      id="wednesdayCheck"
+                      id="addWednesdayCheck"
                       value="3"
                     />
-                    <label class="form-check-label" for="wednesdayCheck"
+                    <label class="form-check-label" for="addWednesdayCheck"
                       >Quarta</label
                     >
                   </div>
@@ -512,10 +483,10 @@
                     <input
                       class="form-check-input"
                       type="checkbox"
-                      id="thursdayCheck"
+                      id="addThursdayCheck"
                       value="4"
                     />
-                    <label class="form-check-label" for="thursdayCheck"
+                    <label class="form-check-label" for="addThursdayCheck"
                       >Quinta</label
                     >
                   </div>
@@ -523,10 +494,10 @@
                     <input
                       class="form-check-input"
                       type="checkbox"
-                      id="fridayCheck"
+                      id="addFridayCheck"
                       value="5"
                     />
-                    <label class="form-check-label" for="fridayCheck"
+                    <label class="form-check-label" for="addFridayCheck"
                       >Sexta</label
                     >
                   </div>
@@ -534,10 +505,10 @@
                     <input
                       class="form-check-input"
                       type="checkbox"
-                      id="saturdayCheck"
+                      id="addSaturdayCheck"
                       value="6"
                     />
-                    <label class="form-check-label" for="saturdayCheck"
+                    <label class="form-check-label" for="addSaturdayCheck"
                       >Sábado</label
                     >
                   </div>
@@ -545,10 +516,10 @@
                     <input
                       class="form-check-input"
                       type="checkbox"
-                      id="sundayCheck"
+                      id="addSundayCheck"
                       value="7"
                     />
-                    <label class="form-check-label" for="sundayCheck"
+                    <label class="form-check-label" for="addSundayCheck"
                       >Domingo</label
                     >
                   </div>
@@ -557,21 +528,21 @@
 
               <div class="mb-3">
                 <label class="form-label">Horários</label>
-                <div id="timeSlotsContainer">
+                <div id="addTimeSlotsContainer">
                   <!-- Os slots de horário serão adicionados aqui -->
                 </div>
                 <div class="d-flex gap-2 mt-2">
                   <input
                     type="time"
                     class="form-control"
-                    id="startTime"
+                    id="addStartTime"
                     style="max-width: 120px"
                   />
                   <span class="align-self-center">às</span>
                   <input
                     type="time"
                     class="form-control"
-                    id="endTime"
+                    id="addEndTime"
                     style="max-width: 120px"
                   />
                   <button
@@ -630,12 +601,12 @@
             <form id="editScheduleForm">
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="editScheduleSpecialty" class="form-label"
+                  <label for="editscheduleSpecialty" class="form-label"
                     >Especialidade</label
                   >
                   <select
                     class="form-select"
-                    id="editScheduleSpecialty"
+                    id="editscheduleSpecialty"
                     required
                   >
                     <option value="1" selected>Cardiologia</option>
@@ -645,10 +616,10 @@
                   </select>
                 </div>
                 <div class="col-md-6">
-                  <label for="editScheduleDoctor" class="form-label"
+                  <label for="editscheduleDoctor" class="form-label"
                     >Médico</label
                   >
-                  <select class="form-select" id="editScheduleDoctor" required>
+                  <select class="form-select" id="editscheduleDoctor" required>
                     <option value="1" selected>Dr. Carlos Andrade</option>
                     <option value="2">Dra. Ana Beatriz</option>
                     <option value="3">Dr. Roberto Santos</option>
@@ -850,535 +821,635 @@
 
     <!-- Bootstrap 5.3 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      const API_BASE = "https://ubs-zxgf.onrender.com";
-      let currentUser = null;
-      let schedules = [];
-      let doctors = [];
-      let specialties = [];
+        <!-- ... (HEAD e HTML anterior) ... -->
+        <script>
+          const API_BASE = "https://ubs-zxgf.onrender.com";
+          // const API_BASE = "http://localhost:8080"; // Certifique-se que este é o seu backend
+          let currentUser = null;
+          let allBackendSchedules = []; // Armazena os schedules individuais do backend
+          let groupedSchedules = []; // Armazena os schedules agrupados para a tabela do frontend
+          let doctors = [];
+          // let specialties = []; // A especialidade virá do médico
 
-      document.addEventListener("DOMContentLoaded", async () => {
-        try {
-          await checkAuth();
-          await loadInitialData();
-          setupEventListeners();
-        } catch (error) {
-          console.error("Erro ao carregar página:", error);
-        }
-      });
+          // Mapeamento dos dias da semana para o enum do backend
+          const dayOfWeekMapping = {
+              1: "MONDAY", 2: "TUESDAY", 3: "WEDNESDAY", 4: "THURSDAY",
+              5: "FRIDAY", 6: "SATURDAY", 7: "SUNDAY"
+          };
+          const dayNameToEnum = {
+              "MONDAY": 1, "TUESDAY": 2, "WEDNESDAY": 3, "THURSDAY": 4,
+              "FRIDAY": 5, "SATURDAY": 6, "SUNDAY": 7
+          };
 
-      async function checkAuth() {
-        const token = localStorage.getItem("access_token");
-        if (!token) {
-          window.location.href = "index.html";
-          return;
-        }
 
-        try {
-          const response = await fetch(`${API_BASE}/users/me`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          if (!response.ok) throw new Error("Falha na autenticação");
-
-          currentUser = await response.json();
-          updateUserInfo();
-
-          if (!currentUser.roles?.includes("ROLE_UNIT")) {
-            throw new Error("Acesso não autorizado");
-          }
-        } catch (error) {
-          localStorage.clear();
-          window.location.href = "index.html";
-        }
-      }
-
-      function updateUserInfo() {
-        document.querySelectorAll(".username").forEach((element) => {
-          element.textContent = currentUser.name;
-        });
-      }
-
-      async function loadInitialData() {
-        try {
-          const [schedulesRes, doctorsRes, specialtiesRes] = await Promise.all([
-            fetch(`${API_BASE}/schedules?unitId=${currentUser.id}`, {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-              },
-            }),
-            fetch(`${API_BASE}/doctors?unitId=${currentUser.id}`, {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-              },
-            }),
-            fetch(`${API_BASE}/specializations`, {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-              },
-            }),
-          ]);
-
-          schedules = await schedulesRes.json();
-          doctors = await doctorsRes.json();
-          specialties = await specialtiesRes.json();
-
-          renderSchedules();
-          populateFilters();
-          populateFormSelects();
-        } catch (error) {
-          showError(error.message);
-        }
-      }
-
-      function renderSchedules() {
-        const tbody = document.querySelector("table tbody");
-        if (!tbody) return;
-
-        tbody.innerHTML = schedules
-          .map((schedule) => {
-            const doctor =
-              doctors.find((d) => d.id === schedule.doctorId) || {};
-            const specialty =
-              specialties.find((s) => s === schedule.specialty) || "";
-
-            // Format days of week
-            const daysMap = {
-              1: "Segunda",
-              2: "Terça",
-              3: "Quarta",
-              4: "Quinta",
-              5: "Sexta",
-              6: "Sábado",
-              7: "Domingo",
-            };
-            const days = schedule.days.map((day) => daysMap[day]).join(", ");
-
-            // Format time slots
-            const timeSlots = schedule.timeSlots
-              .map(
-                (slot) =>
-                  `<span class="time-slot">${slot.start} - ${slot.end}</span>`
-              )
-              .join("");
-
-            return `
-            <tr data-id="${schedule.id}">
-              <td>${specialty}</td>
-              <td>${doctor.name || ""}</td>
-              <td>${days}</td>
-              <td>${timeSlots}</td>
-              <td>
-                <button class="btn btn-sm btn-outline-primary action-btn edit-schedule">
-                  <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger action-btn delete-schedule">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            </tr>
-          `;
-          })
-          .join("");
-      }
-
-      function populateFilters() {
-        const specialtyFilter = document.getElementById("specialtyFilter");
-        const doctorFilter = document.getElementById("doctorFilter");
-
-        if (specialtyFilter) {
-          specialtyFilter.innerHTML =
-            '<option value="">Todas especialidades</option>' +
-            specialties
-              .map((s) => `<option value="${s}">${s}</option>`)
-              .join("");
-        }
-
-        if (doctorFilter) {
-          doctorFilter.innerHTML =
-            '<option value="">Todos médicos</option>' +
-            doctors
-              .map((d) => `<option value="${d.id}">${d.name}</option>`)
-              .join("");
-        }
-      }
-
-      function populateFormSelects() {
-        const specialtySelect = document.getElementById("scheduleSpecialty");
-        const doctorSelect = document.getElementById("scheduleDoctor");
-
-        if (specialtySelect) {
-          specialtySelect.innerHTML =
-            '<option value="">Selecione uma especialidade</option>' +
-            specialties
-              .map((s) => `<option value="${s}">${s}</option>`)
-              .join("");
-        }
-
-        if (doctorSelect) {
-          doctorSelect.innerHTML =
-            '<option value="">Selecione um médico</option>' +
-            doctors
-              .map((d) => `<option value="${d.id}">${d.name}</option>`)
-              .join("");
-        }
-      }
-
-      function setupEventListeners() {
-        // Logout
-        document
-          .querySelector('.dropdown-item[href="#"]')
-          .addEventListener("click", () => {
-            localStorage.clear();
-            window.location.href = "index.html";
-          });
-
-        // Adicionar slot de horário
-        document
-          .getElementById("addTimeSlot")
-          ?.addEventListener("click", addTimeSlot);
-        document
-          .getElementById("editAddTimeSlot")
-          ?.addEventListener("click", addTimeSlot);
-
-        // Remover slot de horário
-        document.addEventListener("click", function (e) {
-          if (e.target.classList.contains("remove-slot")) {
-            e.target.parentElement.remove();
-          }
-        });
-
-        // Filtros
-        document
-          .getElementById("specialtyFilter")
-          ?.addEventListener("change", filterSchedules);
-        document
-          .getElementById("doctorFilter")
-          ?.addEventListener("change", filterSchedules);
-
-        // Formulários
-        document
-          .getElementById("newScheduleForm")
-          ?.addEventListener("submit", handleCreateSchedule);
-        document
-          .getElementById("editScheduleForm")
-          ?.addEventListener("submit", handleUpdateSchedule);
-
-        // Botões de ação na tabela (usando event delegation)
-        document
-          .querySelector("table tbody")
-          ?.addEventListener("click", function (e) {
-            const btn = e.target.closest("button");
-            if (!btn) return;
-
-            const row = btn.closest("tr");
-            const scheduleId = row?.getAttribute("data-id");
-            const schedule = schedules.find((s) => s.id == scheduleId);
-
-            if (btn.classList.contains("edit-schedule")) {
-              openEditScheduleModal(schedule);
-            } else if (btn.classList.contains("delete-schedule")) {
-              openDeleteScheduleModal(schedule);
+          document.addEventListener("DOMContentLoaded", async () => {
+            try {
+              await checkAuth();
+              await loadInitialData(); // Esta função será modificada
+              setupEventListeners();
+            } catch (error) {
+              console.error("Erro ao carregar página:", error);
+              showError("Erro crítico ao carregar a página: " + error.message);
             }
           });
 
-        // Confirmar exclusão
-        document
-          .querySelector("#deleteScheduleModal .btn-danger")
-          ?.addEventListener("click", handleDeleteSchedule);
-      }
-
-      function addTimeSlot() {
-        const isEdit = this.id === "editAddTimeSlot";
-        const prefix = isEdit ? "edit" : "";
-        const containerId = isEdit
-          ? "editTimeSlotsContainer"
-          : "timeSlotsContainer";
-
-        const startTime = document.getElementById(`${prefix}StartTime`).value;
-        const endTime = document.getElementById(`${prefix}EndTime`).value;
-
-        if (!startTime || !endTime) {
-          showError("Por favor, preencha ambos os horários");
-          return;
-        }
-
-        if (startTime >= endTime) {
-          showError("O horário de início deve ser antes do horário de término");
-          return;
-        }
-
-        const container = document.getElementById(containerId);
-        const slot = document.createElement("span");
-        slot.className = "time-slot";
-        slot.innerHTML = `
-          ${startTime} - ${endTime}
-          <span class="remove-slot">&times;</span>
-        `;
-        container.appendChild(slot);
-
-        // Limpar os inputs
-        document.getElementById(`${prefix}StartTime`).value = "";
-        document.getElementById(`${prefix}EndTime`).value = "";
-      }
-
-      function filterSchedules() {
-        const specialtyFilter =
-          document.getElementById("specialtyFilter").value;
-        const doctorFilter = document.getElementById("doctorFilter").value;
-
-        document.querySelectorAll("table tbody tr").forEach((row) => {
-          const specialty = row.cells[0].textContent;
-          const doctor = row.cells[1].textContent;
-
-          const matchesSpecialty =
-            !specialtyFilter || specialty === specialtyFilter;
-          const matchesDoctor = !doctorFilter || doctor.includes(doctorFilter);
-
-          row.style.display = matchesSpecialty && matchesDoctor ? "" : "none";
-        });
-      }
-
-      function openEditScheduleModal(schedule) {
-        if (!schedule) return;
-
-        // Preencher dados do formulário
-        document.getElementById("editScheduleSpecialty").value =
-          schedule.specialty;
-        document.getElementById("editScheduleDoctor").value = schedule.doctorId;
-
-        // Marcar dias da semana
-        [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday",
-        ].forEach((day, index) => {
-          const checkbox = document.getElementById(`edit${day}Check`);
-          if (checkbox) {
-            checkbox.checked = schedule.days.includes(index + 1);
-          }
-        });
-
-        // Preencher slots de horário
-        const container = document.getElementById("editTimeSlotsContainer");
-        container.innerHTML = "";
-        schedule.timeSlots.forEach((slot) => {
-          const slotElement = document.createElement("span");
-          slotElement.className = "time-slot";
-          slotElement.innerHTML = `
-            ${slot.start} - ${slot.end}
-            <span class="remove-slot">&times;</span>
-          `;
-          container.appendChild(slotElement);
-        });
-
-        // Armazenar ID do horário sendo editado
-        document.getElementById("editScheduleForm").dataset.scheduleId =
-          schedule.id;
-
-        // Abrir modal
-        new bootstrap.Modal(
-          document.getElementById("editScheduleModal")
-        ).show();
-      }
-
-      function openDeleteScheduleModal(schedule) {
-        if (!schedule) return;
-
-        const doctor = doctors.find((d) => d.id === schedule.doctorId) || {};
-        const modal = document.getElementById("deleteScheduleModal");
-
-        modal.querySelector(
-          "strong"
-        ).textContent = `${schedule.specialty} - ${doctor.name}`;
-        modal.dataset.scheduleId = schedule.id;
-
-        new bootstrap.Modal(modal).show();
-      }
-
-      async function handleCreateSchedule(e) {
-        e.preventDefault();
-        try {
-          const formData = getScheduleFormData("newScheduleForm");
-
-          const response = await fetch(`${API_BASE}/schedules`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-            body: JSON.stringify({
-              ...formData,
-              unitId: currentUser.id,
-            }),
-          });
-
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || "Erro ao criar horário");
+          async function checkAuth() {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+              window.location.href = "index.html";
+              return;
+            }
+            try {
+              const response = await fetch(`${API_BASE}/users/me`, {
+                headers: { Authorization: `Bearer ${token}` },
+              });
+              if (!response.ok) throw new Error("Falha na autenticação");
+              currentUser = await response.json();
+              updateUserInfo();
+              if (!currentUser.roles?.includes("ROLE_UNIT")) { // Ou a role que identifica a unidade
+                throw new Error("Acesso não autorizado para esta funcionalidade.");
+              }
+            } catch (error) {
+              localStorage.clear();
+              window.location.href = "index.html";
+            }
           }
 
-          const newSchedule = await response.json();
-          schedules.push(newSchedule);
-          renderSchedules();
-
-          // Fechar modal e limpar formulário
-          bootstrap.Modal.getInstance(
-            document.getElementById("newScheduleModal")
-          ).hide();
-          e.target.reset();
-          document.getElementById("timeSlotsContainer").innerHTML = "";
-
-          showSuccess("Horário criado com sucesso!");
-        } catch (error) {
-          showError(error.message);
-        }
-      }
-
-      async function handleUpdateSchedule(e) {
-        e.preventDefault();
-
-        try {
-          const scheduleId = e.target.dataset.scheduleId;
-          if (!scheduleId) throw new Error("ID do horário não encontrado");
-
-          const formData = getScheduleFormData("editScheduleForm");
-
-          const response = await fetch(`${API_BASE}/schedules/${scheduleId}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-            body: JSON.stringify(formData),
-          });
-
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || "Erro ao atualizar horário");
+          function updateUserInfo() {
+            document.querySelectorAll(".username").forEach((element) => {
+              element.textContent = currentUser.name;
+            });
           }
 
-          const updatedSchedule = await response.json();
-          const index = schedules.findIndex((s) => s.id == scheduleId);
-          if (index !== -1) {
-            schedules[index] = updatedSchedule;
-          }
-          renderSchedules();
+          async function loadInitialData() {
+            try {
+              // 1. Carregar Médicos da Unidade
+              const doctorsRes = await fetch(`${API_BASE}/doctors?unitId=${currentUser.id}`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` },
+              });
+              if (!doctorsRes.ok) throw new Error('Falha ao carregar médicos');
+              doctors = await doctorsRes.json();
 
-          // Fechar modal
-          bootstrap.Modal.getInstance(
-            document.getElementById("editScheduleModal")
-          ).hide();
 
-          showSuccess("Horário atualizado com sucesso!");
-        } catch (error) {
-          showError(error.message);
-        }
-      }
+              allBackendSchedules = [];
+              for (const doctor of doctors) {
+                const schedulesRes = await fetch(`${API_BASE}/schedules/doctor/${doctor.id}`, {
+                  headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` },
+                });
+                if (schedulesRes.ok) {
+                  const doctorSchedules = await schedulesRes.json();
+                  allBackendSchedules.push(...doctorSchedules);
+                } else {
+                  console.warn(`Falha ao carregar horários para Dr(a). ${doctor.name}`);
+                }
+              }
 
-      async function handleDeleteSchedule() {
-        try {
-          const scheduleId = document.getElementById("deleteScheduleModal")
-            .dataset.scheduleId;
-          if (!scheduleId) throw new Error("ID do horário não encontrado");
+              groupSchedulesForFrontend();
+              renderSchedulesTable();
+              populateFilters();
+              populateFormSelects();
+              renderWeeklyView();
 
-          const response = await fetch(`${API_BASE}/schedules/${scheduleId}`, {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          });
-
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || "Erro ao excluir horário");
+            } catch (error) {
+              showError("Erro ao carregar dados iniciais: " + error.message);
+            }
           }
 
-          // Remover da lista local
-          schedules = schedules.filter((s) => s.id != scheduleId);
-          renderSchedules();
+          function groupSchedulesForFrontend() {
+            groupedSchedules = [];
+            const schedulesByDoctor = {};
 
-          // Fechar modal
-          bootstrap.Modal.getInstance(
-            document.getElementById("deleteScheduleModal")
-          ).hide();
+            allBackendSchedules.forEach(backendSchedule => {
+                const doctorId = backendSchedule.doctorId;
+                if (!schedulesByDoctor[doctorId]) {
+                    schedulesByDoctor[doctorId] = {
+                        doctorId: doctorId,
+                        doctorName: backendSchedule.doctorName,
+                        specialization: doctors.find(d => d.id === doctorId)?.specialization || "N/A",
+                        timeSlotToDaysMap: new Map()
+                    };
+                }
 
-          showSuccess("Horário excluído com sucesso!");
-        } catch (error) {
-          showError(error.message);
-        }
-      }
+                const slotKey = `${backendSchedule.startTime}-${backendSchedule.endTime}`;
+                if (!schedulesByDoctor[doctorId].timeSlotToDaysMap.has(slotKey)) {
+                    schedulesByDoctor[doctorId].timeSlotToDaysMap.set(slotKey, new Set());
+                }
+                schedulesByDoctor[doctorId].timeSlotToDaysMap.get(slotKey).add(backendSchedule.dayOfWeek);
+            });
 
-      function getScheduleFormData(formId) {
-        const form = document.getElementById(formId);
-        const isEdit = formId === "editScheduleForm";
-        const prefix = isEdit ? "edit" : "";
+            for (const doctorId in schedulesByDoctor) {
+                const data = schedulesByDoctor[doctorId];
+                const frontendSchedule = {
 
-        // Obter dias selecionados
-        const days = [];
-        for (let i = 1; i <= 7; i++) {
-          const checkbox = document.getElementById(
-            `${prefix}${getDayName(i)}Check`
-          );
-          if (checkbox?.checked) days.push(i);
-        }
+                    id: allBackendSchedules.find(s => s.doctorId == doctorId)?.id,
+                    doctorId: data.doctorId,
+                    doctorName: data.doctorName,
+                    specialization: data.specialization,
+                    // Formato que o frontend espera:
+                    daysAndSlots: [] // { days: [1,2,3], timeSlots: [{start:'08:00', end:'12:00'}, ...] }
+                };
 
-        if (days.length === 0) {
-          throw new Error("Selecione pelo menos um dia da semana");
-        }
 
-        // Obter slots de horário
-        const container = document.getElementById(
-          isEdit ? "editTimeSlotsContainer" : "timeSlotsContainer"
-        );
-        const timeSlots = Array.from(
-          container.querySelectorAll(".time-slot")
-        ).map((slot) => {
-          const text = slot.textContent.trim();
-          const [start, end] = text.split(" - ");
-          return { start, end };
-        });
+                 data.timeSlotToDaysMap.forEach((daysSet, slotKey) => {
+                    const [start, end] = slotKey.split('-');
+                    frontendSchedule.daysAndSlots.push({
+                        daysRaw: Array.from(daysSet), // ex: ["MONDAY", "WEDNESDAY"]
+                        daysNumeric: Array.from(daysSet).map(dayStr => dayNameToEnum[dayStr]).sort((a,b) => a-b), // ex: [1, 3]
+                        timeSlot: { start, end }
+                    });
+                });
+                groupedSchedules.push(frontendSchedule);
+            }
+          }
 
-        if (timeSlots.length === 0) {
-          throw new Error("Adicione pelo menos um horário");
-        }
+          function renderSchedulesTable() {
+            const tbody = document.querySelector("#scheduleTableBody");
+            if (!tbody) return;
 
-        return {
-          specialty: form.querySelector(`#${prefix}ScheduleSpecialty`).value,
-          doctorId: form.querySelector(`#${prefix}ScheduleDoctor`).value,
-          days,
-          timeSlots,
-        };
-      }
+            const daysMap = { 1: "Seg", 2: "Ter", 3: "Qua", 4: "Qui", 5: "Sex", 6: "Sáb", 7: "Dom" };
 
-      function getDayName(dayNumber) {
-        const days = [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday",
-        ];
-        return days[dayNumber - 1];
-      }
+            tbody.innerHTML = groupedSchedules.map(gs => {
 
-      function showError(message) {
-        // Implementar lógica para exibir mensagens de erro (pode usar Toast, SweetAlert, etc.)
-        alert(`Erro: ${message}`);
-      }
+                let daysDisplay = new Set();
+                let slotsDisplay = new Set();
 
-      function showSuccess(message) {
-        // Implementar lógica para exibir mensagens de sucesso
-        alert(`Sucesso: ${message}`);
-      }
-    </script>
-  </body>
-</html>
+                gs.daysAndSlots.forEach(ds => {
+                    ds.daysNumeric.forEach(dayNum => daysDisplay.add(daysMap[dayNum]));
+                    slotsDisplay.add(`${ds.timeSlot.start} - ${ds.timeSlot.end}`);
+                });
+
+
+                return `
+                <tr data-doctor-id="${gs.doctorId}" data-reference-schedule-id="${gs.id || ''}">
+                  <td>${gs.specialization}</td>
+                  <td>${gs.doctorName}</td>
+                  <td>${Array.from(daysDisplay).join(', ')}</td>
+                  <td>${Array.from(slotsDisplay).map(slot => `<span class="time-slot">${slot}</span>`).join('')}</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary action-btn edit-schedule" title="Editar horários de ${gs.doctorName}">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger action-btn delete-schedule" title="Excluir todos os horários de ${gs.doctorName}">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              `;
+            }).join("");
+          }
+
+          function renderWeeklyView() {
+            const dayColumns = {
+                MONDAY: document.querySelector('.row .day-column:nth-child(1) .time-slots-container'),
+                TUESDAY: document.querySelector('.row .day-column:nth-child(2) .time-slots-container'),
+                WEDNESDAY: document.querySelector('.row .day-column:nth-child(3) .time-slots-container'),
+                THURSDAY: document.querySelector('.row .day-column:nth-child(4) .time-slots-container'),
+                FRIDAY: document.querySelector('.row .day-column:nth-child(5) .time-slots-container'),
+                SATURDAY: document.querySelector('.row .day-column:nth-child(6) .time-slots-container'),
+                SUNDAY: document.querySelector('.row .day-column:nth-child(7) .time-slots-container'),
+            };
+
+            // Limpar colunas existentes
+            for (const dayKey in dayColumns) {
+                if (dayColumns[dayKey]) dayColumns[dayKey].innerHTML = '';
+            }
+
+            allBackendSchedules.forEach(schedule => {
+                const dayContainer = dayColumns[schedule.dayOfWeek];
+                if (dayContainer) {
+                    const doctor = doctors.find(d => d.id === schedule.doctorId);
+                    const slotItem = document.createElement('div');
+                    slotItem.className = 'slot-item';
+                    slotItem.innerHTML = `
+                        <strong>${doctor?.specialization || 'N/A'}</strong><br />
+                        ${schedule.doctorName}<br />
+                        ${schedule.startTime} - ${schedule.endTime}
+                    `;
+                    dayContainer.appendChild(slotItem);
+                }
+            });
+
+            // Adicionar mensagem "Sem horários" se a coluna estiver vazia
+            for (const dayKey in dayColumns) {
+                if (dayColumns[dayKey] && dayColumns[dayKey].children.length === 0) {
+                    dayColumns[dayKey].innerHTML = '<div class="text-muted text-center mt-4">Sem horários</div>';
+                }
+            }
+          }
+
+
+          function populateFilters() {
+            const specialtyFilter = document.getElementById("specialtyFilter");
+            const doctorFilter = document.getElementById("doctorFilter");
+
+            // Obter especialidades únicas dos médicos carregados
+            const uniqueSpecialties = [...new Set(doctors.map(d => d.specialization).filter(Boolean))];
+
+            if (specialtyFilter) {
+              specialtyFilter.innerHTML = '<option value="">Todas especialidades</option>' +
+                uniqueSpecialties.map(s => `<option value="${s}">${s}</option>`).join("");
+            }
+
+            if (doctorFilter) {
+              doctorFilter.innerHTML = '<option value="">Todos médicos</option>' +
+                doctors.map(d => `<option value="${d.id}">${d.name}</option>`).join("");
+            }
+          }
+
+          function populateFormSelects(formPrefix = "add") { // formPrefix é "edit" ou ""
+            const specialtySelect = document.getElementById(`${formPrefix}scheduleSpecialty`);
+            const doctorSelect = document.getElementById(`${formPrefix}scheduleDoctor`);
+
+            const uniqueSpecialties = [...new Set(doctors.map(d => d.specialization).filter(Boolean))];
+
+            if (specialtySelect) {
+              specialtySelect.innerHTML = '<option value="">Selecione uma especialidade</option>' +
+                uniqueSpecialties.map(s => `<option value="${s}">${s}</option>`).join("");
+            }
+            // Event listener para popular médicos baseado na especialidade
+            specialtySelect?.addEventListener('change', function() {
+                const selectedSpecialty = this.value;
+                const filteredDoctors = selectedSpecialty ? doctors.filter(d => d.specialization === selectedSpecialty) : doctors;
+                if (doctorSelect) {
+                    doctorSelect.innerHTML = '<option value="">Selecione um médico</option>' +
+                        filteredDoctors.map(d => `<option value="${d.id}">${d.name}</option>`).join("");
+                }
+            });
+
+            // Popular médicos inicialmente (todos)
+            if (doctorSelect) {
+                doctorSelect.innerHTML = '<option value="">Selecione um médico</option>' +
+                    doctors.map(d => `<option value="${d.id}">${d.name}</option>`).join("");
+            }
+          }
+
+
+          function setupEventListeners() {
+            document.querySelector('.dropdown-item[href="#"]')?.addEventListener("click", () => {
+                localStorage.clear();
+                window.location.href = "index.html";
+            });
+
+            document.getElementById("addTimeSlot")?.addEventListener("click", function() { addTimeSlot('add'); });
+            document.getElementById("editAddTimeSlot")?.addEventListener("click", function() { addTimeSlot('edit'); });
+
+            document.addEventListener("click", function (e) {
+              if (e.target.classList.contains("remove-slot")) {
+                e.target.parentElement.remove();
+              }
+            });
+
+            document.getElementById("specialtyFilter")?.addEventListener("change", filterSchedulesTable);
+            document.getElementById("doctorFilter")?.addEventListener("change", filterSchedulesTable);
+
+            document.getElementById("newScheduleForm")?.addEventListener("submit", handleCreateSchedule);
+            document.getElementById("editScheduleForm")?.addEventListener("submit", handleUpdateSchedule);
+
+            // Popular selects do modal de edição quando ele abrir
+            const editModal = document.getElementById('editScheduleModal');
+            editModal?.addEventListener('show.bs.modal', function () {
+                populateFormSelects('edit'); // Popula os selects do form de edição
+            });
+
+
+            document.querySelector("#scheduleTableBody")?.addEventListener("click", function (e) { // Usar ID do tbody
+                const btn = e.target.closest("button.action-btn");
+                if (!btn) return;
+
+                const row = btn.closest("tr");
+                const doctorId = row?.getAttribute("data-doctor-id");
+
+                if (btn.classList.contains("edit-schedule")) {
+                  openEditScheduleModal(doctorId);
+                } else if (btn.classList.contains("delete-schedule")) {
+                  openDeleteScheduleModal(doctorId);
+                }
+              });
+
+            document.querySelector("#deleteScheduleModal .btn-danger")?.addEventListener("click", handleDeleteSchedule);
+          }
+
+          function addTimeSlot(formTypePrefix) { // 'add' ou 'edit'
+            const startTimeInput = document.getElementById(`${formTypePrefix}StartTime`);
+            const endTimeInput = document.getElementById(`${formTypePrefix}EndTime`);
+            const container = document.getElementById(`${formTypePrefix}TimeSlotsContainer`);
+
+            const startTime = startTimeInput.value;
+            const endTime = endTimeInput.value;
+
+            if (!startTime || !endTime) {
+              showError("Por favor, preencha ambos os horários (início e fim).");
+              return;
+            }
+            if (startTime >= endTime) {
+              showError("O horário de início deve ser anterior ao horário de término.");
+              return;
+            }
+
+            const slot = document.createElement("span");
+            slot.className = "time-slot";
+            slot.innerHTML = `${startTime} - ${endTime} <span class="remove-slot" title="Remover horário">×</span>`;
+            container.appendChild(slot);
+
+            startTimeInput.value = "";
+            endTimeInput.value = "";
+          }
+
+          function filterSchedulesTable() {
+            const specialtyFilter = document.getElementById("specialtyFilter").value;
+            const doctorFilter = document.getElementById("doctorFilter").value; // Este é o ID do médico
+            const tbody = document.getElementById("scheduleTableBody");
+
+            for (const row of tbody.rows) {
+                const rowSpecialty = row.cells[0].textContent;
+                const rowDoctorId = row.getAttribute('data-doctor-id');
+
+                const matchesSpecialty = !specialtyFilter || rowSpecialty === specialtyFilter;
+                const matchesDoctor = !doctorFilter || rowDoctorId === doctorFilter;
+
+                row.style.display = matchesSpecialty && matchesDoctor ? "" : "none";
+            }
+          }
+
+          function getDayNameFromCheckbox(checkboxIdPrefix, dayNumber) { // ex: "new", 1 -> "newMondayCheck"
+              const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+              return `${checkboxIdPrefix}${days[dayNumber-1]}Check`;
+          }
+
+          function getScheduleFormData(formId) {
+            const form = document.getElementById(formId);
+            const isEdit = formId === "editScheduleForm";
+            const prefix = isEdit ? "edit" : "add"; // 'edit' ou ''
+
+            const doctorId = form.querySelector(`#${prefix}scheduleDoctor`).value;
+            if (!doctorId) throw new Error("Selecione um médico.");
+
+            const selectedDays = [];
+            for (let i = 1; i <= 7; i++) {
+              const checkboxId = `${prefix}${getDayName(i)}Check`;
+              const checkbox = document.getElementById(checkboxId);
+              if (checkbox?.checked) {
+                selectedDays.push(dayOfWeekMapping[i]); // Mapeia 1 para MONDAY, etc.
+              }
+            }
+            if (selectedDays.length === 0) throw new Error("Selecione pelo menos um dia da semana.");
+
+            const timeSlotsContainer = document.getElementById(`${prefix}TimeSlotsContainer`);
+            const timeSlots = Array.from(timeSlotsContainer.querySelectorAll(".time-slot")).map(slotEl => {
+              const text = slotEl.textContent.trim().replace('×','').trim(); // Remove o '×' e espaços extras
+              const [start, end] = text.split(" - ");
+              return { start: start.trim(), end: end.trim() }; // HH:mm format
+            });
+
+            if (timeSlots.length === 0) throw new Error("Adicione pelo menos um intervalo de horário.");
+
+            return { doctorId, daysOfWeek: selectedDays, timeSlots }; // daysOfWeek é um array de strings (MONDAY, TUESDAY)
+          }
+
+
+          async function handleCreateSchedule(e) {
+            e.preventDefault();
+            try {
+              const { doctorId, daysOfWeek, timeSlots } = getScheduleFormData("newScheduleForm");
+
+              const creationPromises = [];
+              for (const day of daysOfWeek) {
+                for (const slot of timeSlots) {
+                  const payload = {
+                    doctorId: parseInt(doctorId),
+                    dayOfWeek: day,
+                    startTime: slot.start,
+                    endTime: slot.end,
+                  };
+                  creationPromises.push(
+                    fetch(`${API_BASE}/schedules`, {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                      },
+                      body: JSON.stringify(payload),
+                    }).then(res => {
+                        if (!res.ok) return res.json().then(err => Promise.reject(err));
+                        return res.json();
+                    })
+                  );
+                }
+              }
+
+              await Promise.all(creationPromises);
+
+              await loadInitialData(); // Recarregar e reagrupar tudo
+
+              bootstrap.Modal.getInstance(document.getElementById("newScheduleModal")).hide();
+              e.target.reset();
+              document.getElementById("addTimeSlotsContainer").innerHTML = "";
+              showSuccess("Horário(s) criado(s) com sucesso!");
+
+            } catch (error) {
+              console.error("Erro ao criar horário:", error);
+              showError(error.message || error.errors?.[0]?.defaultMessage || "Erro desconhecido ao criar horário.");
+            }
+          }
+
+          function openEditScheduleModal(doctorId) {
+              const doctorSchedules = allBackendSchedules.filter(s => s.doctorId == doctorId);
+              if (doctorSchedules.length === 0) {
+                  showError("Nenhum horário encontrado para este médico para edição.");
+                  return;
+              }
+
+              const doctor = doctors.find(d => d.id == doctorId);
+              const form = document.getElementById("editScheduleForm");
+              form.dataset.editingDoctorId = doctorId; // Guardar o ID do médico
+
+              // Preencher selects
+              populateFormSelects('edit'); // Garante que os selects do modal de edição estão populados
+
+              document.getElementById("editscheduleDoctor").disabled = true; // Não permitir mudar o médico na edição
+              document.getElementById("editscheduleSpecialty").disabled = true;
+
+              // Marcar dias da semana (agregado de todos os horários do médico)
+              const activeDays = new Set();
+              doctorSchedules.forEach(s => activeDays.add(s.dayOfWeek)); // MONDAY, TUESDAY...
+
+              for (let i = 1; i <= 7; i++) {
+                  const dayEnum = dayOfWeekMapping[i]; // MONDAY, TUESDAY...
+                  const checkbox = document.getElementById(getDayNameFromCheckbox("edit", i));
+                  if(checkbox) checkbox.checked = activeDays.has(dayEnum);
+              }
+
+              // Preencher slots de horário (agregado e único)
+              const timeSlotsSet = new Set();
+              doctorSchedules.forEach(s => timeSlotsSet.add(`${s.startTime} - ${s.endTime}`));
+
+              const container = document.getElementById("editTimeSlotsContainer");
+              container.innerHTML = ""; // Limpar slots anteriores
+              timeSlotsSet.forEach(slotString => {
+                  const slotElement = document.createElement("span");
+                  slotElement.className = "time-slot";
+                  slotElement.innerHTML = `${slotString} <span class="remove-slot" title="Remover horário">×</span>`;
+                  container.appendChild(slotElement);
+              });
+
+              new bootstrap.Modal(document.getElementById("editScheduleModal")).show();
+
+              document.getElementById("editscheduleDoctor").value = String(doctorId);
+              document.getElementById("editscheduleSpecialty").value = doctor?.specialization || "";
+          }
+
+
+          async function handleUpdateSchedule(e) {
+              e.preventDefault();
+              const form = e.target;
+              const doctorId = form.dataset.editingDoctorId;
+
+              if (!doctorId) {
+                  showError("ID do médico não encontrado para atualização.");
+                  return;
+              }
+
+              try {
+                  const { daysOfWeek: newDaysEnum, timeSlots: newTimeSlots } = getScheduleFormData("editScheduleForm");
+
+                  // 1. Buscar todos os schedules existentes para este médico no backend
+                  const existingSchedulesForDoctor = allBackendSchedules.filter(s => s.doctorId == doctorId);
+
+                  const schedulesToDelete = existingSchedulesForDoctor.filter(existing => {
+                      const isDayPresent = newDaysEnum.includes(existing.dayOfWeek);
+                      const isSlotPresent = newTimeSlots.some(newSlot =>
+                          newSlot.start === existing.startTime && newSlot.end === existing.endTime
+                      );
+                      return !(isDayPresent && isSlotPresent);
+                  });
+
+                  const schedulesToAddPayloads = [];
+                  for (const day of newDaysEnum) {
+                      for (const slot of newTimeSlots) {
+                          const AalreadyExists = existingSchedulesForDoctor.some(existing =>
+                              existing.dayOfWeek === day &&
+                              existing.startTime === slot.start &&
+                              existing.endTime === slot.end
+                          );
+                          if (!AalreadyExists) {
+                              schedulesToAddPayloads.push({
+                                  doctorId: parseInt(doctorId),
+                                  dayOfWeek: day,
+                                  startTime: slot.start,
+                                  endTime: slot.end,
+                              });
+                          }
+                      }
+                  }
+
+                  const apiPromises = [];
+
+                  // Executar deleções
+                  schedulesToDelete.forEach(s => {
+                      apiPromises.push(
+                          fetch(`${API_BASE}/schedules/${s.id}`, {
+                              method: "DELETE",
+                              headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` },
+                          }).then(res => { if (!res.ok) return res.json().then(err => Promise.reject(err)); })
+                      );
+                  });
+
+                  // Executar adições
+                  schedulesToAddPayloads.forEach(payload => {
+                      apiPromises.push(
+                          fetch(`${API_BASE}/schedules`, {
+                              method: "POST",
+                              headers: {
+                                  "Content-Type": "application/json",
+                                  Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                              },
+                              body: JSON.stringify(payload),
+                          }).then(res => { if (!res.ok) return res.json().then(err => Promise.reject(err)); })
+                      );
+                  });
+
+                  await Promise.all(apiPromises);
+
+                  await loadInitialData(); // Recarregar tudo
+                  bootstrap.Modal.getInstance(document.getElementById("editScheduleModal")).hide();
+                  showSuccess("Horários do médico atualizados com sucesso!");
+
+              } catch (error) {
+                  console.error("Erro ao atualizar horários:", error);
+                  showError(error.message || error.errors?.[0]?.defaultMessage || "Erro ao atualizar horários.");
+              } finally {
+                // Habilitar novamente os selects de médico e especialidade
+                document.getElementById("editsheduleDoctor").disabled = false;
+                document.getElementById("editscheduleSpecialty").disabled = false;
+              }
+          }
+
+
+          async function handleDeleteSchedule() {
+            // A exclusão agora será de TODOS os horários de um médico, pois a linha da tabela representa isso.
+            const modal = document.getElementById("deleteScheduleModal");
+            const doctorId = modal.dataset.doctorIdForDeletion; // Precisamos setar isso ao abrir o modal
+
+            if (!doctorId) {
+              showError("ID do médico não encontrado para exclusão.");
+              return;
+            }
+
+            try {
+              // Buscar todos os IDs de schedule para este médico
+              const schedulesForDoctor = allBackendSchedules.filter(s => s.doctorId == doctorId);
+              if (schedulesForDoctor.length === 0) {
+                showSuccess("Médico já não possui horários cadastrados.");
+                bootstrap.Modal.getInstance(modal).hide();
+                return;
+              }
+
+              const deletionPromises = schedulesForDoctor.map(s =>
+                fetch(`${API_BASE}/schedules/${s.id}`, {
+                  method: "DELETE",
+                  headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` },
+                }).then(res => { if (!res.ok) return res.json().then(err => Promise.reject(err)); })
+              );
+
+              await Promise.all(deletionPromises);
+
+              await loadInitialData(); // Recarregar e reagrupar
+
+              bootstrap.Modal.getInstance(modal).hide();
+              showSuccess("Todos os horários do médico foram excluídos com sucesso!");
+
+            } catch (error) {
+              console.error("Erro ao excluir horários do médico:", error);
+              showError(error.message || "Erro ao excluir horários.");
+            }
+          }
+
+          function openDeleteScheduleModal(doctorId) {
+              const doctor = doctors.find(d => d.id == doctorId);
+              if (!doctor) return;
+
+              const modal = document.getElementById("deleteScheduleModal");
+              modal.querySelector("strong").textContent = `${doctor.specialization || 'N/A'} - ${doctor.name}`;
+              // Guardar o ID do médico para a função de deleção
+              modal.dataset.doctorIdForDeletion = doctorId;
+              new bootstrap.Modal(modal).show();
+          }
+
+
+          function getDayName(dayNumber) { // 1=Monday, ..., 7=Sunday
+            const dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+            return dayNames[dayNumber - 1];
+          }
+
+          function showError(message) {
+            console.error("Erro:", message);
+            alert(`ERRO: ${message}`); // Placeholder
+          }
+
+          function showSuccess(message) {
+            console.log("Sucesso:", message);
+            alert(`SUCESSO: ${message}`); // Placeholder
+          }
+        </script>
+      </body>
+    </html>
