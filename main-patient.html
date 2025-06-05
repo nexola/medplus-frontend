@@ -169,15 +169,11 @@
                   />
                 </div>
                 <div class="col-md-4">
-                  <h5 class="mb-1">João da Silva</h5>
-                  <p class="text-muted mb-1">45 anos • Masculino</p>
+                  <h5 class="mb-1">Carregando...</h5>
+                  <p class="text-muted mb-1">...</p>
                 </div>
                 <div class="col-md-4">
-                  <!-- <p class="mb-1">
-                    <strong>Plano de Saúde:</strong> Amil Saúde
-                  </p>
-                  <p class="mb-1"><strong>Número:</strong> 1234567890</p>
-                  <p class="mb-1"><strong>Tipo Sanguíneo:</strong> O+</p> -->
+                  <!-- Espaço para informações adicionais se necessário -->
                 </div>
                 <div class="col-md-2 text-end">
                   <button
@@ -199,66 +195,6 @@
               </h5>
             </div>
             <div class="card-body">
-              <!-- Status Filter Tabs -->
-              <!-- <ul class="nav nav-pills mb-4" id="statusTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                  <button
-                    class="nav-link active"
-                    id="all-tab"
-                    data-bs-toggle="pill"
-                    data-bs-target="#all"
-                    type="button"
-                  >
-                    Todos
-                  </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button
-                    class="nav-link"
-                    id="agendado-tab"
-                    data-bs-toggle="pill"
-                    data-bs-target="#agendado"
-                    type="button"
-                  >
-                    Agendados
-                  </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button
-                    class="nav-link"
-                    id="concluido-tab"
-                    data-bs-toggle="pill"
-                    data-bs-target="#concluido"
-                    type="button"
-                  >
-                    Concluídos
-                  </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button
-                    class="nav-link"
-                    id="cancelado-tab"
-                    data-bs-toggle="pill"
-                    data-bs-target="#cancelado"
-                    type="button"
-                  >
-                    Cancelados
-                  </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button
-                    class="nav-link"
-                    id="pendente-tab"
-                    data-bs-toggle="pill"
-                    data-bs-target="#pendente"
-                    type="button"
-                  >
-                    Pendentes
-                  </button>
-                </li>
-              </ul> -->
-
-              <!-- Records Table -->
               <div class="table-responsive">
                 <table class="table table-hover align-middle">
                   <thead>
@@ -271,162 +207,14 @@
                       <th>Ações</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="appointmentsTableBody">
+                    <!-- Linhas da tabela serão inseridas aqui pelo JavaScript -->
                     <tr>
-                      <td>#FCH-2023-0042</td>
-                      <td>15/05/2023 • 14:30</td>
-                      <td>Dr. Carlos Andrade</td>
-                      <td>Cardiologia</td>
-                      <td>
-                        <span class="status-badge status-agendado"
-                          >Agendado</span
-                        >
-                      </td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          title="Visualizar"
-                          data-bs-toggle="modal"
-                          data-bs-target="#viewFichaModal"
-                        >
-                          <i class="bi bi-eye"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-secondary"
-                          title="Editar"
-                        >
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>#FCH-2023-0038</td>
-                      <td>10/05/2023 • 09:15</td>
-                      <td>Dra. Ana Beatriz</td>
-                      <td>Clínico Geral</td>
-                      <td>
-                        <span class="status-badge status-concluido"
-                          >Concluído</span
-                        >
-                      </td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          title="Visualizar"
-                          data-bs-toggle="modal"
-                          data-bs-target="#viewFichaModal"
-                        >
-                          <i class="bi bi-eye"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-secondary"
-                          title="Editar"
-                        >
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>#FCH-2023-0029</td>
-                      <td>02/05/2023 • 16:45</td>
-                      <td>Dr. Roberto Santos</td>
-                      <td>Ortopedia</td>
-                      <td>
-                        <span class="status-badge status-cancelado"
-                          >Cancelado</span
-                        >
-                      </td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          title="Visualizar"
-                          data-bs-toggle="modal"
-                          data-bs-target="#viewFichaModal"
-                        >
-                          <i class="bi bi-eye"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-secondary"
-                          title="Editar"
-                        >
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>#FCH-2023-0025</td>
-                      <td>25/04/2023 • 11:00</td>
-                      <td>Dra. Juliana Costa</td>
-                      <td>Dermatologia</td>
-                      <td>
-                        <span class="status-badge status-concluido"
-                          >Concluído</span
-                        >
-                      </td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          title="Visualizar"
-                          data-bs-toggle="modal"
-                          data-bs-target="#viewFichaModal"
-                        >
-                          <i class="bi bi-eye"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-secondary"
-                          title="Editar"
-                        >
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>#FCH-2023-0018</td>
-                      <td>18/04/2023 • 08:30</td>
-                      <td>Dr. Carlos Andrade</td>
-                      <td>Cardiologia</td>
-                      <td>
-                        <span class="status-badge status-pendente"
-                          >Pendente</span
-                        >
-                      </td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          title="Visualizar"
-                          data-bs-toggle="modal"
-                          data-bs-target="#viewFichaModal"
-                        >
-                          <i class="bi bi-eye"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-secondary"
-                          title="Editar"
-                        >
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                      </td>
+                        <td colspan="6" class="text-center">Carregando agendamentos...</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-
-              <!-- Pagination -->
-              <!-- <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Anterior</a>
-                  </li>
-                  <li class="page-item active">
-                    <a class="page-link" href="#">1</a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">Próxima</a>
-                  </li>
-                </ul>
-              </nav> -->
             </div>
           </div>
         </main>
@@ -434,12 +222,12 @@
     </div>
 
     <!-- New Ficha Modal -->
-    <div class="modal fade" id="newFichaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="newFichaModal" tabindex="-1" aria-labelledby="newFichaModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">
-              <i class="bi bi-file-earmark-plus"></i> Nova Ficha Médica
+            <h5 class="modal-title" id="newFichaModalLabel">
+              <i class="bi bi-file-earmark-plus"></i> Novo Agendamento
             </h5>
             <button
               type="button"
@@ -475,41 +263,40 @@
                 <div class="col-md-6">
                   <label for="fichaDoctor" class="form-label">Médico</label>
                   <select class="form-select" id="fichaDoctor" required>
-                    <option value="">Selecione um médico</option>
-                    <option value="1">Dr. Carlos Andrade (Cardiologia)</option>
-                    <option value="2">Dra. Ana Beatriz (Clínico Geral)</option>
-                    <option value="3">Dr. Roberto Santos (Ortopedia)</option>
-                    <option value="4">Dra. Juliana Costa (Dermatologia)</option>
+                    <option value="">Carregando médicos...</option>
                   </select>
                 </div>
                 <div class="col-md-6">
                   <label for="fichaType" class="form-label">Tipo</label>
                   <select class="form-select" id="fichaType" required>
                     <option value="">Selecione o tipo</option>
-                    <option value="consulta">Consulta</option>
-                    <option value="retorno">Retorno</option>
-                    <option value="exame">Exame</option>
-                    <option value="emergencia">Emergência</option>
+                    <option value="CONSULTA">Consulta</option>
+                    <option value="RETORNO">Retorno</option>
+                    <option value="EXAME">Exame</option>
+                    <option value="EMERGENCIA">Emergência</option>
+                    <option value="OUTRO">Outro</option>
                   </select>
                 </div>
               </div>
 
               <div class="mb-3">
-                <label for="fichaReason" class="form-label">Motivo</label>
+                <label for="fichaReason" class="form-label">Motivo/Descrição Principal</label>
                 <textarea
                   class="form-control"
                   id="fichaReason"
                   rows="3"
+                  placeholder="Descreva o motivo principal do agendamento"
                   required
                 ></textarea>
               </div>
 
               <div class="mb-3">
-                <label for="fichaSymptoms" class="form-label">Sintomas</label>
+                <label for="fichaSymptoms" class="form-label">Sintomas (Opcional)</label>
                 <textarea
                   class="form-control"
                   id="fichaSymptoms"
                   rows="2"
+                  placeholder="Descreva brevemente quaisquer sintomas"
                 ></textarea>
               </div>
             </form>
@@ -523,7 +310,7 @@
               Cancelar
             </button>
             <button type="submit" form="newFichaForm" class="btn btn-primary">
-              Criar Ficha
+              Criar Agendamento
             </button>
           </div>
         </div>
@@ -531,18 +318,12 @@
     </div>
 
     <!-- View Ficha Modal -->
-    <div
-      class="modal fade"
-      id="viewFichaModal"
-      tabindex="-1"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="viewFichaModal" tabindex="-1" aria-labelledby="viewFichaModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">
-              <i class="bi bi-file-earmark-text"></i> Ficha Médica
-              #FCH-2023-0042
+            <h5 class="modal-title" id="viewFichaModalTitle">
+              <i class="bi bi-file-earmark-text"></i> Detalhes da Ficha
             </h5>
             <button
               type="button"
@@ -555,100 +336,52 @@
             <div class="row mb-4">
               <div class="col-md-6">
                 <h6>Informações Básicas</h6>
-                <p><strong>Paciente:</strong> João da Silva</p>
-                <p><strong>Data:</strong> 15/05/2023 • 14:30</p>
-                <p><strong>Médico:</strong> Dr. Carlos Andrade</p>
-                <p><strong>Especialidade:</strong> Cardiologia</p>
-                <p>
-                  <strong>Status:</strong>
-                  <span class="status-badge status-agendado">Agendado</span>
-                </p>
+                <p><strong>Paciente:</strong> <span id="viewPatientName">Carregando...</span></p>
+                <p><strong>Data:</strong> <span id="viewAppointmentDate">Carregando...</span></p>
+                <p><strong>Médico:</strong> <span id="viewDoctorName">Carregando...</span></p>
+                <p><strong>Especialidade:</strong> <span id="viewDoctorSpecialty">Carregando...</span></p>
+                <p><strong>Status:</strong> <span id="viewAppointmentStatus" class="status-badge">Carregando...</span></p>
               </div>
               <div class="col-md-6">
                 <h6>Detalhes</h6>
-                <p><strong>Tipo:</strong> Consulta</p>
-                <p><strong>Motivo:</strong> Acompanhamento cardíaco</p>
-                <p>
-                  <strong>Sintomas:</strong> Pressão arterial elevada ocasional
-                </p>
+                <p><strong>Tipo:</strong> <span id="viewAppointmentType">Carregando...</span></p>
+                <p><strong>Motivo/Descrição:</strong> <span id="viewAppointmentReason">Carregando...</span></p>
+                <p><strong>Sintomas/Diagnóstico:</strong> <span id="viewAppointmentSymptoms">Carregando...</span></p>
               </div>
             </div>
-
-            <!-- <div class="mb-4">
-              <h6>Histórico</h6>
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex mb-3">
-                    <div class="flex-shrink-0">
-                      <i class="bi bi-file-earmark-text text-primary"></i>
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                      <small class="text-muted"
-                        >10/05/2023 • Dra. Ana Beatriz</small
-                      >
-                      <p class="mb-0">
-                        Paciente relatou melhora nos sintomas após ajuste
-                        medicamentoso. Pressão arterial estável.
-                      </p>
-                    </div>
-                  </div>
-                  <div class="d-flex">
-                    <div class="flex-shrink-0">
-                      <i class="bi bi-file-earmark-text text-primary"></i>
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                      <small class="text-muted"
-                        >25/04/2023 • Dra. Juliana Costa</small
-                      >
-                      <p class="mb-0">
-                        Exame de rotina sem alterações significativas. Paciente
-                        orientado sobre dieta balanceada.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
+          </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
               Fechar
             </button>
-            <button type="button" class="btn btn-primary">
-              <i class="bi bi-printer"></i> Imprimir
-            </button>
-            <!-- Adicione este botão -->
-            <button type="button" class="btn btn-success" id="confirmAppointmentBtn">
-              <i class="bi bi-check-circle"></i> Confirmar
+            <button type="button" class="btn btn-primary" id="printFichaBtn" disabled>
+              <i class="bi bi-printer"></i> Imprimir (Em breve)
             </button>
             <button type="button" class="btn btn-danger" id="cancelAppointmentBtn">
-              <i class="bi bi-x-circle"></i> Não poderei ir
+              <i class="bi bi-x-circle"></i> Não Poderei Ir
             </button>
           </div>
         </div>
       </div>
     </div>
 
-        <!-- Modal de Confirmação -->
-    <div
-      class="modal fade"
-      id="successModal"
-      tabindex="-1"
-      aria-labelledby="successModalLabel"
-      aria-hidden="true"
-    >
+    <!-- Modal de Sucesso -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title text-success" id="successModalLabel">
-              <i class="bi bi-check-circle"></i> Consulta confirmada com sucesso
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="successModalLabel">
+              <i class="bi bi-check-circle-fill"></i> Sucesso!
             </h5>
             <button
               type="button"
-              class="btn-close"
+              class="btn-close btn-close-white"
               data-bs-dismiss="modal"
               aria-label="Close"
             ></button>
+          </div>
+          <div class="modal-body" id="successModalBody">
+            Operação realizada com sucesso.
           </div>
           <div class="modal-footer">
             <button
@@ -663,295 +396,583 @@
       </div>
     </div>
 
-
     <!-- Bootstrap 5.3 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        const API_BASE = "https://ubs-zxgf.onrender.com";
+        // const API_BASE = "http://localhost:8080";
+        let currentUser = null;
+        let currentAppointments = [];
+        let allDoctors = [];
 
-      const API_BASE = "https://ubs-zxgf.onrender.com";
-      let currentUser = null;
-      let currentAppointments = [];
-
-      document.addEventListener('DOMContentLoaded', async () => {
-        await checkAuth();
-        await loadPatientData();
-        await loadAppointments();
-        setupEventListeners();
-      });
-
-      async function checkAuth() {
-        const token = localStorage.getItem('access_token');
-        if (!token) {
-          window.location.href = 'index.html';
-          return;
-        }
-
-        try {
-          const response = await fetch(`${API_BASE}/users/me`, {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          });
-
-          if (!response.ok) throw new Error('Falha na autenticação');
-          currentUser = await response.json();
-
-          if (!currentUser.roles?.includes('ROLE_PATIENT')) {
-            throw new Error('Acesso não autorizado');
-          }
-
-        } catch (error) {
-          localStorage.clear();
-          window.location.href = 'index.html';
-        }
-      }
-
-      async function loadPatientData() {
-        try {
-          const response = await fetch(`${API_BASE}/users/me`, {
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-            }
-          });
-
-          const patientData = await response.json();
-
-          // Atualiza os dados do paciente
-          document.querySelector('.patient-info-card h5').textContent = patientData.name;
-          document.querySelector('.patient-info-card .text-muted').innerHTML = `
-            ${patientData.age} anos<br>
-            <i class="bi bi-envelope"></i> ${patientData.email}<br>
-            <i class="bi bi-telephone"></i> ${patientData.phone}
-          `;
-
-        } catch (error) {
-          showError(error.message);
-        }
-      }
-
-      async function loadAppointments() {
-        try {
-            const response = await fetch(`${API_BASE}/appointments/patient`, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-                }
-            });
-
-            currentAppointments = await response.json();
-            renderAppointments();
-        } catch (error) {
-            showError(error.message);
-        }
-    }
-
-      function renderAppointments() {
-        const tbody = document.querySelector('table tbody');
-        tbody.innerHTML = currentAppointments.map(appointment => `
-          <tr>
-            <td>#FCH-${appointment.id.toString().padStart(4, '0')}</td>
-            <td>${new Date(appointment.date).toLocaleDateString('pt-BR')} • ${new Date(appointment.date).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}</td>
-            <td>${appointment.doctor.name}</td>
-            <td>${appointment.doctor.specialization}</td>
-            <td>
-              <span class="status-badge status-${getStatusClass(appointment.state)}">
-                ${appointment.state.replace('_', ' ')}
-              </span>
-            </td>
-            <td>
-              <button class="btn btn-sm btn-outline-primary view-btn"
-                data-id="${appointment.id}"
-                data-bs-toggle="modal"
-                data-bs-target="#viewFichaModal">
-                <i class="bi bi-eye"></i>
-              </button>
-              ${appointment.state === 'AGENDADO' ? `` : ''}
-            </td>
-          </tr>
-        `).join('');
-      }
-
-      function setupEventListeners() {
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', function(e) {
-          e.preventDefault();
-          localStorage.clear();
-          window.location.href = 'index.html';
-        });
-
-        document.getElementById('cancelAppointmentBtn').addEventListener('click', async function() {
-          if (!confirm('Tem certeza que não poderá comparecer a esta consulta?')) {
-            return;
-          }
-
-          const modal = document.getElementById('viewFichaModal');
-          const appointmentId = modal.dataset.appointmentId;
-
-          try {
-            const response = await fetch(`${API_BASE}/appointments/${appointmentId}/cancel`, {
-              method: 'PUT',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-              },
-              body: JSON.stringify({
-                reason: "Paciente informou que não poderá comparecer"
-              })
-            });
-
-            if (!response.ok) throw new Error('Falha ao cancelar a ficha');
-
-            // Atualiza o status no modal
-            modal.querySelector('.status-badge').className = 'status-badge status-cancelado';
-            modal.querySelector('.status-badge').textContent = 'CANCELADO';
-
-            // Esconde os botões após o cancelamento
-            this.style.display = 'none';
-            document.getElementById('confirmAppointmentBtn').style.display = 'none';
-
-            // Atualiza a lista de fichas
-            await loadAppointments();
-
-            showSuccess('Ficha cancelada com sucesso!');
-
-          } catch (error) {
-            showError(error.message);
-          }
-        });
-
-        // Adicione o evento de clique para o botão de confirmação
-        document.getElementById('confirmAppointmentBtn').addEventListener('click', async function() {
-          const modal = document.getElementById('viewFichaModal');
-          const appointmentId = modal.dataset.appointmentId;
-
-          try {
-            const response = await fetch(`${API_BASE}/appointments/${appointmentId}/confirm`, {
-              method: 'PUT',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-              }
-            });
-
-            if (!response.ok) throw new Error('Falha ao confirmar a ficha');
-
-            // Atualiza o status no modal
-            modal.querySelector('.status-badge').className = 'status-badge status-concluido';
-            modal.querySelector('.status-badge').textContent = 'CONFIRMADO';
-
-            // Esconde o botão após a confirmação
-            this.style.display = 'none';
-
-            // Atualiza a lista de fichas
-            await loadAppointments();
-
-            showSuccess('Ficha confirmada com sucesso!');
-
-          } catch (error) {
-            showError(error.message);
-          }
-        });
-
-        // Nova Ficha
-        document.getElementById('newFichaForm').addEventListener('submit', async function(e) {
-          e.preventDefault();
-
-          const formData = {
-            date: new Date(
-              document.getElementById('fichaDate').value +
-              'T' +
-              document.getElementById('fichaTime').value
-            ).toISOString(),
-            doctorId: document.getElementById('fichaDoctor').value,
-            type: document.getElementById('fichaType').value,
-            reason: document.getElementById('fichaReason').value,
-            symptoms: document.getElementById('fichaSymptoms').value
-          };
-
-          try {
-            const response = await fetch(`${API_BASE}/appointments`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-              },
-              body: JSON.stringify(formData)
-            });
-
-            if (!response.ok) throw new Error(await response.text());
-
-            await loadAppointments();
-            bootstrap.Modal.getInstance(document.getElementById('newFichaModal')).hide();
-            this.reset();
-            showSuccess('Ficha criada com sucesso!');
-
-          } catch (error) {
-            showError(error.message);
-          }
-        });
-
-        // Visualizar Ficha
-        document.getElementById('viewFichaModal').addEventListener('show.bs.modal', async function(event) {
-          const button = event.relatedTarget;
-          const appointmentId = button.dataset.id;
-
-          try {
-            const response = await fetch(`${API_BASE}/appointments/${appointmentId}`, {
-              headers: {
-                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-              }
-            });
-
-            const appointment = await response.json();
-            this.dataset.appointmentId = appointmentId;
-
-            // ... (código existente para preencher os dados) ...
-
-            // Mostra ou esconde os botões de ação
-            const confirmBtn = document.getElementById('confirmAppointmentBtn');
-            const cancelBtn = document.getElementById('cancelAppointmentBtn');
-
-            if (appointment.state === 'AGENDADO' && isAppointmentToday(appointment.date)) {
-              confirmBtn.style.display = 'inline-block';
-              cancelBtn.style.display = 'inline-block';
+        // Função auxiliar para remover o backdrop com segurança
+        function removeModalBackdropSafe() {
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) {
+                backdrop.classList.remove('show');
+                setTimeout(() => {
+                    if (backdrop.parentElement) {
+                        backdrop.remove();
+                    }
+                    if (!document.querySelector('.modal.show')) {
+                        document.body.classList.remove('modal-open');
+                        document.body.style.overflow = '';
+                        document.body.style.paddingRight = '';
+                    }
+                }, 150);
             } else {
-              confirmBtn.style.display = 'none';
-              cancelBtn.style.display = 'none';
+                if (!document.querySelector('.modal.show')) {
+                    document.body.classList.remove('modal-open');
+                    document.body.style.overflow = '';
+                    document.body.style.paddingRight = '';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                await checkAuth();
+                if (currentUser) {
+                    await loadPatientData();
+                    await loadAppointments();
+                    await loadDoctorsForSelect();
+                    setupEventListeners();
+                }
+            } catch (error) {
+                console.error("PFSCR: Erro na inicialização da página do paciente:", error);
+                // checkAuth já lida com redirecionamento, mas um log aqui é útil.
+                // Se não houver currentUser, a página não deve carregar mais nada.
+            }
+        });
+
+        async function checkAuth() {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                window.location.href = 'index.html';
+                throw new Error("PFSCR: Token não encontrado, redirecionando para login.");
+            }
+            try {
+                const response = await fetch(`${API_BASE}/users/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        localStorage.clear();
+                        window.location.href = 'index.html';
+                        throw new Error('PFSCR: Sessão expirada ou inválida, redirecionando.');
+                    }
+                    const errorData = await response.json().catch(() => ({ message: 'PFSCR: Falha na autenticação, resposta não JSON.' }));
+                    throw new Error(`PFSCR: Falha na autenticação: ${errorData.message || response.statusText}`);
+                }
+                currentUser = await response.json();
+                if (!currentUser.roles?.includes('ROLE_PATIENT')) {
+                    throw new Error('PFSCR: Acesso não autorizado para pacientes.');
+                }
+                localStorage.setItem('currentUserData', JSON.stringify(currentUser)); // Opcional
+            } catch (error) {
+                console.error("PFSCR: Erro em checkAuth:", error.message);
+                localStorage.clear();
+                if (!window.location.pathname.endsWith('index.html')) {
+                    window.location.href = 'index.html';
+                }
+                throw error;
+            }
+        }
+
+        async function loadPatientData() {
+            if (!currentUser) {
+                showError("PFSCR: Dados do paciente não puderam ser carregados (usuário não definido).");
+                return;
+            }
+            try {
+                document.querySelector('.patient-info-card h5').textContent = currentUser.name || 'Paciente';
+                const birthDate = currentUser.birthDate || currentUser.birth_date; // Tentar os dois nomes de campo comuns
+                let ageDisplay = 'Idade não informada';
+                if (birthDate) {
+                    const birth = new Date(birthDate);
+                    const today = new Date();
+                    let age = today.getFullYear() - birth.getFullYear();
+                    const m = today.getMonth() - birth.getMonth();
+                    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+                        age--;
+                    }
+                    ageDisplay = `${age} anos`;
+                }
+
+                document.querySelector('.patient-info-card .text-muted').innerHTML = `
+                    ${ageDisplay}<br/>
+                    <i class="bi bi-envelope"></i> ${currentUser.email || 'N/A'}<br>
+                    <i class="bi bi-telephone"></i> ${currentUser.phone || 'N/A'}
+                `;
+            } catch (error) {
+                showError("PFSCR: Erro ao exibir dados do paciente: " + error.message);
+            }
+        }
+
+        async function loadDoctorsForSelect() {
+            try {
+                const response = await fetch(`${API_BASE}/doctors`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
+                });
+                if (!response.ok) throw new Error('PFSCR: Falha ao carregar lista de médicos.');
+                allDoctors = await response.json();
+                const doctorSelect = document.getElementById('fichaDoctor');
+                if (doctorSelect) {
+                    doctorSelect.innerHTML = '<option value="">Selecione um médico</option>';
+                    allDoctors.forEach(doctor => {
+                        const option = document.createElement('option');
+                        option.value = doctor.id;
+                        // Verifica se specialization existe e não é nulo antes de toLowerCase
+                        const specializationText = doctor.specialization ? doctor.specialization.toLowerCase() : 'N/A';
+                        option.textContent = `${doctor.name} (${specializationText})`;
+                        doctorSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                showError("PFSCR: Erro ao carregar médicos: " + error.message);
+                const doctorSelect = document.getElementById('fichaDoctor');
+                if (doctorSelect) doctorSelect.innerHTML = '<option value="">Erro ao carregar médicos</option>';
+            }
+        }
+
+        async function loadAppointments() {
+            if (!currentUser) return;
+            const tbody = document.getElementById('appointmentsTableBody'); // Seleciona o tbody aqui
+            if (!tbody) {
+                console.error("PFSCR: Elemento tbody com ID 'appointmentsTableBody' não encontrado.");
+                return;
+            }
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center">Carregando seus agendamentos...</td></tr>`; // Feedback de carregamento
+
+            try {
+                const response = await fetch(`${API_BASE}/appointments/patient`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
+                });
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ message: 'PFSCR: Falha ao carregar fichas.' }));
+                    throw new Error(errorData.message || 'PFSCR: Falha ao carregar fichas.');
+                }
+                currentAppointments = await response.json();
+                renderAppointments();
+            } catch (error) {
+                showError("PFSCR: Erro ao carregar seus agendamentos: " + error.message);
+                if (tbody) tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Não foi possível carregar seus agendamentos. Tente novamente mais tarde.</td></tr>`;
+            }
+        }
+
+        function renderAppointments() {
+            const tbody = document.getElementById('appointmentsTableBody');
+            if (!tbody) return;
+
+            if (!currentAppointments || currentAppointments.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center">Você ainda não possui fichas ou agendamentos.</td></tr>`;
+                return;
             }
 
-          } catch (error) {
-            showError(error.message);
-          }
-        });
-      }
+            tbody.innerHTML = currentAppointments.map(appointment => {
+                const localDate = new Date(appointment.date);
+                const formattedDate = localDate.toLocaleDateString('pt-BR');
+                const formattedTime = localDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
-      function isAppointmentToday(appointmentDate) {
-        const today = new Date();
-        const appointment = new Date(appointmentDate);
+                let stateText = 'N/A';
+                if (appointment.state) {
+                    stateText = appointment.state.replace(/_/g, ' ').toLowerCase();
+                    stateText = stateText.charAt(0).toUpperCase() + stateText.slice(1);
+                }
 
-        return (
-          appointment.getDate() === today.getDate() &&
-          appointment.getMonth() === today.getMonth() &&
-          appointment.getFullYear() === today.getFullYear()
-        );
-      }
+                return `
+                    <tr data-appointment-id="${appointment.id}">
+                        <td>#FCH-${String(appointment.id).padStart(4, '0')}</td>
+                        <td>${formattedDate} • ${formattedTime}</td>
+                        <td>${appointment.doctor?.name || 'N/A'}</td>
+                        <td>${appointment.doctor?.specialization || 'N/A'}</td>
+                        <td>
+                        <span class="status-badge status-${getStatusClass(appointment.state)}">
+                            ${stateText}
+                        </span>
+                        </td>
+                        <td>
+                        <button class="btn btn-sm btn-outline-primary view-btn"
+                            data-id="${appointment.id}"
+                            title="Visualizar Detalhes"
+                            data-bs-toggle="modal"
+                            data-bs-target="#viewFichaModal">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        ${appointment.state === 'AGENDADO' && isAppointmentInFuture(appointment.date) ?
+                            `<button class="btn btn-sm btn-outline-danger cancel-btn-row ms-1"
+                                    data-id="${appointment.id}"
+                                    title="Cancelar Agendamento">
+                                <i class="bi bi-x-circle"></i>
+                            </button>` : ''}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
 
-      function getStatusClass(state) {
-        const statusMap = {
-          'AGENDADO': 'agendado',
-          'CONCLUIDO': 'concluido',
-          'CANCELADO': 'cancelado',
-          'PENDENTE': 'pendente'
-        };
-        return statusMap[state] || 'agendado';
-      }
+        function isAppointmentInFuture(appointmentDateStr) {
+            if (!appointmentDateStr) return false;
+            const appointmentDate = new Date(appointmentDateStr);
+            const now = new Date();
+            // Compara apenas a data, desconsiderando a hora para "futuro"
+            appointmentDate.setHours(0,0,0,0);
+            now.setHours(0,0,0,0);
+            return appointmentDate >= now; // Maior ou igual a hoje
+        }
 
-      function showError(message) {
-        alert('Erro: ' + message);
-      }
+        function setupEventListeners() {
+            document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.clear();
+                window.location.href = 'index.html';
+            });
 
-      function showSuccess(message) {
-        alert('Sucesso: ' + message);
-      }
+            const newFichaForm = document.getElementById('newFichaForm');
+            if (newFichaForm) {
+                newFichaForm.addEventListener('submit', handleCreateNewFicha);
+            }
+
+            const viewFichaModalElement = document.getElementById('viewFichaModal');
+            if (viewFichaModalElement) {
+                viewFichaModalElement.addEventListener('show.bs.modal', async function(event) {
+                    const button = event.relatedTarget;
+                    if (button && button.classList.contains('view-btn')) {
+                        const appointmentId = button.dataset.id;
+                        this.dataset.currentAppointmentId = appointmentId;
+                        await populateViewFichaModal(appointmentId);
+                    }
+                });
+                viewFichaModalElement.addEventListener('hidden.bs.modal', removeModalBackdropSafe);
+            }
+
+            const newFichaModalElement = document.getElementById('newFichaModal');
+            if (newFichaModalElement) {
+                newFichaModalElement.addEventListener('hidden.bs.modal', removeModalBackdropSafe);
+            }
+
+            const successModalElement = document.getElementById('successModal');
+            if (successModalElement) {
+                successModalElement.addEventListener('hidden.bs.modal', removeModalBackdropSafe);
+            }
+
+            const confirmBtnModal = document.getElementById('confirmAppointmentBtn');
+            if (confirmBtnModal) {
+                confirmBtnModal.addEventListener('click', async function() {
+                    const modal = document.getElementById('viewFichaModal');
+                    const appointmentId = modal.dataset.currentAppointmentId;
+                    if (appointmentId) {
+                        await handleConfirmAppointment(appointmentId);
+                    }
+                });
+            }
+
+            const cancelBtnModal = document.getElementById('cancelAppointmentBtn');
+            if (cancelBtnModal) {
+                cancelBtnModal.addEventListener('click', async function() {
+                    const modal = document.getElementById('viewFichaModal');
+                    const appointmentId = modal.dataset.currentAppointmentId;
+                    if (appointmentId) {
+                        await handleCancelAppointment(appointmentId, "Paciente informou que não poderá comparecer (via modal).");
+                    }
+                });
+            }
+
+            const tableBody = document.getElementById('appointmentsTableBody');
+            if (tableBody) {
+                tableBody.addEventListener('click', function(event) {
+                    const target = event.target.closest('.cancel-btn-row');
+                    if (target) {
+                        const appointmentId = target.dataset.id;
+                        handleCancelAppointment(appointmentId, 'Paciente solicitou cancelamento (via tabela).');
+                    }
+                });
+            }
+        }
+
+        async function handleCreateNewFicha(e) {
+            e.preventDefault();
+            if (!currentUser) {
+                showError("PFSCR: Não foi possível identificar o paciente. Faça login novamente.");
+                return;
+            }
+
+            const localDate = document.getElementById('fichaDate').value;
+            const localTime = document.getElementById('fichaTime').value;
+
+            if (!localDate || !localTime) {
+                showError('PFSCR: Data e Hora do agendamento são obrigatórias.');
+                return;
+            }
+            const localDateTime = new Date(`${localDate}T${localTime}:00`);
+            if (isNaN(localDateTime.getTime())) {
+                showError('PFSCR: Data ou Hora inválida.');
+                return;
+            }
+            const appointmentInstant = localDateTime.toISOString();
+
+            const formData = {
+                patientId: currentUser.id,
+                doctorId: document.getElementById('fichaDoctor').value,
+                date: appointmentInstant,
+                type: document.getElementById('fichaType').value,
+                description: document.getElementById('fichaReason').value,
+                diagnosis: document.getElementById('fichaSymptoms').value, // Backend pode tratar isso como 'symptoms' se preferir
+                state: "AGENDADO"
+            };
+
+            if (!formData.doctorId || !formData.type || !formData.description) {
+                showError("PFSCR: Médico, Tipo e Motivo/Descrição são obrigatórios.");
+                return;
+            }
+
+            const newFichaModalEl = document.getElementById('newFichaModal');
+            try {
+                const response = await fetch(`${API_BASE}/appointments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ message: "PFSCR: Erro ao criar ficha." }));
+                    throw new Error(errorData.message || "PFSCR: Erro desconhecido ao criar ficha.");
+                }
+
+                if (newFichaModalEl) {
+                    const modalInstance = bootstrap.Modal.getInstance(newFichaModalEl);
+                    if (modalInstance) {
+                        newFichaModalEl.addEventListener('hidden.bs.modal', async function handler() {
+                            newFichaModalEl.removeEventListener('hidden.bs.modal', handler);
+                            e.target.reset();
+                            showSuccess('Agendamento criado com sucesso!');
+                            await loadAppointments();
+                            removeModalBackdropSafe();
+                        }, { once: true });
+                        modalInstance.hide();
+                    } else { // Fallback
+                        e.target.reset();
+                        showSuccess('Agendamento criado com sucesso!');
+                        await loadAppointments();
+                        removeModalBackdropSafe();
+                    }
+                }
+            } catch (error) {
+                showError("PFSCR: Erro ao criar agendamento: " + error.message);
+                 // Se o modal ainda estiver aberto e houver erro, não fechar automaticamente
+                 // mas garantir que o backdrop seja removido se o usuário fechar manualmente.
+                if (newFichaModalEl && bootstrap.Modal.getInstance(newFichaModalEl)?._isShown) {
+                    // Não faz nada, deixa o usuário fechar ou tentar novamente
+                } else {
+                    removeModalBackdropSafe(); // Limpa se o modal não estiver mais ativo
+                }
+            }
+        }
+
+        async function populateViewFichaModal(appointmentId) {
+            const modal = document.getElementById('viewFichaModal');
+            if (!modal) return;
+
+            // Resetar para "Carregando..."
+            modal.querySelector('#viewFichaModalTitle').innerHTML = `<i class="bi bi-file-earmark-text"></i> Carregando Ficha...`;
+            modal.querySelector('#viewPatientName').textContent = 'Carregando...';
+            modal.querySelector('#viewAppointmentDate').textContent = 'Carregando...';
+            modal.querySelector('#viewDoctorName').textContent = 'Carregando...';
+            modal.querySelector('#viewDoctorSpecialty').textContent = 'Carregando...';
+            modal.querySelector('#viewAppointmentStatus').textContent = 'Carregando...';
+            modal.querySelector('#viewAppointmentType').textContent = 'Carregando...';
+            modal.querySelector('#viewAppointmentReason').textContent = 'Carregando...';
+            modal.querySelector('#viewAppointmentSymptoms').textContent = 'Carregando...';
+
+
+            try {
+                const response = await fetch(`${API_BASE}/appointments/${appointmentId}`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
+                });
+                if (!response.ok) throw new Error('PFSCR: Falha ao carregar detalhes da ficha.');
+
+                const appointment = await response.json();
+
+                modal.querySelector('#viewFichaModalTitle').innerHTML = `<i class="bi bi-file-earmark-text"></i> Ficha Médica #${String(appointment.id).padStart(4, '0')}`;
+                modal.querySelector('#viewPatientName').textContent = appointment.patient?.name || 'N/A';
+
+                const localDate = new Date(appointment.date);
+                const formattedDate = localDate.toLocaleDateString('pt-BR');
+                const formattedTime = localDate.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
+                modal.querySelector('#viewAppointmentDate').textContent = `${formattedDate} • ${formattedTime}`;
+
+                modal.querySelector('#viewDoctorName').textContent = appointment.doctor?.name || 'N/A';
+                modal.querySelector('#viewDoctorSpecialty').textContent = appointment.doctor?.specialization || 'N/A';
+
+                const statusBadge = modal.querySelector('#viewAppointmentStatus');
+                if(statusBadge) {
+                    let stateText = appointment.state ? appointment.state.replace(/_/g, ' ').toLowerCase() : 'agendado';
+                    stateText = stateText.charAt(0).toUpperCase() + stateText.slice(1);
+                    statusBadge.textContent = stateText;
+                    statusBadge.className = `status-badge status-${getStatusClass(appointment.state)}`;
+                }
+
+                modal.querySelector('#viewAppointmentType').textContent = appointment.type ? appointment.type.replace(/_/g,' ') : 'N/A';
+                modal.querySelector('#viewAppointmentReason').textContent = appointment.description || 'N/A';
+                modal.querySelector('#viewAppointmentSymptoms').textContent = appointment.diagnosis || 'Nenhum sintoma/diagnóstico informado';
+
+                const confirmBtn = document.getElementById('confirmAppointmentBtn');
+                const cancelBtn = document.getElementById('cancelAppointmentBtn');
+                if (appointment.state === 'AGENDADO' && isAppointmentInFuture(appointment.date)) {
+                    if (confirmBtn) confirmBtn.style.display = 'inline-block';
+                    if (cancelBtn) cancelBtn.style.display = 'inline-block';
+                } else {
+                    if (confirmBtn) confirmBtn.style.display = 'none';
+                    if (cancelBtn) cancelBtn.style.display = 'none';
+                }
+            } catch (error) {
+                showError("PFSCR: Erro ao carregar detalhes da ficha no modal: " + error.message);
+                // Resetar para erro
+                modal.querySelector('#viewFichaModalTitle').innerHTML = `<i class="bi bi-exclamation-triangle-fill"></i> Erro ao Carregar`;
+            }
+        }
+
+        async function handleConfirmAppointment(appointmentId) {
+            if (!confirm('Deseja confirmar sua presença para esta consulta?')) return;
+            const viewFichaModalElConfirm = document.getElementById('viewFichaModal');
+            try {
+                const response = await fetch(`${API_BASE}/appointments/${appointmentId}/confirm`, {
+                    method: 'PUT', // Ou PATCH se for o caso
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    }
+                });
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ message: "PFSCR: Falha ao confirmar agendamento." }));
+                    throw new Error(errorData.message || "PFSCR: Falha ao confirmar agendamento.");
+                }
+
+                if (viewFichaModalElConfirm) {
+                    const modalInstance = bootstrap.Modal.getInstance(viewFichaModalElConfirm);
+                    if (modalInstance) {
+                        viewFichaModalElConfirm.addEventListener('hidden.bs.modal', async function handler() {
+                            viewFichaModalElConfirm.removeEventListener('hidden.bs.modal', handler);
+                            showSuccess('Agendamento confirmado com sucesso!');
+                            await loadAppointments();
+                            removeModalBackdropSafe();
+                        }, { once: true });
+                        modalInstance.hide();
+                    } else { // Fallback
+                        showSuccess('Agendamento confirmado com sucesso!');
+                        await loadAppointments();
+                        removeModalBackdropSafe();
+                    }
+                }
+            } catch (error) {
+                showError("PFSCR: Erro ao confirmar agendamento: " + error.message);
+                if (viewFichaModalElConfirm && bootstrap.Modal.getInstance(viewFichaModalElConfirm)?._isShown) {
+                   // Não faz nada, deixa o usuário fechar ou tentar novamente
+                } else {
+                    removeModalBackdropSafe();
+                }
+            }
+        }
+
+        async function handleCancelAppointment(appointmentId, reasonText = "Paciente cancelou") {
+            if (!confirm('Tem certeza que deseja cancelar este agendamento?')) return;
+            const viewFichaModalElCancel = document.getElementById('viewFichaModal');
+            let isViewModalOpenAndRelevant = false;
+            if (viewFichaModalElCancel) {
+                const modalInstance = bootstrap.Modal.getInstance(viewFichaModalElCancel);
+                if (modalInstance && modalInstance._isShown && viewFichaModalElCancel.dataset.currentAppointmentId === String(appointmentId)) {
+                    isViewModalOpenAndRelevant = true;
+                }
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/appointments/${appointmentId}/cancel`, {
+                    method: 'PATCH', // Usando PATCH para atualização parcial (estado)
+                    headers: {
+                        'Content-Type': 'application/json', // Mesmo sem body, alguns backends esperam
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    },
+                    // body: JSON.stringify({ reason: reasonText }) // Enviar reason se o backend processar
+                });
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ message: "PFSCR: Falha ao cancelar agendamento." }));
+                    throw new Error(errorData.message || "PFSCR: Falha ao cancelar agendamento.");
+                }
+
+                if (isViewModalOpenAndRelevant) {
+                    const modalInstance = bootstrap.Modal.getInstance(viewFichaModalElCancel);
+                    viewFichaModalElCancel.addEventListener('hidden.bs.modal', async function handler() {
+                        viewFichaModalElCancel.removeEventListener('hidden.bs.modal', handler);
+                        showSuccess('Agendamento cancelado com sucesso!');
+                        await loadAppointments();
+                        removeModalBackdropSafe();
+                    }, { once: true });
+                    modalInstance.hide();
+                } else {
+                    showSuccess('Agendamento cancelado com sucesso!');
+                    await loadAppointments();
+                    removeModalBackdropSafe();
+                }
+            } catch (error) {
+                showError("PFSCR: Erro ao cancelar agendamento: " + error.message);
+                if (isViewModalOpenAndRelevant && bootstrap.Modal.getInstance(viewFichaModalElCancel)?._isShown) {
+                    // Não faz nada
+                } else {
+                   removeModalBackdropSafe();
+                }
+            }
+        }
+
+        function getStatusClass(state) {
+            if (!state) return 'agendado';
+            const lowerState = String(state).toLowerCase().replace(/_/g, ''); // Remove underscore para a classe
+            const statusMap = {
+                'agendado': 'agendado',
+                'concluido': 'concluido',
+                'confirmado': 'confirmado',
+                'cancelado': 'cancelado',
+                'pendente': 'pendente',
+                'em_andamento': 'em_andamento', // Adicionar se o backend tiver este estado
+                'em andamento': 'em_andamento'  // Adicionar se o backend tiver este estado
+            };
+            return statusMap[lowerState] || 'agendado';
+        }
+
+        function isAppointmentToday(appointmentDateStr) {
+           // Esta função não é mais usada para mostrar os botões, mas pode ser útil para outras lógicas.
+           // A lógica foi simplificada em isAppointmentInFuture
+           if (!appointmentDateStr) return false;
+            const appointmentDate = new Date(appointmentDateStr);
+            const today = new Date();
+            return appointmentDate.getFullYear() === today.getFullYear() &&
+                   appointmentDate.getMonth() === today.getMonth() &&
+                   appointmentDate.getDate() === today.getDate();
+        }
+
+        function showError(message) {
+            console.error("PFSCR_ERROR:", message);
+            alert('Erro: ' + message);
+        }
+
+        function showSuccess(message) {
+            console.log("PFSCR_SUCCESS:", message);
+            const successModalEl = document.getElementById('successModal');
+            const titleElement = document.getElementById('successModalLabel');
+            const bodyElement = document.getElementById('successModalBody'); // Pegar o body para mensagem mais detalhada
+
+            if (titleElement) titleElement.innerHTML = `<i class="bi bi-check-circle-fill"></i> Sucesso!`;
+            if (bodyElement) bodyElement.textContent = message;
+
+            if (successModalEl) {
+                const modalInstance = bootstrap.Modal.getOrCreateInstance(successModalEl);
+                modalInstance.show();
+            } else {
+                alert('Sucesso: ' + message); // Fallback
+            }
+        }
     </script>
-  </body>
+</body>
 </html>

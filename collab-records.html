@@ -462,7 +462,7 @@
               const doctorSelect = document.getElementById('recordDoctorSelect');
               if(doctorSelect) {
                 doctorSelect.innerHTML = '<option value="">Selecione um médico...</option>';
-                doctorsForSelect_Records.forEach(d => doctorSelect.innerHTML += `<option value="${d.id}">${d.name} (${d.specialty || 'N/A'})</option>`);
+                doctorsForSelect_Records.forEach(d => doctorSelect.innerHTML += `<option value="${d.id}">${d.name} (${d.specialization || 'N/A'})</option>`);
               }
           } catch (error) {
               const patientSelect = document.getElementById('recordPatientSelect');
