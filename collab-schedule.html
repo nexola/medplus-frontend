@@ -27,153 +27,54 @@
         --med-dark: #2c5282;
         --med-light: #f5f9ff;
       }
-
-      body {
-        background-color: #f8f9fa;
-        color: #212529;
-      }
-
-      .navbar-brand {
-        font-weight: 700;
-        color: var(--med-primary);
-      }
-
-      .navbar-brand span {
-        color: var(--med-dark);
-      }
-
-      .sidebar {
-        background-color: white;
-        min-height: calc(100vh - 56px);
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-      }
-
-      .sidebar .nav-link {
-        color: #495057;
-        border-radius: 5px;
-        margin-bottom: 5px;
-      }
-
+      body { background-color: #f8f9fa; color: #212529; }
+      .navbar-brand { font-weight: 700; color: var(--med-primary); }
+      .navbar-brand span.med-plus-text { color: var(--med-dark); }
+      .navbar-brand span.user-role-display { font-size: 0.9rem; color: #6c757d; margin-left: 5px; }
+      .sidebar { background-color: white; min-height: calc(100vh - 56px); box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); }
+      .sidebar .nav-link { color: #495057; border-radius: 5px; margin-bottom: 5px; }
       .sidebar .nav-link:hover,
-      .sidebar .nav-link.active {
-        background-color: var(--med-light);
-        color: var(--med-primary);
-      }
-
-      .sidebar .nav-link i {
-        margin-right: 10px;
-      }
-
-      .card {
-        border: none;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
-        border-radius: 10px;
-      }
-
-      .btn-primary {
-        background-color: var(--med-primary);
-        border-color: var(--med-primary);
-      }
-
-      .btn-primary:hover {
-        background-color: var(--med-dark);
-        border-color: var(--med-dark);
-      }
-
-      .action-btn {
-        width: 30px;
-        height: 30px;
-        padding: 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .badge-collab {
-        background-color: #6f42c1;
-      }
-
-      .search-box {
-        position: relative;
-      }
-
-      .search-box .form-control {
-        padding-left: 40px;
-      }
-
-      .search-box i {
-        position: absolute;
-        left: 15px;
-        top: 12px;
-        color: #6c757d;
-      }
-
-      .filter-dropdown .dropdown-menu {
-        width: 300px;
-        padding: 15px;
-      }
-
-      .appointment-badge {
-        font-size: 0.75rem;
-      }
-
-      .appointment-card {
-        border-left: 4px solid var(--med-primary);
-        transition: all 0.2s;
-      }
-
-      .appointment-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      }
-
-      .appointment-card.urgent {
-        border-left-color: #dc3545;
-      }
-
-      .appointment-card.completed {
-        border-left-color: #28a745;
-      }
-
-      .appointment-card.canceled {
-        border-left-color: #6c757d;
-      }
-
-      .patient-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
-      }
-
-      #calendar {
+      .sidebar .nav-link.active { background-color: var(--med-light); color: var(--med-primary); }
+      .sidebar .nav-link i { margin-right: 10px; }
+      .card { border: none; box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); border-radius: 10px; }
+      .btn-primary { background-color: var(--med-primary); border-color: var(--med-primary); }
+      .btn-primary:hover { background-color: var(--med-dark); border-color: var(--med-dark); }
+      #calendarContainer {
         background-color: white;
         border-radius: 10px;
         padding: 20px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
       }
+      .fc-event { cursor: pointer; }
+      .fc-event-agendado { background-color: var(--med-primary); border-color: var(--med-primary); }
+      .fc-event-confirmado { background-color: #198754; border-color: #198754; }
+      .fc-event-concluido { background-color: #28a745; border-color: #28a745; }
+      .fc-event-cancelado { background-color: #6c757d; border-color: #6c757d; }
+      .fc-event-pendente { background-color: #ffc107; border-color: #ffc107; color: #000 !important; }
+      .fc-event-em_andamento { background-color: #fd7e14; border-color: #fd7e14; } /* Exemplo para EM_ANDAMENTO */
 
-      .fc-event {
-        cursor: pointer;
+
+      .fc-toolbar-title { font-size: 1.5rem; font-weight: 600; }
+      .fc-daygrid-day-number, .fc-col-header-cell-cushion { font-size: 0.9rem; }
+      .loading-spinner {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
       }
-
-      .fc-event-primary {
-        background-color: var(--med-primary);
-        border-color: var(--med-primary);
+      #calendarContainer.loading .loading-spinner {
+        display: block;
       }
-
-      .fc-event-urgent {
-        background-color: #dc3545;
-        border-color: #dc3545;
+      #calendarContainer.loading > div:not(.loading-spinner) {
+        opacity: 0.5;
       }
-
-      .fc-event-completed {
-        background-color: #28a745;
-        border-color: #28a745;
+      .fc-event-title{
+        color: white;
       }
-
-      .fc-toolbar-title {
-        font-size: 1.25rem;
-        font-weight: 600;
+      .fc-event-time{
+        color: white;
       }
     </style>
   </head>
@@ -182,32 +83,22 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <i class="bi bi-heart-pulse"></i> Med<span>+</span> Collab
+          <i class="bi bi-heart-pulse"></i> Med<span class="med-plus-text">+</span>
+          <span class="user-role-display">Colaborador</span>
         </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-              >
-                <i class="bi bi-person-circle"></i> Maria Oliveira
+              <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown">
+                <i class="bi bi-person-circle"></i> <span id="userNamePlaceholder">Carregando...</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li>
-                  <a class="dropdown-item" href="./profile-collab.html"
-                    ><i class="bi bi-person"></i> Perfil</a
-                  >
-                </li>
+                <li><a class="dropdown-item" href="./profile-collab.html"><i class="bi bi-person"></i> Perfil</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#"
-                    ><i class="bi bi-box-arrow-right"></i> Sair</a
-                  >
-                </li>
+                <li><a class="dropdown-item" href="#" id="logoutButton"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
               </ul>
             </li>
           </ul>
@@ -221,515 +112,134 @@
         <div class="col-md-3 col-lg-2 d-md-block sidebar bg-white">
           <div class="position-sticky pt-3">
             <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link" href="./main-collab.html">
-                  <i class="bi bi-speedometer2"></i> Dashboard
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./collab-patients.html">
-                  <i class="bi bi-people"></i> Pacientes
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./collab-records.html">
-                  <i class="bi bi-files"></i> Fichas
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="./collab-schedule.html">
-                  <i class="bi bi-calendar-check"></i> Agenda
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./profile-collab.html">
-                  <i class="bi bi-person"></i> Meu Perfil
-                </a>
-              </li>
+              <li class="nav-item"><a class="nav-link" href="./main-collab.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+              <li class="nav-item"><a class="nav-link" href="./collab-patients.html"><i class="bi bi-people"></i> Pacientes</a></li>
+              <li class="nav-item"><a class="nav-link" href="./collab-records.html"><i class="bi bi-files"></i> Fichas</a></li>
+              <li class="nav-item"><a class="nav-link active" href="./collab-schedule.html"><i class="bi bi-calendar-check"></i> Agenda</a></li>
+              <li class="nav-item"><a class="nav-link" href="./profile-collab.html"><i class="bi bi-person"></i> Meu Perfil</a></li>
             </ul>
           </div>
         </div>
 
         <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-          <div
-            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
-          >
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2"><i class="bi bi-calendar-check"></i> Agenda</h1>
-            <div class="btn-toolbar mb-2 mb-md-0">
-              <button
-                class="btn btn-primary me-2"
-                data-bs-toggle="modal"
-                data-bs-target="#newAppointmentModal"
-              >
+             <div class="btn-toolbar mb-2 mb-md-0">
+              <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#newAppointmentModal">
                 <i class="bi bi-plus-lg"></i> Novo Agendamento
               </button>
-              <div class="btn-group">
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary dropdown-toggle"
-                  data-bs-toggle="dropdown"
-                >
-                  <i class="bi bi-funnel"></i> Filtros
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      <i class="bi bi-calendar-check"></i> Todos
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      <i class="bi bi-exclamation-triangle text-danger"></i>
-                      Urgentes
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      <i class="bi bi-check-circle text-success"></i>
-                      Confirmados
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      <i class="bi bi-x-circle text-secondary"></i> Cancelados
-                    </a>
-                  </li>
-                </ul>
-              </div>
             </div>
           </div>
 
-          <!-- Calendar View Tabs -->
-          <ul class="nav nav-tabs mb-4" id="calendarTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link active"
-                id="day-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#day"
-                type="button"
-              >
-                <i class="bi bi-calendar-day"></i> Dia
-              </button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link"
-                id="week-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#week"
-                type="button"
-              >
-                <i class="bi bi-calendar-week"></i> Semana
-              </button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link"
-                id="month-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#month"
-                type="button"
-              >
-                <i class="bi bi-calendar-month"></i> Mês
-              </button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link"
-                id="list-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#list"
-                type="button"
-              >
-                <i class="bi bi-list-ul"></i> Lista
-              </button>
-            </li>
-          </ul>
-
-          <div class="tab-content" id="calendarTabsContent">
-            <!-- Day View -->
-            <div class="tab-pane fade show active" id="day" role="tabpanel">
-              <div id="dayCalendar"></div>
-            </div>
-
-            <!-- Week View -->
-            <div class="tab-pane fade" id="week" role="tabpanel">
-              <div id="weekCalendar"></div>
-            </div>
-
-            <!-- Month View -->
-            <div class="tab-pane fade" id="month" role="tabpanel">
-              <div id="monthCalendar"></div>
-            </div>
-
-            <!-- List View -->
-            <div class="tab-pane fade" id="list" role="tabpanel">
-              <div class="card">
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th>Data/Hora</th>
-                          <th>Paciente</th>
-                          <th>Médico</th>
-                          <th>Tipo</th>
-                          <th>Status</th>
-                          <th>Ações</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <strong>Hoje</strong><br />
-                            09:30 - 10:00
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img
-                                src="https://randomuser.me/api/portraits/men/32.jpg"
-                                alt="Patient"
-                                class="patient-avatar me-2"
-                              />
-                              João da Silva
-                            </div>
-                          </td>
-                          <td>Dr. Carlos Andrade</td>
-                          <td>Consulta</td>
-                          <td>
-                            <span class="badge bg-primary">Confirmado</span>
-                          </td>
-                          <td>
-                            <button
-                              class="btn btn-sm btn-outline-primary action-btn"
-                            >
-                              <i class="bi bi-eye"></i>
-                            </button>
-                            <button
-                              class="btn btn-sm btn-outline-secondary action-btn"
-                            >
-                              <i class="bi bi-pencil"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <strong>Hoje</strong><br />
-                            11:15 - 11:45
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img
-                                src="https://randomuser.me/api/portraits/women/44.jpg"
-                                alt="Patient"
-                                class="patient-avatar me-2"
-                              />
-                              Maria Oliveira
-                            </div>
-                          </td>
-                          <td>Dra. Ana Beatriz</td>
-                          <td>Retorno</td>
-                          <td>
-                            <span class="badge bg-primary">Confirmado</span>
-                          </td>
-                          <td>
-                            <button
-                              class="btn btn-sm btn-outline-primary action-btn"
-                            >
-                              <i class="bi bi-eye"></i>
-                            </button>
-                            <button
-                              class="btn btn-sm btn-outline-secondary action-btn"
-                            >
-                              <i class="bi bi-pencil"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <strong>Amanhã</strong><br />
-                            14:00 - 14:30
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img
-                                src="https://randomuser.me/api/portraits/men/75.jpg"
-                                alt="Patient"
-                                class="patient-avatar me-2"
-                              />
-                              Carlos Ferreira
-                            </div>
-                          </td>
-                          <td>Dr. Roberto Santos</td>
-                          <td>Emergência</td>
-                          <td><span class="badge bg-danger">Urgente</span></td>
-                          <td>
-                            <button
-                              class="btn btn-sm btn-outline-primary action-btn"
-                            >
-                              <i class="bi bi-eye"></i>
-                            </button>
-                            <button
-                              class="btn btn-sm btn-outline-secondary action-btn"
-                            >
-                              <i class="bi bi-pencil"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <strong>22/11</strong><br />
-                            08:30 - 09:00
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img
-                                src="https://randomuser.me/api/portraits/women/68.jpg"
-                                alt="Patient"
-                                class="patient-avatar me-2"
-                              />
-                              Ana Paula Santos
-                            </div>
-                          </td>
-                          <td>Dra. Juliana Costa</td>
-                          <td>Consulta</td>
-                          <td>
-                            <span class="badge bg-secondary">Cancelado</span>
-                          </td>
-                          <td>
-                            <button
-                              class="btn btn-sm btn-outline-primary action-btn"
-                            >
-                              <i class="bi bi-eye"></i>
-                            </button>
-                            <button
-                              class="btn btn-sm btn-outline-secondary action-btn"
-                            >
-                              <i class="bi bi-pencil"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+          <div id="calendarContainer" class="position-relative">
+            <div class="loading-spinner">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Carregando...</span>
                 </div>
-              </div>
             </div>
-          </div>
-
-          <!-- Today's Appointments -->
-          <div class="mt-4">
-            <h5 class="mb-3">
-              <i class="bi bi-calendar-day"></i> Agendamentos de Hoje
-            </h5>
-            <div class="row">
-              <!-- Appointment Card -->
-              <div class="col-md-6 col-lg-4 mb-3">
-                <div class="card appointment-card">
-                  <div class="card-body">
-                    <div
-                      class="d-flex justify-content-between align-items-start mb-2"
-                    >
-                      <span class="badge bg-primary">09:30 - 10:00</span>
-                      <span class="badge bg-success">Confirmado</span>
-                    </div>
-                    <h6 class="mb-2">João da Silva</h6>
-                    <p class="mb-1">
-                      <small class="text-muted"
-                        >Dr. Carlos Andrade • Cardiologia</small
-                      >
-                    </p>
-                    <p class="mb-2">Consulta de rotina</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Appointment Card -->
-              <div class="col-md-6 col-lg-4 mb-3">
-                <div class="card appointment-card urgent">
-                  <div class="card-body">
-                    <div
-                      class="d-flex justify-content-between align-items-start mb-2"
-                    >
-                      <span class="badge bg-primary">11:15 - 11:45</span>
-                      <span class="badge bg-danger">Urgente</span>
-                    </div>
-                    <h6 class="mb-2">Maria Oliveira</h6>
-                    <p class="mb-1">
-                      <small class="text-muted"
-                        >Dra. Ana Beatriz • Pediatria</small
-                      >
-                    </p>
-                    <p class="mb-2">Dor abdominal intensa</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Appointment Card -->
-              <div class="col-md-6 col-lg-4 mb-3">
-                <div class="card appointment-card completed">
-                  <div class="card-body">
-                    <div
-                      class="d-flex justify-content-between align-items-start mb-2"
-                    >
-                      <span class="badge bg-primary">08:00 - 08:30</span>
-                      <span class="badge bg-secondary">Concluído</span>
-                    </div>
-                    <h6 class="mb-2">Carlos Ferreira</h6>
-                    <p class="mb-1">
-                      <small class="text-muted"
-                        >Dr. Roberto Santos • Ortopedia</small
-                      >
-                    </p>
-                    <p class="mb-2">Avaliação pós-cirúrgica</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div id="calendar"></div>
           </div>
         </main>
       </div>
     </div>
 
     <!-- New Appointment Modal -->
-    <div
-      class="modal fade"
-      id="newAppointmentModal"
-      tabindex="-1"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="newAppointmentModal" tabindex="-1" aria-labelledby="newAppointmentModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">
-              <i class="bi bi-calendar-plus"></i> Novo Agendamento
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <h5 class="modal-title" id="newAppointmentModalLabel">Novo Agendamento</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <form id="newAppointmentForm">
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="appointmentPatient" class="form-label"
-                    >Paciente</label
-                  >
+                  <label for="appointmentPatient" class="form-label">Paciente</label>
                   <select class="form-select" id="appointmentPatient" required>
-                    <option value="">Selecione um paciente</option>
-                    <option value="1">João da Silva</option>
-                    <option value="2">Maria Oliveira</option>
-                    <option value="3">Carlos Ferreira</option>
-                    <option value="4">Ana Paula Santos</option>
+                    <option value="">Carregando pacientes...</option>
                   </select>
                 </div>
                 <div class="col-md-6">
-                  <label for="appointmentDoctor" class="form-label"
-                    >Médico</label
-                  >
+                  <label for="appointmentDoctor" class="form-label">Médico</label>
                   <select class="form-select" id="appointmentDoctor" required>
-                    <option value="">Selecione um médico</option>
-                    <option value="1">Dr. Carlos Andrade</option>
-                    <option value="2">Dra. Ana Beatriz</option>
-                    <option value="3">Dr. Roberto Santos</option>
-                    <option value="4">Dra. Juliana Costa</option>
+                    <option value="">Carregando médicos...</option>
                   </select>
                 </div>
               </div>
-
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="appointmentDate" class="form-label">Data</label>
-                  <input
-                    type="date"
-                    class="form-control"
-                    id="appointmentDate"
-                    required
-                  />
+                  <input type="date" class="form-control" id="appointmentDate" required />
                 </div>
-                <div class="col-md-3">
-                  <label for="appointmentStart" class="form-label"
-                    >Hora Início</label
-                  >
-                  <input
-                    type="time"
-                    class="form-control"
-                    id="appointmentStart"
-                    required
-                  />
-                </div>
-                <div class="col-md-3">
-                  <label for="appointmentEnd" class="form-label"
-                    >Hora Fim</label
-                  >
-                  <input
-                    type="time"
-                    class="form-control"
-                    id="appointmentEnd"
-                    required
-                  />
+                <div class="col-md-6">
+                  <label for="appointmentStart" class="form-label">Horário</label>
+                  <input type="time" class="form-control" id="appointmentStart" step="900" required /> <!-- step 900 = 15 min -->
                 </div>
               </div>
-
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="appointmentType" class="form-label">Tipo</label>
                   <select class="form-select" id="appointmentType" required>
                     <option value="">Selecione o tipo</option>
-                    <option value="consulta">Consulta</option>
-                    <option value="retorno">Retorno</option>
-                    <option value="emergencia">Emergência</option>
-                    <option value="exame">Exame</option>
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <label for="appointmentStatus" class="form-label"
-                    >Status</label
-                  >
-                  <select class="form-select" id="appointmentStatus" required>
-                    <option value="confirmado">Confirmado</option>
-                    <option value="pendente">Pendente</option>
-                    <option value="cancelado">Cancelado</option>
+                    <option value="CONSULTA">Consulta</option>
+                    <option value="RETORNO">Retorno</option>
+                    <option value="EMERGENCIA">Emergência</option>
+                    <option value="EXAME">Exame</option>
+                    <option value="OUTRO">Outro</option>
                   </select>
                 </div>
               </div>
-
               <div class="mb-3">
-                <label for="appointmentDescription" class="form-label"
-                  >Descrição</label
-                >
-                <textarea
-                  class="form-control"
-                  id="appointmentDescription"
-                  rows="3"
-                ></textarea>
+                <label for="appointmentDescription" class="form-label">Descrição/Motivo</label>
+                <textarea class="form-control" id="appointmentDescription" rows="3" placeholder="Principal motivo do agendamento"></textarea>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              form="newAppointmentForm"
-              class="btn btn-primary"
-            >
-              Agendar
-            </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" form="newAppointmentForm" class="btn btn-primary">Agendar</button>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- View/Edit Appointment Modal -->
+    <div class="modal fade" id="viewAppointmentModal" tabindex="-1" aria-labelledby="viewAppointmentModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="viewAppointmentModalLabel">Detalhes do Agendamento</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="viewAppointmentModalBody">
+            <p>Carregando detalhes...</p>
+          </div>
+          <div class="modal-footer" id="viewAppointmentModalFooter">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            {/* Botões de ação serão adicionados aqui pelo JS */}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Sucesso (reutilizado de outras telas) -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="successModalLabel"><i class="bi bi-check-circle-fill"></i> Sucesso!</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="successModalBody">Operação realizada com sucesso.</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <!-- FullCalendar JS -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
@@ -737,164 +247,535 @@
     <!-- Bootstrap 5.3 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Initialize calendars
-        const dayCalendarEl = document.getElementById("dayCalendar");
-        const weekCalendarEl = document.getElementById("weekCalendar");
-        const monthCalendarEl = document.getElementById("monthCalendar");
+        const API_BASE = "https://ubs-zxgf.onrender.com";
+        // const API_BASE = "http://localhost:8080";
+        let calendar;
+        let currentUser_CollabAgenda = null;
+        let allPatients_CollabAgenda = [];
+        let allDoctors_CollabAgenda = [];
 
-        const dayCalendar = new FullCalendar.Calendar(dayCalendarEl, {
-          initialView: "timeGridDay",
-          locale: "pt-br",
-          headerToolbar: {
-            left: "prev,next today",
-            center: "title",
-            right: "timeGridDay",
-          },
-          events: [
-            {
-              title: "João da Silva - Dr. Carlos",
-              start: new Date().setHours(9, 30, 0),
-              end: new Date().setHours(10, 0, 0),
-              className: "fc-event-primary",
-              extendedProps: {
-                description: "Consulta de rotina",
-              },
-            },
-            {
-              title: "Maria Oliveira - Dra. Ana",
-              start: new Date().setHours(11, 15, 0),
-              end: new Date().setHours(11, 45, 0),
-              className: "fc-event-urgent",
-              extendedProps: {
-                description: "Dor abdominal intensa",
-              },
-            },
-            {
-              title: "Carlos Ferreira - Dr. Roberto",
-              start: new Date().setHours(14, 0, 0),
-              end: new Date().setHours(14, 30, 0),
-              className: "fc-event-primary",
-              extendedProps: {
-                description: "Avaliação pós-cirúrgica",
-              },
-            },
-          ],
-          eventClick: function (info) {
-            alert(
-              "Event: " +
-                info.event.title +
-                "\n" +
-                "Description: " +
-                info.event.extendedProps.description
-            );
-          },
-        });
 
-        const weekCalendar = new FullCalendar.Calendar(weekCalendarEl, {
-          initialView: "timeGridWeek",
-          locale: "pt-br",
-          headerToolbar: {
-            left: "prev,next today",
-            center: "title",
-            right: "timeGridWeek",
-          },
-          events: [
-            {
-              title: "João da Silva - Dr. Carlos",
-              start: new Date().setHours(9, 30, 0),
-              end: new Date().setHours(10, 0, 0),
-              className: "fc-event-primary",
-            },
-            {
-              title: "Maria Oliveira - Dra. Ana",
-              start: new Date().setHours(11, 15, 0),
-              end: new Date().setHours(11, 45, 0),
-              className: "fc-event-urgent",
-            },
-            {
-              title: "Carlos Ferreira - Dr. Roberto",
-              start: new Date().setHours(14, 0, 0),
-              end: new Date().setHours(14, 30, 0),
-              className: "fc-event-primary",
-            },
-            {
-              title: "Ana Paula - Dra. Juliana",
-              start: new Date(
-                new Date().setDate(new Date().getDate() + 1)
-              ).setHours(8, 30, 0),
-              end: new Date(
-                new Date().setDate(new Date().getDate() + 1)
-              ).setHours(9, 0, 0),
-              className: "fc-event-completed",
-            },
-          ],
-        });
-
-        const monthCalendar = new FullCalendar.Calendar(monthCalendarEl, {
-          initialView: "dayGridMonth",
-          locale: "pt-br",
-          headerToolbar: {
-            left: "prev,next today",
-            center: "title",
-            right: "dayGridMonth",
-          },
-          events: [
-            {
-              title: "João da Silva",
-              start: new Date(),
-              className: "fc-event-primary",
-            },
-            {
-              title: "Maria Oliveira",
-              start: new Date(),
-              className: "fc-event-urgent",
-            },
-            {
-              title: "Carlos Ferreira",
-              start: new Date(new Date().setDate(new Date().getDate() + 1)),
-              className: "fc-event-primary",
-            },
-            {
-              title: "Ana Paula",
-              start: new Date(new Date().setDate(new Date().getDate() + 2)),
-              className: "fc-event-completed",
-            },
-          ],
-        });
-
-        dayCalendar.render();
-        weekCalendar.render();
-        monthCalendar.render();
-
-        // Handle tab changes to render proper calendar
-        const calendarTabs = document.querySelectorAll(
-          '#calendarTabs button[data-bs-toggle="tab"]'
-        );
-        calendarTabs.forEach((tab) => {
-          tab.addEventListener("shown.bs.tab", function (event) {
-            if (event.target.id === "day-tab") {
-              dayCalendar.render();
-            } else if (event.target.id === "week-tab") {
-              weekCalendar.render();
-            } else if (event.target.id === "month-tab") {
-              monthCalendar.render();
+        // MOVER ESTA FUNÇÃO PARA O TOPO DO SCRIPT
+        function removeModalBackdropSafe() {
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) {
+                backdrop.classList.remove('show');
+                setTimeout(() => {
+                    if (backdrop.parentElement) {
+                        backdrop.remove();
+                    }
+                    if (!document.querySelector('.modal.show')) {
+                        document.body.classList.remove('modal-open');
+                        document.body.style.overflow = '';
+                        document.body.style.paddingRight = '';
+                    }
+                }, 150);
+            } else {
+                if (!document.querySelector('.modal.show')) {
+                    document.body.classList.remove('modal-open');
+                    document.body.style.overflow = '';
+                    document.body.style.paddingRight = '';
+                }
             }
-          });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                await checkAuth_CollabAgenda();
+                if (currentUser_CollabAgenda) {
+                    initializeCalendar();
+                    setupEventListeners_CollabAgenda();
+                    await loadDataForNewAppointmentModal(); // Carregar dados para o modal
+                }
+            } catch (error) {
+                console.error("AGENDA_COLLAB: Erro na inicialização:", error);
+                showError_CollabAgenda("Não foi possível carregar a agenda. Tente novamente.");
+            }
         });
 
-        // Form submission handler
-        document
-          .getElementById("newAppointmentForm")
-          .addEventListener("submit", function (e) {
-            e.preventDefault();
-            alert("Agendamento criado com sucesso!");
-            bootstrap.Modal.getInstance(
-              document.getElementById("newAppointmentModal")
-            ).hide();
-            this.reset();
-          });
-      });
+        async function checkAuth_CollabAgenda() {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                window.location.href = 'index.html';
+                throw new Error("AGENDA_COLLAB: Token não encontrado.");
+            }
+            try {
+                const response = await fetch(`${API_BASE}/users/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!response.ok) {
+                    if (response.status === 401) localStorage.clear();
+                    window.location.href = 'index.html';
+                    throw new Error(`AGENDA_COLLAB: Falha na autenticação (${response.status})`);
+                }
+                currentUser_CollabAgenda = await response.json();
+                updateUserDisplayInfo_CollabAgenda();
+            } catch (error) {
+                console.error("AGENDA_COLLAB: Erro em checkAuth:", error);
+                if (!window.location.pathname.endsWith('index.html')) {
+                     localStorage.clear();
+                     window.location.href = 'index.html';
+                }
+                throw error;
+            }
+        }
+
+        function updateUserDisplayInfo_CollabAgenda() {
+            if (currentUser_CollabAgenda && currentUser_CollabAgenda.name) {
+                const userNameEl = document.getElementById('userNamePlaceholder');
+                if(userNameEl) userNameEl.textContent = currentUser_CollabAgenda.name.split(' ')[0];
+
+                const navbarBrand = document.querySelector('.navbar-brand');
+                if(navbarBrand) {
+                    let userRoleDisplay = navbarBrand.querySelector('span.user-role-display');
+                    if (!userRoleDisplay) {
+                         userRoleDisplay = document.createElement('span');
+                         userRoleDisplay.className = 'user-role-display';
+                         navbarBrand.appendChild(userRoleDisplay);
+                    }
+                    const unitName = currentUser_CollabAgenda.healthUnitName || 'Unidade';
+                    let roleText = "Colaborador";
+                    if(currentUser_CollabAgenda.roles?.includes("ROLE_DOCTOR")) roleText = "Médico(a)";
+                    else if(currentUser_CollabAgenda.roles?.includes("ROLE_UNIT")) roleText = "Admin Unidade";
+                    userRoleDisplay.textContent = `${roleText} (${unitName})`;
+                }
+            }
+        }
+
+        function initializeCalendar() {
+            const calendarEl = document.getElementById('calendar');
+            const calendarContainer = document.getElementById('calendarContainer');
+            if (!calendarEl || !calendarContainer) {
+                console.error("AGENDA_COLLAB: Elemento do calendário não encontrado.");
+                return;
+            }
+
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                locale: 'pt-br',
+                initialView: 'timeGridWeek',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia', list: 'Lista' },
+                allDaySlot: false,
+                slotMinTime: "07:00:00",
+                slotMaxTime: "21:00:00",
+                expandRows: true,
+                navLinks: true,
+                editable: false,
+                selectable: true,
+
+                select: function(selectionInfo) {
+                    openNewAppointmentModalWithDateTime(selectionInfo.start, selectionInfo.end);
+                },
+                eventClick: function(info) {
+                    openViewAppointmentModal(info.event.id);
+                },
+                events: function(fetchInfo, successCallback, failureCallback) {
+                    const token = localStorage.getItem('access_token');
+                    calendarContainer.classList.add('loading');
+                    const startParam = fetchInfo.start.toISOString();
+                    const endParam = fetchInfo.end.toISOString();
+
+                    fetch(`${API_BASE}/appointments/calendar?start=${startParam}&end=${endParam}`, {
+                        method: 'GET',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error(`AGENDA_COLLAB: Erro ao buscar agendamentos (${response.status})`);
+                        return response.json();
+                    })
+                    .then(data => {
+                        const events = data.map(app => {
+                            // Calcula o 'end' se não vier do backend, ou se vier um campo 'durationMinutes'
+                            let endDate = app.endDate; // Supondo que o DTO pode ter um endDate
+                            if (!endDate && app.date) {
+                                // Se não houver endDate, usa uma duração padrão (ex: 30 minutos)
+                                const startDate = new Date(app.date);
+                                endDate = new Date(startDate.getTime() + 30 * 60000).toISOString();
+                            }
+
+                            return {
+                                id: app.id,
+                                title: `${app.patient?.name || 'Paciente?'} (${app.doctor?.name || 'Médico?'})`,
+                                start: app.date,
+                                end: endDate, // Usar o endDate calculado ou do DTO
+                                allDay: false,
+                                className: `fc-event-${getStatusClass_CollabAgenda(app.state)}`,
+                                extendedProps: {
+                                    patientName: app.patient?.name,
+                                    doctorName: app.doctor?.name,
+                                    doctorSpecialty: app.doctor?.specialization,
+                                    type: app.type,
+                                    state: app.state,
+                                    description: app.description,
+                                    diagnosis: app.diagnosis
+                                }
+                            };
+                        });
+                        successCallback(events);
+                    })
+                    .catch(error => {
+                        console.error("AGENDA_COLLAB: Erro ao buscar eventos:", error);
+                        failureCallback(error);
+                        showError_CollabAgenda("Erro ao carregar os agendamentos no calendário.");
+                    })
+                    .finally(() => {
+                        calendarContainer.classList.remove('loading');
+                    });
+                },
+                defaultTimedEventDuration: '00:30' // Usado se 'end' não for fornecido nos eventos
+            });
+            calendar.render();
+
+            const calendarTabs = document.querySelectorAll('#calendarTabs button[data-bs-toggle="tab"]'); // Se você tiver abas
+            calendarTabs.forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function (event) {
+                    const targetId = event.target.id;
+                    if (targetId === 'day-tab') calendar.changeView('timeGridDay');
+                    else if (targetId === 'week-tab') calendar.changeView('timeGridWeek');
+                    else if (targetId === 'month-tab') calendar.changeView('dayGridMonth');
+                    else if (targetId === 'list-tab') calendar.changeView('listWeek');
+                    // calendar.render(); // O FullCalendar geralmente se ajusta à mudança de view. Se não, descomente.
+                });
+            });
+        }
+
+        function openNewAppointmentModalWithDateTime(startDate, endDate) {
+            const modalElement = document.getElementById('newAppointmentModal');
+            if (!modalElement) return;
+            const newAppointmentModal = bootstrap.Modal.getOrCreateInstance(modalElement);
+
+            document.getElementById('appointmentDate').value = startDate.toISOString().split('T')[0];
+            document.getElementById('appointmentStart').value = startDate.toTimeString().substring(0,5);
+
+            let effectiveEndDate = endDate;
+            if (!endDate) {
+                 effectiveEndDate = new Date(startDate.getTime() + 30 * 60000); // Default 30 min
+            }
+
+            document.getElementById('newAppointmentForm').reset(); // Limpa outros campos
+            // Re-seta data e hora pois o reset() pode limpá-los
+            document.getElementById('appointmentDate').value = startDate.toISOString().split('T')[0];
+            document.getElementById('appointmentStart').value = startDate.toTimeString().substring(0,5);
+
+
+            newAppointmentModal.show();
+        }
+
+        function isAppointmentInFuture(appointmentDateStr) {
+          if (!appointmentDateStr) return false;
+          const appointmentDate = new Date(appointmentDateStr);
+          const now = new Date();
+          appointmentDate.setHours(0,0,0,0);
+          now.setHours(0,0,0,0);
+          return appointmentDate >= now;
+      }
+
+        async function openViewAppointmentModal(appointmentId) {
+            const modalElement = document.getElementById('viewAppointmentModal');
+            if (!modalElement || !appointmentId) return;
+            const viewModal = bootstrap.Modal.getOrCreateInstance(modalElement);
+            const modalBody = document.getElementById('viewAppointmentModalBody');
+            const modalFooter = document.getElementById('viewAppointmentModalFooter');
+            modalBody.innerHTML = '<p>Carregando detalhes do agendamento...</p>';
+            modalFooter.innerHTML = '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>'; // Botão fechar padrão
+            viewModal.show();
+
+            try {
+                const token = localStorage.getItem('access_token');
+                const response = await fetch(`${API_BASE}/appointments/${appointmentId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!response.ok) throw new Error("Falha ao buscar detalhes do agendamento.");
+                const app = await response.json();
+
+                modalElement.dataset.currentAppointmentId = app.id; // Guarda o ID no modal para ações
+
+                const localDate = new Date(app.date);
+                const formattedDate = localDate.toLocaleDateString('pt-BR');
+                const formattedTime = localDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+                let stateText = app.state ? app.state.replace(/_/g, ' ').toLowerCase() : 'N/A';
+                stateText = stateText.charAt(0).toUpperCase() + stateText.slice(1);
+
+                let typeText = app.type ? app.type.replace(/_/g, ' ').toLowerCase() : 'N/A';
+                typeText = typeText.charAt(0).toUpperCase() + typeText.slice(1);
+
+                modalBody.innerHTML = `
+                    <p><strong>Paciente:</strong> ${app.patient?.name || 'N/A'}</p>
+                    <p><strong>Médico:</strong> ${app.doctor?.name || 'N/A'} (${app.doctor?.specialization || 'N/A'})</p>
+                    <p><strong>Data e Hora:</strong> ${formattedDate} às ${formattedTime}</p>
+                    <p><strong>Status:</strong> <span class="status-badge status-${getStatusClass_CollabAgenda(app.state)}">${stateText}</span></p>
+                    <p><strong>Tipo:</strong> ${typeText}</p>
+                    <p><strong>Descrição/Motivo:</strong> ${app.description || 'N/A'}</p>
+                    <p><strong>Diagnóstico/Sintomas (se houver):</strong> ${app.diagnosis || 'N/A'}</p>
+                `;
+
+                // Adicionar botões de ação dinamicamente ao footer
+                modalFooter.innerHTML = '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>';
+                if (app.state === 'AGENDADO' && isAppointmentInFuture(app.date)) {
+                     // O colaborador pode cancelar, mas não confirmar pelo paciente.
+                     // A confirmação aqui seria da unidade/staff.
+                    const cancelBtn = document.createElement('button');
+                    cancelBtn.type = 'button';
+                    cancelBtn.className = 'btn btn-danger ms-2';
+                    cancelBtn.innerHTML = '<i class="bi bi-x-circle"></i> Cancelar Agendamento';
+                    cancelBtn.onclick = () => handleCancelAppointment_CollabAgenda(app.id, "Cancelado pelo colaborador");
+                    modalFooter.appendChild(cancelBtn);
+                }
+                // Botão de editar pode ser adicionado aqui se a lógica de edição for implementada
+            } catch (error) {
+                modalBody.innerHTML = `<p class="text-danger">Erro ao carregar detalhes: ${error.message}</p>`;
+                showError_CollabAgenda(error.message);
+            }
+        }
+
+        function setupEventListeners_CollabAgenda() {
+            document.getElementById('logoutButton')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.clear();
+                window.location.href = 'index.html';
+            });
+
+            const newAppointmentForm = document.getElementById('newAppointmentForm');
+            newAppointmentForm?.addEventListener('submit', handleNewAppointmentSubmit);
+
+            const newAppointmentModalEl = document.getElementById('newAppointmentModal');
+            newAppointmentModalEl?.addEventListener('hidden.bs.modal', removeModalBackdropSafe);
+
+            const viewAppointmentModalEl = document.getElementById('viewAppointmentModal');
+            viewAppointmentModalEl?.addEventListener('hidden.bs.modal', removeModalBackdropSafe);
+
+            const successModalEl = document.getElementById('successModal');
+            successModalEl?.addEventListener('hidden.bs.modal', removeModalBackdropSafe);
+        }
+
+        async function handleNewAppointmentSubmit(event) {
+            event.preventDefault();
+            const token = localStorage.getItem('access_token');
+            const newAppointmentModalEl = document.getElementById('newAppointmentModal');
+
+            const localDate = document.getElementById('appointmentDate').value;
+            const startTime = document.getElementById('appointmentStart').value;
+
+            if (!localDate || !startTime) {
+                showError_CollabAgenda("Data e hora são obrigatórias.");
+                return;
+            }
+
+            const localDateTimeStart = new Date(`${localDate}T${startTime}:00`);
+            if (isNaN(localDateTimeStart.getTime())) {
+                showError_CollabAgenda('Data ou Hora de Início inválida.');
+                return;
+            }
+            const appointmentStartInstant = localDateTimeStart.toISOString();
+
+            // Para o backend, o `date` é o início. Se o seu backend suportar `endDate` ou `duration`, envie.
+            // Por enquanto, o FullCalendar usará defaultTimedEventDuration se `end` não for enviado.
+            // Mas para o POST, o seu AppointmentInsertDTO deve refletir o que o backend espera.
+            // Se o backend só tem `date`, então é apenas o `appointmentStartInstant`.
+
+            const appointmentData = {
+                patientId: document.getElementById('appointmentPatient').value,
+                doctorId: document.getElementById('appointmentDoctor').value,
+                date: appointmentStartInstant,
+                type: document.getElementById('appointmentType').value,
+                diagnosis: document.getElementById('appointmentDescription').value,
+                state: "AGENDADO"
+            };
+
+            if (!appointmentData.patientId || !appointmentData.doctorId || !appointmentData.type || !appointmentData.state) {
+                showError_CollabAgenda("Paciente, Médico, Tipo e Status são obrigatórios.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/appointments`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+                    body: JSON.stringify(appointmentData)
+                });
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.message || `Erro ao criar agendamento (${response.status})`);
+                }
+
+                if (newAppointmentModalEl) {
+                    const modalInstance = bootstrap.Modal.getInstance(newAppointmentModalEl);
+                    if (modalInstance) {
+                        newAppointmentModalEl.addEventListener('hidden.bs.modal', function handler() {
+                            newAppointmentModalEl.removeEventListener('hidden.bs.modal', handler);
+                            showSuccess_CollabAgenda('Agendamento criado com sucesso!');
+                            calendar.refetchEvents();
+                            event.target.reset();
+                            removeModalBackdropSafe();
+                        }, { once: true });
+                        modalInstance.hide();
+                    } else {
+                        showSuccess_CollabAgenda('Agendamento criado com sucesso!');
+                        calendar.refetchEvents();
+                        event.target.reset();
+                        removeModalBackdropSafe();
+                    }
+                }
+            } catch (error) {
+                showError_CollabAgenda(error.message);
+            }
+        }
+
+        async function handleConfirmAppointment_CollabAgenda(appointmentId) {
+            if (!confirm('Confirmar este agendamento pela unidade/staff?')) return;
+            const viewModalEl = document.getElementById('viewAppointmentModal');
+            try {
+                // O endpoint de confirmação do paciente é /confirm.
+                // Se a unidade/staff tem um endpoint diferente ou payload, ajuste aqui.
+                // Assumindo que o endpoint /appointments/{id} com PUT e state="CONFIRMADO" funciona.
+                // Ou que existe um /appointments/{id}/staff-confirm
+                const response = await fetch(`${API_BASE}/appointments/${appointmentId}`, { //  OU /appointments/${appointmentId}/staff-confirm
+                    method: 'PUT', // Ou PATCH
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    },
+                    body: JSON.stringify({ state: 'CONFIRMADO' }) // Envia apenas o estado para atualizar
+                });
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.message || "Falha ao confirmar agendamento (unidade).");
+                }
+
+                if (viewModalEl) {
+                    const modalInstance = bootstrap.Modal.getInstance(viewModalEl);
+                    if (modalInstance) {
+                        viewModalEl.addEventListener('hidden.bs.modal', function handler() {
+                            viewModalEl.removeEventListener('hidden.bs.modal', handler);
+                            showSuccess_CollabAgenda('Agendamento confirmado pela unidade!');
+                            calendar.refetchEvents();
+                            removeModalBackdropSafe();
+                        }, { once: true });
+                        modalInstance.hide();
+                    } else {
+                        showSuccess_CollabAgenda('Agendamento confirmado pela unidade!');
+                        calendar.refetchEvents();
+                        removeModalBackdropSafe();
+                    }
+                }
+            } catch (error) {
+                showError_CollabAgenda(error.message);
+            }
+        }
+
+        async function handleCancelAppointment_CollabAgenda(appointmentId, reasonText = "Cancelado pela unidade") {
+            if (!confirm('Tem certeza que deseja cancelar este agendamento?')) return;
+            const viewModalEl = document.getElementById('viewAppointmentModal');
+            let isViewModalOpenAndRelevant = false;
+            if (viewModalEl) {
+                const modalInstance = bootstrap.Modal.getInstance(viewModalEl);
+                if (modalInstance && modalInstance._isShown && viewModalEl.dataset.currentAppointmentId === String(appointmentId)) {
+                    isViewModalOpenAndRelevant = true;
+                }
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/appointments/${appointmentId}/cancel`, { // Seu endpoint de cancelamento
+                    method: 'PATCH', // ou PUT
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}`},
+                    // body: JSON.stringify({ reason: reasonText }) // Se o endpoint /cancel aceitar um body
+                });
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.message || "Falha ao cancelar agendamento.");
+                }
+
+                if (isViewModalOpenAndRelevant) {
+                    const modalInstance = bootstrap.Modal.getInstance(viewModalEl);
+                    viewModalEl.addEventListener('hidden.bs.modal', function handler() {
+                        viewModalEl.removeEventListener('hidden.bs.modal', handler);
+                        showSuccess_CollabAgenda('Agendamento cancelado com sucesso!');
+                        calendar.refetchEvents();
+                        removeModalBackdropSafe();
+                    }, { once: true });
+                    modalInstance.hide();
+                } else {
+                    showSuccess_CollabAgenda('Agendamento cancelado com sucesso!');
+                    calendar.refetchEvents();
+                    removeModalBackdropSafe();
+                }
+            } catch (error) {
+                showError_CollabAgenda(error.message);
+            }
+        }
+
+        async function loadDataForNewAppointmentModal() {
+            try {
+                const [patientsRes, doctorsRes] = await Promise.all([
+                    fetch(`${API_BASE}/patients`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` } }),
+                    fetch(`${API_BASE}/doctors`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` } })
+                ]);
+                if (!patientsRes.ok) throw new Error("Falha ao carregar pacientes para formulário.");
+                if (!doctorsRes.ok) throw new Error("Falha ao carregar médicos para formulário.");
+
+                allPatients_CollabAgenda = await patientsRes.json();
+                allDoctors_CollabAgenda = await doctorsRes.json();
+
+                const patientSelect = document.getElementById('appointmentPatient');
+                const doctorSelect = document.getElementById('appointmentDoctor');
+
+                if (patientSelect) {
+                    patientSelect.innerHTML = '<option value="">Selecione um paciente</option>';
+                    allPatients_CollabAgenda.forEach(p => patientSelect.innerHTML += `<option value="${p.id}">${p.name}</option>`);
+                }
+                if (doctorSelect) {
+                    doctorSelect.innerHTML = '<option value="">Selecione um médico</option>';
+                    allDoctors_CollabAgenda.forEach(d => {
+                        const specializationText = d.specialization ? d.specialization.toLowerCase() : 'N/A';
+                        doctorSelect.innerHTML += `<option value="${d.id}">${d.name} (${specializationText})</option>`
+                    });
+                }
+            } catch (error) {
+                showError_CollabAgenda("Erro ao carregar dados para o formulário de agendamento: " + error.message);
+                const patientSelect = document.getElementById('appointmentPatient');
+                const doctorSelect = document.getElementById('appointmentDoctor');
+                if (patientSelect) patientSelect.innerHTML = '<option value="">Erro ao carregar</option>';
+                if (doctorSelect) doctorSelect.innerHTML = '<option value="">Erro ao carregar</option>';
+            }
+        }
+
+        function getStatusClass_CollabAgenda(state) {
+            if (!state) return 'agendado';
+            const lowerState = String(state).toLowerCase().replace(/_/g, '');
+             const statusMap = {
+                'agendado': 'agendado', 'confirmado': 'confirmado', 'concluido': 'concluido',
+                'cancelado': 'cancelado', 'pendente': 'pendente', 'emandamento': 'em_andamento'
+            };
+            return statusMap[lowerState] || 'agendado'; // Default
+        }
+
+        function showError_CollabAgenda(message) {
+            console.error("AGENDA_COLLAB_ERROR:", message);
+            alert('Erro na Agenda: ' + message);
+        }
+
+        function showSuccess_CollabAgenda(message) {
+            console.log("AGENDA_COLLAB_SUCCESS:", message);
+            const successModalEl = document.getElementById('successModal');
+            const titleElement = document.getElementById('successModalLabel');
+            const bodyElement = document.getElementById('successModalBody');
+
+            if (titleElement) titleElement.innerHTML = `<i class="bi bi-check-circle-fill"></i> Sucesso!`;
+            if (bodyElement) bodyElement.textContent = message;
+
+            if (successModalEl) {
+                const modalInstance = bootstrap.Modal.getOrCreateInstance(successModalEl);
+                modalInstance.show();
+            } else {
+                alert('Sucesso: ' + message); // Fallback
+            }
+        }
     </script>
   </body>
 </html>

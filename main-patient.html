@@ -890,12 +890,11 @@
 
             try {
                 const response = await fetch(`${API_BASE}/appointments/${appointmentId}/cancel`, {
-                    method: 'PATCH', // Usando PATCH para atualização parcial (estado)
+                    method: 'PATCH',
                     headers: {
-                        'Content-Type': 'application/json', // Mesmo sem body, alguns backends esperam
+                        'Content-Type': 'application/json',
                         'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-                    },
-                    // body: JSON.stringify({ reason: reasonText }) // Enviar reason se o backend processar
+                    }
                 });
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({ message: "PFSCR: Falha ao cancelar agendamento." }));
