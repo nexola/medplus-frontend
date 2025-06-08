@@ -475,6 +475,15 @@
           return appointmentDate >= now;
       }
 
+      function isAppointmentInPast(appointmentDateStr) {
+        if (!appointmentDateStr) return false;
+        const appointmentDate = new Date(appointmentDateStr);
+        const now = new Date();
+        appointmentDate.setHours(0, 0, 0, 0);
+        now.setHours(0, 0, 0, 0);
+        return appointmentDate < now;
+      }
+
         async function openViewAppointmentModal(appointmentId) {
             const modalElement = document.getElementById('viewAppointmentModal');
             if (!modalElement || !appointmentId) return;
@@ -574,11 +583,6 @@
             }
             const appointmentStartInstant = localDateTimeStart.toISOString();
 
-            // Para o backend, o `date` é o início. Se o seu backend suportar `endDate` ou `duration`, envie.
-            // Por enquanto, o FullCalendar usará defaultTimedEventDuration se `end` não for enviado.
-            // Mas para o POST, o seu AppointmentInsertDTO deve refletir o que o backend espera.
-            // Se o backend só tem `date`, então é apenas o `appointmentStartInstant`.
-
             const appointmentData = {
                 patientId: document.getElementById('appointmentPatient').value,
                 doctorId: document.getElementById('appointmentDoctor').value,
@@ -587,6 +591,10 @@
                 diagnosis: document.getElementById('appointmentDescription').value,
                 state: "AGENDADO"
             };
+
+            if(isAppointmentInPast(appointmentData.date)){
+              appointmentData.state = "CONCLUIDO"
+            }
 
             if (!appointmentData.patientId || !appointmentData.doctorId || !appointmentData.type || !appointmentData.state) {
                 showError_CollabAgenda("Paciente, Médico, Tipo e Status são obrigatórios.");

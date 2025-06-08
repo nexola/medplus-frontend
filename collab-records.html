@@ -30,6 +30,7 @@
       .filter-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
       .patient-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background-color: var(--med-light); color: var(--med-primary); display: flex; align-items: center; justify-content: center; font-weight: bold; }
       #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); z-index: 10050; display: flex; justify-content: center; align-items: center; }
+      .filter-btn-group .btn { margin-right: 5px; }
       @media (max-width: 768px) { .table-responsive { overflow-x: auto;} .modal-lg { max-width: 95%;} }
     </style>
   </head>
@@ -103,8 +104,30 @@
             </div>
           </div>
 
+          <!-- Filter Section -->
           <div class="card mb-4">
-
+             <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-funnel"></i> Filtros</h5>
+                 <div class="row g-3 align-items-end">
+                     <div class="col-md-4">
+                         <label for="searchInput" class="form-label">Pesquisar</label>
+                         <input type="text" class="form-control" id="searchInput" placeholder="Nome, médico ou ID...">
+                     </div>
+                     <div class="col-md-3">
+                        <label for="dateFilterSingle" class="form-label">Filtrar por Data</label>
+                        <input type="date" class="form-control" id="dateFilterSingle">
+                     </div>
+                     <div class="col-md-5">
+                         <label class="form-label">Filtrar por Estado</label>
+                         <div class="btn-group w-100" role="group" id="statusFilterButtonGroup">
+                             <button type="button" class="btn btn-outline-secondary active" data-status-filter="ALL">Todos</button>
+                             <button type="button" class="btn btn-outline-primary" data-status-filter="AGENDADO">Agendado</button>
+                             <button type="button" class="btn btn-outline-success" data-status-filter="CONCLUIDO">Concluído</button>
+                             <button type="button" class="btn btn-outline-danger" data-status-filter="CANCELADO">Cancelado</button>
+                         </div>
+                     </div>
+                 </div>
+             </div>
           </div>
 
           <div class="card">
@@ -128,36 +151,47 @@
                 </table>
               </div>
             </div>
+            <!-- Pagination Footer -->
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <span id="pagination-info"></span>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination mb-0" id="pagination-controls">
+                        <!-- Pagination buttons will be inserted here by JS -->
+                    </ul>
+                </nav>
+            </div>
           </div>
         </main>
       </div>
     </div>
 
+    <!-- New Record Modal -->
     <div class="modal fade" id="newRecordModal" tabindex="-1" aria-labelledby="newRecordModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header"><h5 class="modal-title" id="newRecordModalLabel"><i class="bi bi-file-earmark-plus"></i> Nova Ficha (Agendamento)</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
           <form id="newRecordForm"><div class="modal-body">
-              <div class="mb-3"><label for="recordPatientSelect" class="form-label">Paciente</label><select class="form-select" id="recordPatientSelect" required><option value="">Carregando...</option></select></div>
-              <div class="mb-3"><label for="recordDoctorSelect" class="form-label">Médico</label><select class="form-select" id="recordDoctorSelect" required><option value="">Carregando...</option></select></div>
-              <div class="row"><div class="col-md-6 mb-3"><label for="recordDateInput" class="form-label">Data</label><input type="date" class="form-control" id="recordDateInput" required /></div><div class="col-md-6 mb-3"><label for="recordTimeInput" class="form-label">Hora</label><input type="time" class="form-control" id="recordTimeInput" required /></div></div>
-              <div class="mb-3"><label for="recordTypeSelect" class="form-label">Tipo da Consulta</label>
-                <select class="form-select" id="recordTypeSelect" required>
-                    <option value="">Selecione o tipo...</option>
-                    <option value="CONSULTA_ROTINA">Consulta de Rotina</option>
-                    <option value="RETORNO">Retorno</option>
-                    <option value="EMERGENCIA">Emergência</option>
-                    <option value="ACOMPANHAMENTO_EXAME">Acompanhamento de Exame</option>
-                    <option value="OUTRO">Outro (descrever abaixo)</option>
-                </select>
-              </div>
-              <div class="mb-3"><label for="recordDescriptionText" class="form-label">Observações / Descrição Adicional</label><textarea class="form-control" id="recordDescriptionText" rows="3" placeholder="Detalhes adicionais, motivo da consulta se 'Outro'"></textarea></div>
-              <div id="newRecordError" class="text-danger mt-2" style="display: none;"></div>
+            <div class="mb-3"><label for="recordPatientSelect" class="form-label">Paciente</label><select class="form-select" id="recordPatientSelect" required><option value="">Carregando...</option></select></div>
+            <div class="mb-3"><label for="recordDoctorSelect" class="form-label">Médico</label><select class="form-select" id="recordDoctorSelect" required><option value="">Carregando...</option></select></div>
+            <div class="row"><div class="col-md-6 mb-3"><label for="recordDateInput" class="form-label">Data</label><input type="date" class="form-control" id="recordDateInput" required /></div><div class="col-md-6 mb-3"><label for="recordTimeInput" class="form-label">Hora</label><input type="time" class="form-control" id="recordTimeInput" required /></div></div>
+            <div class="mb-3"><label for="recordTypeSelect" class="form-label">Tipo da Consulta</label>
+              <select class="form-select" id="recordTypeSelect" required>
+                <option value="">Selecione o tipo...</option>
+                <option value="CONSULTA_ROTINA">Consulta de Rotina</option>
+                <option value="RETORNO">Retorno</option>
+                <option value="EMERGENCIA">Emergência</option>
+                <option value="ACOMPANHAMENTO_EXAME">Acompanhamento de Exame</option>
+                <option value="OUTRO">Outro (descrever abaixo)</option>
+              </select>
+            </div>
+            <div class="mb-3"><label for="recordDescriptionText" class="form-label">Observações / Descrição Adicional</label><textarea class="form-control" id="recordDescriptionText" rows="3" placeholder="Detalhes adicionais, motivo da consulta se 'Outro'"></textarea></div>
+            <div id="newRecordError" class="text-danger mt-2" style="display: none;"></div>
           </div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button><button type="submit" class="btn btn-primary">Criar Ficha</button></div></form>
         </div>
       </div>
     </div>
 
+    <!-- View Record Modal -->
     <div class="modal fade" id="viewRecordModal" tabindex="-1" aria-labelledby="viewRecordModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -178,13 +212,12 @@
             </div>
             <hr/>
             <div id="recordActions" class="mt-3 d-flex justify-content-end">
-                 {/* Botões de ação serão adicionados aqui se o estado permitir */}
+                {/* Botões de ação serão adicionados aqui se o estado permitir */}
             </div>
-             <div id="updateRecordError" class="text-danger mt-2" style="display: none;"></div> {/* Div de erro para o modal de detalhes */}
+             <div id="updateRecordError" class="text-danger mt-2" style="display: none;"></div>
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-outline-secondary" id="printRecordButton" disabled><i class="bi bi-printer"></i> Imprimir (Em breve)</button>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
           </div>
         </div>
       </div>
@@ -193,14 +226,21 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       const API_BASE_RECORDS= "https://ubs-zxgf.onrender.com";
-      // const API_BASE_RECORDS = "http://localhost:8080";
       const DEFAULT_ZONE_ID_RECORDS = "America/Sao_Paulo";
 
       let currentUser_Records = null;
-      let allAppointments_Records = [];
-      let displayedAppointments_Records = [];
+      let allAppointments_Records = []; // Stores all records from API
+      let filteredAppointments_Records = []; // Stores records after filtering
       let patientsForSelect_Records = [];
       let doctorsForSelect_Records = [];
+
+      // Pagination state
+      let currentPage_Records = 1;
+      const recordsPerPage_Records = 10;
+
+      // Filter state
+      let currentStatusFilter = 'ALL';
+
 
       function showLoading_Records() {
         const el = document.getElementById('loading-overlay');
@@ -317,8 +357,8 @@
         try {
             await authenticateAndLoadUser_CollabRecords();
             if (currentUser_Records) {
-                await loadPageData_CollabRecords();
                 attachPageEventListeners_CollabRecords();
+                await loadPageData_CollabRecords();
             }
         } catch (error) {
             console.error("RCRDS: Erro crítico na inicialização da página de fichas:", error.message);
@@ -373,9 +413,8 @@
       async function loadPageData_CollabRecords() {
         try {
             const appointmentsData = await fetchAPI_Records('/appointments');
-            allAppointments_Records = appointmentsData || [];
-            displayedAppointments_Records = [...allAppointments_Records];
-            renderRecordsTable_CollabRecords();
+            allAppointments_Records = (appointmentsData || []).sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort newest first
+            applyRecordFilters_CollabRecords();
             updateRecordStatsCards_CollabRecords();
         } catch (error) {
             const tbody = document.getElementById('recordsTableBody');
@@ -386,14 +425,19 @@
       function renderRecordsTable_CollabRecords() {
         const tbody = document.getElementById('recordsTableBody');
         if(!tbody) { console.error("Elemento recordsTableBody não encontrado!"); return; }
+
+        const startIndex = (currentPage_Records - 1) * recordsPerPage_Records;
+        const endIndex = startIndex + recordsPerPage_Records;
+        const paginatedRecords = filteredAppointments_Records.slice(startIndex, endIndex);
+
         tbody.innerHTML = '';
 
-        if (displayedAppointments_Records.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="7" class="text-center">Nenhuma ficha encontrada.</td></tr>`;
+        if (paginatedRecords.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" class="text-center">Nenhuma ficha encontrada com os filtros atuais.</td></tr>`;
             return;
         }
 
-        displayedAppointments_Records.forEach(app => {
+        paginatedRecords.forEach(app => {
             const {date: localeDate, time: localeTime} = formatInstantToLocaleDateTime_Records(app.date);
             const patientName = app.patient?.name || 'Paciente Desconhecido';
             const patientCpf = app.patient?.cpf ? `(${formatCPF_Records(app.patient.cpf)})` : '';
@@ -428,6 +472,43 @@
             `;
             tbody.innerHTML += row;
         });
+      }
+
+      function renderPaginationControls_CollabRecords() {
+        const paginationControls = document.getElementById('pagination-controls');
+        const paginationInfo = document.getElementById('pagination-info');
+        paginationControls.innerHTML = '';
+        paginationInfo.innerHTML = '';
+
+        const totalRecords = filteredAppointments_Records.length;
+        const totalPages = Math.ceil(totalRecords / recordsPerPage_Records);
+
+        if (totalPages <= 1) return;
+
+        // Info Text
+        const startRecord = (currentPage_Records - 1) * recordsPerPage_Records + 1;
+        const endRecord = Math.min(startRecord + recordsPerPage_Records - 1, totalRecords);
+        paginationInfo.textContent = `Mostrando ${startRecord}-${endRecord} de ${totalRecords}`;
+
+        // Previous Button
+        let li = document.createElement('li');
+        li.className = `page-item ${currentPage_Records === 1 ? 'disabled' : ''}`;
+        li.innerHTML = `<a class="page-link" href="#" data-page="prev">Anterior</a>`;
+        paginationControls.appendChild(li);
+
+        // Page Number Buttons
+        for (let i = 1; i <= totalPages; i++) {
+             li = document.createElement('li');
+             li.className = `page-item ${i === currentPage_Records ? 'active' : ''}`;
+             li.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+             paginationControls.appendChild(li);
+        }
+
+        // Next Button
+        li = document.createElement('li');
+        li.className = `page-item ${currentPage_Records === totalPages ? 'disabled' : ''}`;
+        li.innerHTML = `<a class="page-link" href="#" data-page="next">Próximo</a>`;
+        paginationControls.appendChild(li);
       }
 
       function updateRecordStatsCards_CollabRecords() {
@@ -474,26 +555,33 @@
 
       function applyRecordFilters_CollabRecords() {
         const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-        const stateFilter = document.getElementById('stateFilter').value;
         const dateFilterValue = document.getElementById('dateFilterSingle').value;
 
-        displayedAppointments_Records = allAppointments_Records.filter(app => {
+        filteredAppointments_Records = allAppointments_Records.filter(app => {
             const matchesSearch = !searchTerm ||
                 (app.patient?.name || "").toLowerCase().includes(searchTerm) ||
                 (app.doctor?.name || "").toLowerCase().includes(searchTerm) ||
                 String(app.id).includes(searchTerm);
 
-            const matchesState = !stateFilter || app.state === stateFilter;
+            const matchesState = currentStatusFilter === 'ALL' || app.state === currentStatusFilter;
 
             let matchesDate = true;
             if (dateFilterValue) {
-                const filterDate = new Date(dateFilterValue + "T00:00:00Z");
-                const appDateOnly = new Date(new Date(app.date).toISOString().substring(0, 10) + "T00:00:00Z");
-                matchesDate = appDateOnly.getTime() === filterDate.getTime();
+                // Compare only the date part, ignoring time and timezone
+                const filterDate = new Date(dateFilterValue);
+                const appDate = new Date(app.date);
+
+                const filterDateLocal = new Date(filterDate.getUTCFullYear(), filterDate.getUTCMonth(), filterDate.getUTCDate());
+                const appDateLocal = new Date(appDate.getFullYear(), appDate.getMonth(), appDate.getDate());
+
+                matchesDate = appDateLocal.getTime() === filterDateLocal.getTime();
             }
             return matchesSearch && matchesState && matchesDate;
         });
+
+        currentPage_Records = 1; // Reset to first page after filtering
         renderRecordsTable_CollabRecords();
+        renderPaginationControls_CollabRecords();
       }
 
       function attachPageEventListeners_CollabRecords() {
@@ -505,17 +593,24 @@
         const newRecordFormEl = document.getElementById('newRecordForm');
         if(newRecordFormEl) newRecordFormEl.addEventListener('submit', handleCreateNewRecord_CollabRecords);
 
+        // Filter event listeners
         const searchInputEl = document.getElementById('searchInput');
         if(searchInputEl) searchInputEl.addEventListener('input', applyRecordFilters_CollabRecords);
-
-        const stateFilterEl = document.getElementById('stateFilter');
-        if(stateFilterEl) stateFilterEl.addEventListener('change', applyRecordFilters_CollabRecords);
 
         const dateFilterEl = document.getElementById('dateFilterSingle');
         if(dateFilterEl) dateFilterEl.addEventListener('change', applyRecordFilters_CollabRecords);
 
-        const applyFiltersBtn = document.getElementById('applyRecordFiltersButton');
-        if(applyFiltersBtn) applyFiltersBtn.addEventListener('click', applyRecordFilters_CollabRecords);
+        const statusFilterGroup = document.getElementById('statusFilterButtonGroup');
+        if(statusFilterGroup) statusFilterGroup.addEventListener('click', (event) => {
+            if (event.target.tagName === 'BUTTON') {
+                // Update active state on buttons
+                statusFilterGroup.querySelector('.active').classList.remove('active');
+                event.target.classList.add('active');
+                // Update filter and re-render
+                currentStatusFilter = event.target.dataset.statusFilter;
+                applyRecordFilters_CollabRecords();
+            }
+        });
 
         const newRecordModalEl = document.getElementById('newRecordModal');
         if(newRecordModalEl) {
@@ -528,6 +623,28 @@
                 const button = event.relatedTarget;
                 const recordId = button.dataset.recordId;
                 if(recordId) await loadAndShowRecordDetails_CollabRecords(recordId);
+            });
+        }
+
+        // Pagination event listener
+        const paginationControls = document.getElementById('pagination-controls');
+        if (paginationControls) {
+            paginationControls.addEventListener('click', (event) => {
+                event.preventDefault();
+                const target = event.target;
+                if (target.tagName === 'A') {
+                    const page = target.dataset.page;
+                    const totalPages = Math.ceil(filteredAppointments_Records.length / recordsPerPage_Records);
+                    if (page === 'prev' && currentPage_Records > 1) {
+                        currentPage_Records--;
+                    } else if (page === 'next' && currentPage_Records < totalPages) {
+                        currentPage_Records++;
+                    } else if (!isNaN(page)) {
+                        currentPage_Records = parseInt(page, 10);
+                    }
+                    renderRecordsTable_CollabRecords();
+                    renderPaginationControls_CollabRecords();
+                }
             });
         }
       }
@@ -545,7 +662,7 @@
               else { showError_Records('Data e Hora são obrigatórias.'); }
               return;
           }
-          // Cria o Instant assumindo que a data/hora são no fuso local do navegador e converte para UTC (ISO string)
+          // Creates the Instant assuming the date/time are in the browser's local timezone and converts to UTC (ISO string)
           const localDateTime = new Date(`${localDate}T${localTime}:00`);
           if (isNaN(localDateTime.getTime())) {
               if(errorDiv){ errorDiv.textContent = 'Data ou Hora inválida.'; errorDiv.style.display = 'block'; }
@@ -560,7 +677,6 @@
           if (descriptionText.trim()) {
             fullDescription += (fullDescription && recordType !== 'OUTRO' ? " - " : (recordType === 'OUTRO' ? ": " : "")) + descriptionText.trim();
           }
-
 
           const recordData = {
               patientId: document.getElementById('recordPatientSelect').value,
@@ -584,10 +700,9 @@
               const newRecordModalInstance = bootstrap.Modal.getInstance(document.getElementById('newRecordModal'));
               if (newRecordModalInstance) newRecordModalInstance.hide();
               event.target.reset();
-              await loadPageData_CollabRecords();
+              await loadPageData_CollabRecords(); // This will reload and re-apply filters
           } catch (error) {
               if(errorDiv){ errorDiv.textContent = `Erro ao criar ficha: ${error.message}`; errorDiv.style.display = 'block'; }
-              // showError_Records já é chamado por fetchAPI_Records
           }
       }
 
@@ -633,7 +748,6 @@
             actionsContainer.innerHTML = '';
 
             if (stateOriginal === 'AGENDADO') {
-                // Para STAFF, apenas CANCELAR é uma ação provável. Concluir é para Médico.
                 const cancelBtn = document.createElement('button');
                 cancelBtn.className = 'btn btn-sm btn-danger';
                 cancelBtn.innerHTML = '<i class="bi bi-x-circle"></i> Cancelar Agendamento';
@@ -653,8 +767,6 @@
           const errorDiv = document.getElementById('updateRecordError');
           if(errorDiv) { errorDiv.style.display = 'none'; errorDiv.textContent = ''; }
 
-          // Envia APENAS o novo estado. O backend precisa aceitar isso no PUT /appointments/{id}
-          // ou ter um endpoint PATCH específico.
           const updateData = { state: newState };
 
           try {
@@ -664,13 +776,11 @@
               const viewModalInstance = bootstrap.Modal.getInstance(document.getElementById('viewRecordModal'));
               if(viewModalInstance) viewModalInstance.hide();
 
+              // Update the local data and re-render
               const index = allAppointments_Records.findIndex(app => app.id == recordId);
               if (index !== -1) {
-                  if(updatedRecord) {
-                    allAppointments_Records[index] = updatedRecord;
-                  } else {
-                    allAppointments_Records[index].state = newState;
-                  }
+                  // The API might not return the full updated object, so merge state
+                  allAppointments_Records[index] = { ...allAppointments_Records[index], ...updateData };
               }
               applyRecordFilters_CollabRecords();
               updateRecordStatsCards_CollabRecords();

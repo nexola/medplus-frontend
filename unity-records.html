@@ -22,137 +22,103 @@
         --med-dark: #2c5282;
         --med-light: #f5f9ff;
       }
-
       body {
         background-color: #f8f9fa;
         color: #212529;
       }
-
       .navbar-brand {
         font-weight: 700;
         color: var(--med-primary);
       }
-
-      .navbar-brand span {
-        color: var(--med-dark);
+      .navbar-brand span.med-plus-text { color: var(--med-dark); }
+      .navbar-brand .username {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #6c757d;
+        margin-left: 5px;
       }
-
       .sidebar {
         background-color: white;
         min-height: calc(100vh - 56px);
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
       }
-
-      .sidebar .nav-link {
-        color: #495057;
-        border-radius: 5px;
-        margin-bottom: 5px;
-      }
-
+      .sidebar .nav-link { color: #495057; border-radius: 5px; margin-bottom: 5px; }
       .sidebar .nav-link:hover,
       .sidebar .nav-link.active {
         background-color: var(--med-light);
         color: var(--med-primary);
       }
-
-      .sidebar .nav-link i {
-        margin-right: 10px;
-      }
-
+      .sidebar .nav-link i { margin-right: 10px; }
       .card {
         border: none;
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
         border-radius: 10px;
       }
-
       .status-badge {
-        padding: 5px 10px;
-        border-radius: 20px;
+        padding: 0.3em 0.6em;
+        border-radius: 0.25rem;
         font-size: 0.8rem;
         font-weight: 500;
       }
-
-      .status-agendado {
-        background-color: #e3f2fd;
-        color: #1976d2;
-      }
-
-      .status-em-andamento {
-        background-color: #fff8e1;
-        color: #ffa000;
-      }
-
-      .status-concluido {
-        background-color: #e8f5e9;
-        color: #388e3c;
-      }
-
-      .status-cancelado {
-        background-color: #ffebee;
-        color: #d32f2f;
-      }
-
+      .status-agendado { background-color: #e3f2fd; color: #1976d2; }
+      .status-concluido { background-color: #e8f5e9; color: #388e3c; }
+      .status-cancelado { background-color: #ffebee; color: #d32f2f; }
+      .status-em_andamento { background-color: #fff8e1; color: #ffa000; }
       .action-btn {
-        width: 30px;
-        height: 30px;
+        width: 35px;
+        height: 35px;
         padding: 0;
         display: inline-flex;
         align-items: center;
         justify-content: center;
       }
-
-      .filter-card {
-        transition: all 0.3s;
+      #loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+        z-index: 10050;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
-
-      .filter-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      }
-
-      @media (max-width: 768px) {
-        .table-responsive {
-          overflow-x: auto;
-        }
-        .modal-lg {
-          max-width: 95%;
-        }
+       @media (max-width: 768px) {
+        .table-responsive { overflow-x: auto; }
+        .modal-lg { max-width: 95%; }
       }
     </style>
   </head>
   <body>
+    <!-- Loading Spinner Overlay -->
+    <div id="loading-overlay" style="display: none;">
+      <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+    </div>
+
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <i class="bi bi-heart-pulse"></i> Med<span>+</span>
-          <span class="username"></span>
+          <i class="bi bi-heart-pulse"></i> Med<span class="med-plus-text">+</span>
+          <span class="username">Unidade</span>
         </a>
+         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-              >
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                 <i class="bi bi-person-circle"></i>
-                <span class="username"></span>
+                <span class="username-short">Usuário</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li>
-                  <a class="dropdown-item" href="profile.unity.html"
-                    ><i class="bi bi-person"></i> Perfil</a
-                  >
-                </li>
+                <li><a class="dropdown-item" href="profile-unity.html"><i class="bi bi-person"></i> Perfil</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#"
-                    ><i class="bi bi-box-arrow-right"></i> Sair</a
-                  >
-                </li>
+                <li><a class="dropdown-item" href="#" id="logoutButton"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
               </ul>
             </li>
           </ul>
@@ -166,137 +132,44 @@
         <div class="col-md-3 col-lg-2 d-md-block sidebar bg-white">
           <div class="position-sticky pt-3">
             <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link" href="main-unity.html">
-                  <i class="bi bi-speedometer2"></i> Dashboard
-                </a>
-              </li>
-              <!-- <li class="nav-item">
-                <a class="nav-link" href="doctors.html">
-                  <i class="bi bi-person-badge"></i> Médicos
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="collabs.html">
-                  <i class="bi bi-people"></i> Colaboradores
-                </a>
-              </li> -->
-              <li class="nav-item">
-                <a class="nav-link active" href="unity-records.html">
-                  <i class="bi bi-files"></i> Fichas
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="unity-patients.html">
-                  <i class="bi bi-people"></i> Pacientes
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="unity-queue.html">
-                  <i class="bi bi-calendar-plus"></i> Horários
-                </a>
-              </li>
+              <li class="nav-item"><a class="nav-link" href="main-unity.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+              <li class="nav-item"><a class="nav-link active" href="unity-records.html"><i class="bi bi-files"></i> Fichas</a></li>
+              <li class="nav-item"><a class="nav-link" href="unity-patients.html"><i class="bi bi-people"></i> Pacientes</a></li>
+              <li class="nav-item"><a class="nav-link" href="unity-queue.html"><i class="bi bi-calendar-plus"></i> Horários</a></li>
             </ul>
           </div>
         </div>
 
         <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-          <div
-            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
-          >
-            <h1 class="h2">
-              <i class="bi bi-files"></i> Gerenciamento de Fichas
-            </h1>
-            <div class="btn-toolbar mb-2 mb-md-0">
-              <button
-                class="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#novaFichaModal"
-              >
-                <i class="bi bi-plus-lg"></i> Nova Ficha
-              </button>
-            </div>
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2"><i class="bi bi-files"></i> Gerenciamento de Fichas</h1>
           </div>
 
           <!-- Filters -->
-          <div class="row mb-4">
-            <div class="col-md-3">
-              <div class="card filter-card h-100">
-                <div class="card-body text-center">
-                  <h6 class="card-title">Total de Fichas</h6>
-                  <p class="display-6 mb-0">124</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="card filter-card h-100">
-                <div class="card-body text-center">
-                  <h6 class="card-title">Agendadas</h6>
-                  <p class="display-6 mb-0">15</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="card filter-card h-100">
-                <div class="card-body text-center">
-                  <h6 class="card-title">Em Andamento</h6>
-                  <p class="display-6 mb-0">8</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="card filter-card h-100">
-                <div class="card-body text-center">
-                  <h6 class="card-title">Concluídas</h6>
-                  <p class="display-6 mb-0">101</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Search and Advanced Filters -->
           <div class="card mb-4">
             <div class="card-body">
-              <div class="row g-3">
+               <h5 class="card-title mb-3"><i class="bi bi-funnel"></i> Filtros</h5>
+               <div class="row g-3">
                 <div class="col-md-4">
                   <label for="searchInput" class="form-label">Pesquisar</label>
-                  <div class="input-group">
-                    <span class="input-group-text"
-                      ><i class="bi bi-search"></i
-                    ></span>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="searchInput"
-                      placeholder="Paciente, Médico ou ID"
-                    />
-                  </div>
+                  <input type="text" class="form-control" id="searchInput" placeholder="Paciente, Médico ou ID...">
                 </div>
                 <div class="col-md-3">
                   <label for="statusFilter" class="form-label">Status</label>
                   <select class="form-select" id="statusFilter">
-                    <option value="">Todos status</option>
-                    <option value="agendado">Agendado</option>
-                    <option value="andamento">Em Andamento</option>
-                    <option value="concluido">Concluído</option>
-                    <option value="cancelado">Cancelado</option>
+                    <option value="">Todos</option>
+                    <option value="AGENDADO">Agendado</option>
+                    <option value="CONCLUIDO">Concluído</option>
+                    <option value="CANCELADO">Cancelado</option>
                   </select>
                 </div>
                 <div class="col-md-3">
-                  <label for="dateFilter" class="form-label">Período</label>
-                  <select class="form-select" id="dateFilter">
-                    <option value="">Todos os períodos</option>
-                    <option value="hoje">Hoje</option>
-                    <option value="semana">Esta semana</option>
-                    <option value="mes">Este mês</option>
-                    <option value="custom">Personalizado</option>
-                  </select>
+                  <label for="dateFilter" class="form-label">Data da Ficha</label>
+                  <input type="date" class="form-control" id="dateFilter">
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
-                  <button class="btn btn-primary w-100">
-                    <i class="bi bi-funnel"></i> Filtrar
-                  </button>
+                  <button id="clearFiltersButton" class="btn btn-outline-secondary w-100">Limpar</button>
                 </div>
               </div>
             </div>
@@ -304,6 +177,12 @@
 
           <!-- Fichas Table -->
           <div class="card">
+             <div class="card-header bg-white d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">Lista de Fichas</h5>
+               <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRecordModal">
+                 <i class="bi bi-plus-lg"></i> Nova Ficha
+               </button>
+            </div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-hover align-middle">
@@ -315,881 +194,383 @@
                       <th>Data</th>
                       <th>Horário</th>
                       <th>Status</th>
-                      <th>Ações</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>#FCH-2023-0015</td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0">
-                            <div
-                              class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
-                              style="width: 40px; height: 40px"
-                            >
-                              <i class="bi bi-person"></i>
-                            </div>
-                          </div>
-                          <div class="flex-grow-1 ms-3">
-                            <strong>João da Silva</strong>
-                            <div class="text-muted small">
-                              CPF: 123.456.789-00
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td>Dr. Carlos Andrade</td>
-                      <td>15/06/2023</td>
-                      <td>14:30</td>
-                      <td>
-                        <span class="status-badge status-em-andamento"
-                          >Em Andamento</span
-                        >
-                      </td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary action-btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#detalhesFichaModal"
-                        >
-                          <i class="bi bi-eye"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-secondary action-btn"
-                        >
-                          <i class="bi bi-printer"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>#FCH-2023-0014</td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0">
-                            <div
-                              class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
-                              style="width: 40px; height: 40px"
-                            >
-                              <i class="bi bi-person"></i>
-                            </div>
-                          </div>
-                          <div class="flex-grow-1 ms-3">
-                            <strong>Maria Oliveira</strong>
-                            <div class="text-muted small">
-                              CPF: 987.654.321-00
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td>Dra. Ana Beatriz</td>
-                      <td>14/06/2023</td>
-                      <td>10:15</td>
-                      <td>
-                        <span class="status-badge status-concluido"
-                          >Concluído</span
-                        >
-                      </td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary action-btn"
-                        >
-                          <i class="bi bi-eye"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-secondary action-btn"
-                        >
-                          <i class="bi bi-printer"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>#FCH-2023-0013</td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0">
-                            <div
-                              class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
-                              style="width: 40px; height: 40px"
-                            >
-                              <i class="bi bi-person"></i>
-                            </div>
-                          </div>
-                          <div class="flex-grow-1 ms-3">
-                            <strong>Pedro Souza</strong>
-                            <div class="text-muted small">
-                              CPF: 456.789.123-00
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td>Dr. Marcelo Silva</td>
-                      <td>16/06/2023</td>
-                      <td>09:00</td>
-                      <td>
-                        <span class="status-badge status-agendado"
-                          >Agendado</span
-                        >
-                      </td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary action-btn"
-                        >
-                          <i class="bi bi-eye"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-secondary action-btn"
-                        >
-                          <i class="bi bi-printer"></i>
-                        </button>
-                      </td>
-                    </tr>
+                  <tbody id="recordsTableBody">
+                    <!-- Rows will be inserted here by JavaScript -->
                   </tbody>
                 </table>
               </div>
-
-              <!-- Pagination -->
-              <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center mt-4">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Anterior</a>
-                  </li>
-                  <li class="page-item active">
-                    <a class="page-link" href="#">1</a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">Próxima</a>
-                  </li>
-                </ul>
-              </nav>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <span id="pagination-info"></span>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination mb-0" id="pagination-controls">
+                        <!-- Pagination buttons will be inserted here by JavaScript -->
+                    </ul>
+                </nav>
             </div>
           </div>
         </main>
       </div>
     </div>
 
-    <!-- Nova Ficha Modal -->
-    <div
-      class="modal fade"
-      id="novaFichaModal"
-      tabindex="-1"
-      aria-labelledby="novaFichaModalLabel"
-      aria-hidden="true"
-    >
+    <!-- Add/Edit Ficha Modal -->
+    <div class="modal fade" id="addRecordModal" tabindex="-1" aria-labelledby="addRecordModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="novaFichaModalLabel">
-              <i class="bi bi-file-earmark-plus"></i> Nova Ficha Médica
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <h5 class="modal-title" id="addRecordModalLabel"><i class="bi bi-file-earmark-plus"></i> Nova Ficha Médica</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="novaFichaForm">
+            <form id="addRecordForm">
               <div class="row mb-3">
-                <div class="col-md-6">
-                  <label for="pacienteSelect" class="form-label"
-                    >Paciente</label
-                  >
-                  <select class="form-select" id="pacienteSelect" required>
-                    <option value="">Selecione um paciente...</option>
-                    <option value="1">
-                      João da Silva (CPF: 123.456.789-00)
-                    </option>
-                    <option value="2">
-                      Maria Oliveira (CPF: 987.654.321-00)
-                    </option>
-                    <option value="3">Pedro Souza (CPF: 456.789.123-00)</option>
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <label for="medicoSelect" class="form-label">Médico</label>
-                  <select class="form-select" id="medicoSelect" required>
-                    <option value="">Selecione um médico...</option>
-                    <option value="1">Dr. Carlos Andrade (Cardiologia)</option>
-                    <option value="2">Dra. Ana Beatriz (Pediatria)</option>
-                    <option value="3">Dr. Marcelo Silva (Ortopedia)</option>
-                  </select>
-                </div>
+                <div class="col-md-6"><label for="patientSelect" class="form-label">Paciente</label><select class="form-select" id="patientSelect" required></select></div>
+                <div class="col-md-6"><label for="doctorSelect" class="form-label">Médico</label><select class="form-select" id="doctorSelect" required></select></div>
               </div>
-
               <div class="row mb-3">
-                <div class="col-md-6">
-                  <label for="dataConsulta" class="form-label"
-                    >Data da Consulta</label
-                  >
-                  <input
-                    type="date"
-                    class="form-control"
-                    id="dataConsulta"
-                    required
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label for="horaConsulta" class="form-label">Horário</label>
-                  <input
-                    type="time"
-                    class="form-control"
-                    id="horaConsulta"
-                    required
-                  />
-                </div>
+                <div class="col-md-6"><label for="dataConsulta" class="form-label">Data da Consulta</label><input type="date" class="form-control" id="dataConsulta" required /></div>
+                <div class="col-md-6"><label for="horaConsulta" class="form-label">Horário</label><input type="time" class="form-control" id="horaConsulta" required /></div>
               </div>
-
               <div class="mb-3">
-                <label for="tipoConsulta" class="form-label"
-                  >Tipo de Consulta</label
-                >
+                <label for="tipoConsulta" class="form-label">Tipo de Consulta</label>
                 <select class="form-select" id="tipoConsulta" required>
                   <option value="">Selecione o tipo...</option>
-                  <option value="rotina">Consulta de Rotina</option>
-                  <option value="retorno">Retorno</option>
-                  <option value="emergencia">Emergência</option>
-                  <option value="exame">Acompanhamento de Exame</option>
+                  <option value="CONSULTA_ROTINA">Consulta de Rotina</option>
+                  <option value="RETORNO">Retorno</option>
+                  <option value="EMERGENCIA">Emergência</option>
+                  <option value="ACOMPANHAMENTO_EXAME">Acompanhamento de Exame</option>
                 </select>
               </div>
-
-              <div class="mb-3" id="subtypeContainer" style="display: none">
-                <label for="subtypeConsulta" class="form-label"
-                  >Sub-tipo de Consulta</label
-                >
-                <select class="form-select" id="subtypeConsulta">
-                  <option value="">Selecione o sub-tipo...</option>
-                  <!-- Opções serão preenchidas dinamicamente -->
-                </select>
-              </div>
-
               <div class="mb-3">
                 <label for="observacoes" class="form-label">Observações</label>
-                <textarea
-                  class="form-control"
-                  id="observacoes"
-                  rows="3"
-                ></textarea>
+                <textarea class="form-control" id="observacoes" rows="3"></textarea>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancelar
-            </button>
-            <button type="submit" form="novaFichaForm" class="btn btn-primary">
-              Criar Ficha
-            </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" form="addRecordForm" class="btn btn-primary">Criar Ficha</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Detalhes Ficha Modal -->
-    <div
-      class="modal fade"
-      id="detalhesFichaModal"
-      tabindex="-1"
-      aria-labelledby="detalhesFichaModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="detalhesFichaModalLabel">
-              <i class="bi bi-file-earmark-text"></i> Detalhes da Ficha
-              <span id="detailAppointmentId"></span>
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div class="row mb-4">
-              <div class="col-md-6">
-                <h6>Informações do Paciente</h6>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span>Nome:</span>
-                    <strong id="detailPatientName"></strong>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span>CPF:</span>
-                    <span id="detailPatientCpf"></span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span>Data Nasc.:</span>
-                    <span id="detailPatientBirthdate"></span>
-                  </li>
-                </ul>
-              </div>
-              <div class="col-md-6">
-                <h6>Informações da Consulta</h6>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span>Médico:</span>
-                    <strong id="detailDoctorName"></strong>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span>Data/Horário:</span>
-                    <span id="detailAppointmentDate"></span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span>Tipo:</span>
-                    <span id="detailAppointmentType"></span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span>Status:</span>
-                    <span id="detailAppointmentStatus"></span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Observações</label>
-              <div class="card">
-                <div class="card-body">
-                  <p class="mb-0" id="detailAppointmentNotes"></p>
-                </div>
-              </div>
-            </div>
-
-            <div class="d-flex justify-content-between">
-              <div>
-                <button class="btn btn-outline-secondary">
-                  <i class="bi bi-printer"></i> Imprimir Ficha
-                </button>
-              </div>
-              <div>
-                <button class="btn btn-success me-2" id="completeButton">
-                  <i class="bi bi-check-circle"></i> Concluir Consulta
-                </button>
-                <button class="btn btn-danger" id="cancelButton">
-                  <i class="bi bi-x-circle"></i> Cancelar Consulta
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bootstrap 5.3 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       const API_BASE = "https://ubs-zxgf.onrender.com";
-      // const API_BASE = "http://localhost:8080";
 
       let currentUser = null;
-      let currentAppointments = [];
-      let currentPatients = [];
-      let currentDoctors = [];
+      let allAppointments = [];
+      let filteredAppointments = [];
+      let allPatients = [];
+      let allDoctors = [];
 
-      document.addEventListener("DOMContentLoaded", async () => {
-        await checkAuth();
-        await loadInitialData();
-        setupEventListeners();
-      });
+      let specialtyChartInstance = null;
+      let statusChartInstance = null;
 
-      async function checkAuth() {
-        const token = localStorage.getItem("access_token");
-        if (!token) {
-          window.location.href = "index.html";
-          return;
-        }
+      let currentPage = 1;
+      const recordsPerPage = 10;
 
-        try {
-          const response = await fetch(`${API_BASE}/users/me`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          if (!response.ok) throw new Error("Falha na autenticação");
-
-          currentUser = await response.json();
-          updateUserInfo();
-          if (!currentUser.roles?.includes("ROLE_UNIT")) {
-            throw new Error("Acesso não autorizado");
-          }
-        } catch (error) {
-          localStorage.clear();
-          window.location.href = "index.html";
-        }
-      }
-
-      async function loadInitialData() {
-        try {
-          const [appointmentsRes, patientsRes, doctorsRes] = await Promise.all([
-            fetch(`${API_BASE}/appointments?unitId=${currentUser.id}`, {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-              },
-            }),
-            fetch(`${API_BASE}/patients`, {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-              },
-            }),
-            fetch(`${API_BASE}/doctors?unitId=${currentUser.id}`, {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-              },
-            }),
-          ]);
-
-          currentAppointments = await appointmentsRes.json();
-          currentPatients = await patientsRes.json();
-          currentDoctors = await doctorsRes.json();
-
-          renderAppointments();
-          populateSelects();
-          updateStats();
-        } catch (error) {
-          showError(error.message);
-        }
-      }
-
-      function showAppointmentDetails(appointmentId) {
-        const appointment = currentAppointments.find(
-          (a) => a.id == appointmentId
-        );
-        if (!appointment) return;
-
-        // Função para formatar datas UTC corretamente
-        const formatUTCDate = (isoString) => {
-          try {
-            const date = new Date(isoString);
-            return date.toLocaleDateString("pt-BR", {
-              timeZone: "UTC",
-              day: "2-digit",
-              month: "2-digit",
-              year: "numeric",
-            });
-          } catch (e) {
-            console.error("Erro ao formatar data:", e);
-            return "Data inválida";
-          }
-        };
-
-        // Formatação da data/horário da consulta
-        const appointmentDate = new Date(appointment.date);
-        const formattedDate = appointmentDate.toLocaleDateString("pt-BR");
-        const formattedTime = appointmentDate.toLocaleTimeString("pt-BR", {
-          hour: "2-digit",
-          minute: "2-digit",
-          timeZone: "UTC", // Ajuste conforme necessidade
-        });
-
-        // Atualização do modal
-        document.getElementById(
-          "detailAppointmentId"
-        ).textContent = `#FCH-${appointment.id.toString().padStart(4, "0")}`;
-
-        // Seção do Paciente
-        document.getElementById("detailPatientName").textContent =
-          appointment.patient.name;
-        document.getElementById("detailPatientCpf").textContent =
-          appointment.patient.cpf;
-        document.getElementById("detailPatientBirthdate").textContent =
-          formatUTCDate(appointment.patient.birth_date);
-
-        // Seção da Consulta
-        document.getElementById("detailDoctorName").textContent =
-          appointment.doctor.name;
-        document.getElementById(
-          "detailAppointmentDate"
-        ).textContent = `${formattedDate} às ${formattedTime}`;
-
-        document.getElementById("detailAppointmentType").textContent =
-          appointment.type === "rotina"
-            ? "Consulta de Rotina"
-            : appointment.type === "retorno"
-            ? "Retorno"
-            : appointment.type === "emergencia"
-            ? "Emergência"
-            : "Acompanhamento de Exame";
-
-        // Status
-        const statusElement = document.getElementById(
-          "detailAppointmentStatus"
-        );
-        statusElement.innerHTML = `
-          <span class="status-badge status-${getStatusClass(
-            appointment.state
-          )}">
-            ${appointment.state}
-          </span>
-        `;
-
-        // Observações
-        const notes = appointment.diagnosis || "Nenhuma observação registrada";
-        document.getElementById("detailAppointmentNotes").textContent = notes;
-      }
-
-      function renderAppointments() {
-        const tbody = document.querySelector("table tbody");
-        tbody.innerHTML = currentAppointments
-          .map(
-            (appointment) => `
-          <tr>
-            <td>#FCH-${appointment.id.toString().padStart(4, "0")}</td>
-            <td>
-              <div class="d-flex align-items-center">
-                <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px">
-                  <i class="bi bi-person"></i>
-                </div>
-                <div class="flex-grow-1 ms-3">
-                  <strong>${appointment.patient.name}</strong>
-                  <div class="text-muted small">CPF: ${
-                    appointment.patient.cpf
-                  }</div>
-                </div>
-              </div>
-            </td>
-            <td>${appointment.doctor.name}</td>
-            <td>${new Date(appointment.date).toLocaleDateString("pt-BR")}</td>
-            <td>${new Date(appointment.date).toLocaleTimeString("pt-BR", {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}</td>
-            <td>
-              <span class="status-badge status-${getStatusClass(
-                appointment.state
-              )}">
-                ${appointment.state}
-              </span>
-            </td>
-            <td>
-              <button class="btn btn-sm btn-outline-primary action-btn"
-                data-bs-toggle="modal"
-                data-bs-target="#detalhesFichaModal"
-                data-id="${appointment.id}">
-                <i class="bi bi-eye"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-secondary action-btn">
-                <i class="bi bi-printer"></i>
-              </button>
-            </td>
-          </tr>
-        `
-          )
-          .join("");
-      }
-
-      function getStatusClass(state) {
-        const statusMap = {
-          AGENDADO: "agendado",
-          EM_ANDAMENTO: "em-andamento",
-          CONCLUIDO: "concluido",
-          CANCELADO: "cancelado",
-        };
-        return statusMap[state] || "agendado";
-      }
-
-      function populateSelects() {
-        const pacienteSelect = document.getElementById("pacienteSelect");
-        const medicoSelect = document.getElementById("medicoSelect");
-
-        // Popular pacientes
-        pacienteSelect.innerHTML = currentPatients
-          .map(
-            (patient) => `
-          <option value="${patient.id}">
-            ${patient.name} (CPF: ${patient.cpf})
-          </option>
-        `
-          )
-          .join("");
-
-        // Popular médicos
-        medicoSelect.innerHTML = currentDoctors
-          .map(
-            (doctor) => `
-          <option value="${doctor.id}">
-            ${doctor.name} (${doctor.specialization})
-          </option>
-        `
-          )
-          .join("");
-      }
-
-      async function handleCreateAppointment(e) {
-        e.preventDefault();
-
-        const formData = {
-          date: new Date(
-            `${document.getElementById("dataConsulta").value}T${
-              document.getElementById("horaConsulta").value
-            }:00`
-          ).toISOString(),
-          diagnosis: document.getElementById("observacoes").value,
-          state: "AGENDADO",
-          type: document.getElementById("tipoConsulta").value,
-          subtype: document.getElementById("subtypeConsulta").value || null, // Adicionado
-          patientId: document.getElementById("pacienteSelect").value,
-          doctorId: document.getElementById("medicoSelect").value,
-        };
-
-        try {
-          const response = await fetch(`${API_BASE}/appointments`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-            body: JSON.stringify(formData),
-          });
-
-          if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.errors[0]);
-          }
-
-          await loadInitialData();
-          showSuccess("Ficha criada com sucesso!");
-          bootstrap.Modal.getInstance(
-            document.getElementById("novaFichaModal")
-          ).hide();
-        } catch (error) {
-          showError(error.message);
-        }
-      }
-
-      function setupEventListeners() {
-        document
-          .getElementById("tipoConsulta")
-          .addEventListener("change", function () {
-            const subtypeContainer =
-              document.getElementById("subtypeContainer");
-            const subtypeSelect = document.getElementById("subtypeConsulta");
-
-            // Tipos que mostram subtipos
-            const showSubtypes = ["rotina", "emergencia", "retorno"];
-
-            if (showSubtypes.includes(this.value)) {
-              subtypeContainer.style.display = "block";
-
-              // Definir subtipos disponíveis
-              const subtypes = [
-                { value: "odontologia", text: "Odontologia" },
-                { value: "pediatria", text: "Pediatria" },
-                { value: "cardiologia", text: "Cardiologia" },
-                { value: "pneumologia", text: "Pneumologia" },
-              ];
-
-              // Popular o select
-              subtypeSelect.innerHTML =
-                '<option value="">Selecione o sub-tipo...</option>' +
-                subtypes
-                  .map(
-                    (sub) => `<option value="${sub.value}">${sub.text}</option>`
-                  )
-                  .join("");
-            } else {
-              subtypeContainer.style.display = "none";
-              subtypeSelect.value = "";
-            }
-          });
-
-        // Formulário de nova ficha
-        document
-          .getElementById("novaFichaForm")
-          .addEventListener("submit", handleCreateAppointment);
-
-        // Logout
-        document
-          .querySelector('.dropdown-item[href="#"]')
-          .addEventListener("click", () => {
-            localStorage.clear();
-            window.location.href = "index.html";
-          });
-
-        // Filtros
-        document
-          .querySelector("#statusFilter")
-          .addEventListener("change", filterAppointments);
-        document
-          .querySelector("#searchInput")
-          .addEventListener("input", filterAppointments);
-
-        document
-          .querySelector("#detalhesFichaModal .btn-success")
-          .addEventListener("click", () => {
-            updateAppointmentState("CONCLUIDO");
-          });
-
-        document
-          .querySelector("#detalhesFichaModal .btn-danger")
-          .addEventListener("click", () => {
-            updateAppointmentState("CANCELADO");
-          });
-      }
-
-      function filterAppointments() {
-        const searchTerm = document
-          .getElementById("searchInput")
-          .value.toLowerCase();
-        const statusFilter = document.getElementById("statusFilter").value;
-
-        const filtered = currentAppointments.filter((appointment) => {
-          const matchesSearch =
-            appointment.patient.name.toLowerCase().includes(searchTerm) ||
-            appointment.doctor.name.toLowerCase().includes(searchTerm) ||
-            appointment.id.toString().includes(searchTerm);
-
-          const matchesStatus =
-            !statusFilter ||
-            appointment.state.toLowerCase() === statusFilter.toUpperCase();
-
-          return matchesSearch && matchesStatus;
-        });
-
-        renderFilteredAppointments(filtered);
-      }
-
-      function renderFilteredAppointments(appointments) {
-        const tbody = document.querySelector("table tbody");
-        tbody.innerHTML = appointments
-          .map(
-            (appointment) => `
-          <tr>
-            <td>#FCH-${appointment.id.toString().padStart(4, "0")}</td>
-            <td>${appointment.patient.name}</td>
-            <td>${appointment.doctor.name}</td>
-            <td>${new Date(appointment.date).toLocaleDateString("pt-BR")}</td>
-            <td>${new Date(appointment.date).toLocaleTimeString("pt-BR", {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}</td>
-            <td>
-              <span class="status-badge status-${getStatusClass(
-                appointment.state
-              )}">
-                ${appointment.state}
-              </span>
-            </td>
-            <td>
-              <button class="btn btn-sm btn-outline-primary action-btn">
-                <i class="bi bi-eye"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-secondary action-btn">
-                <i class="bi bi-printer"></i>
-              </button>
-            </td>
-          </tr>
-        `
-          )
-          .join("");
-      }
-
-      function updateUserInfo() {
-        // Atualiza o nome do usuário em todos os lugares
-        document.querySelectorAll(".username").forEach((element) => {
-          element.textContent = currentUser.name;
-        });
-      }
-
-      function updateStats() {
-        const stats = {
-          total: currentAppointments.length,
-          agendado: currentAppointments.filter((a) => a.state === "AGENDADO")
-            .length,
-          andamento: currentAppointments.filter(
-            (a) => a.state === "EM_ANDAMENTO"
-          ).length,
-          concluido: currentAppointments.filter((a) => a.state === "CONCLUIDO")
-            .length,
-        };
-
-        document
-          .querySelectorAll(".filter-card .display-6")
-          .forEach((el, index) => {
-            el.textContent = Object.values(stats)[index];
-          });
-      }
+      // --- Helper Functions ---
+      const showLoading = () => document.getElementById('loading-overlay').style.display = 'flex';
+      const hideLoading = () => document.getElementById('loading-overlay').style.display = 'none';
 
       function showError(message) {
-        const alert = document.createElement("div");
-        alert.className =
-          "alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3";
-        alert.innerHTML = `
-          ${message}
-          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        `;
-        document.body.appendChild(alert);
+        console.error("Error:", message);
+        const alertContainer = document.createElement('div');
+        alertContainer.className = 'position-fixed top-0 end-0 p-3'
+        alertContainer.style.zIndex = "1055";
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-danger alert-dismissible fade show';
+        alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+        alertContainer.appendChild(alertDiv);
+        document.body.appendChild(alertContainer);
+        setTimeout(() => alertDiv.remove(), 5000);
       }
 
       function showSuccess(message) {
-        const alert = document.createElement("div");
-        alert.className =
-          "alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3";
-        alert.innerHTML = `
-          ${message}
-          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        `;
-        document.body.appendChild(alert);
+        console.log("Success:", message);
+         const alertContainer = document.createElement('div');
+        alertContainer.className = 'position-fixed top-0 end-0 p-3'
+        alertContainer.style.zIndex = "1055";
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-success alert-dismissible fade show';
+        alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+        alertContainer.appendChild(alertDiv);
+        document.body.appendChild(alertContainer);
+        setTimeout(() => alertDiv.remove(), 3000);
       }
 
-      document
-        .getElementById("detalhesFichaModal")
-        .addEventListener("show.bs.modal", function (event) {
-          const button = event.relatedTarget; // Botão que acionou o modal
-          const appointmentId = button.getAttribute("data-id");
-          this.dataset.appointmentId = appointmentId;
-          showAppointmentDetails(appointmentId); // Chama a função para popular os dados
-        });
+       async function fetchAPI(endpoint, method = 'GET', body = null) {
+          const token = localStorage.getItem("access_token");
+          if (!token) {
+              showError("Token de acesso não encontrado. Redirecionando para login.");
+              setTimeout(() => { window.location.href = './index.html'; }, 2000);
+              throw new Error("Token não encontrado.");
+          }
 
-      async function updateAppointmentState(newState) {
-        const modal = document.getElementById("detalhesFichaModal");
-        const appointmentId = modal.dataset.appointmentId;
+          const headers = { 'Authorization': `Bearer ${token}` };
+           if (body) {
+              headers['Content-Type'] = 'application/json';
+          }
 
+          const config = { method, headers };
+          if (body) {
+              config.body = JSON.stringify(body);
+          }
+
+          showLoading();
+          try {
+              const response = await fetch(`${API_BASE}${endpoint}`, config);
+              if (response.status === 401) {
+                  localStorage.clear();
+                  window.location.href = './index.html';
+                  throw new Error("Sessão expirada. Faça login novamente.");
+              }
+              if (!response.ok) {
+                  const errorData = await response.json().catch(() => ({ message: `Erro ${response.status}: ${response.statusText}` }));
+                  const mainError = errorData.error_description || errorData.message || errorData.error || (errorData.errors && errorData.errors[0]) || `Erro ao processar a solicitação.`;
+                  throw new Error(mainError);
+              }
+              if (response.status === 204 || response.headers.get("content-length") === "0") {
+                  return null;
+              }
+              return await response.json();
+          } catch (error) {
+              showError(error.message);
+              throw error;
+          } finally {
+              hideLoading();
+          }
+      }
+
+      // --- Initialization ---
+      document.addEventListener('DOMContentLoaded', async () => {
         try {
-          const response = await fetch(
-            `${API_BASE}/appointments/${appointmentId}`,
-            {
-              method: "PUT", // Ou PUT dependendo da sua API
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-              },
-              body: JSON.stringify({ state: newState }),
-            }
-          );
-
-          if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.errors[0]);
-          }
-
-          // Atualiza o estado local
-          const appointment = currentAppointments.find(
-            (a) => a.id == appointmentId
-          );
-          if (appointment) {
-            appointment.state = newState;
-          }
-
-          // Atualiza a interface
-          renderAppointments();
-          updateStats();
-          showSuccess(`Status atualizado para ${newState}`);
-          bootstrap.Modal.getInstance(modal).hide();
+          await checkAuth();
+          updateUserInfo();
+          await loadAllData();
+          setupEventListeners();
         } catch (error) {
-          showError(error.message);
+          console.error("Erro na inicialização:", error);
+        }
+      });
+
+      async function checkAuth() {
+          currentUser = await fetchAPI('/users/me');
+          if (!currentUser.roles?.includes('ROLE_UNIT')) {
+            localStorage.clear();
+            window.location.href = 'index.html';
+            throw new Error('Acesso não autorizado.');
+          }
+      }
+
+      function updateUserInfo() {
+        if (!currentUser) return;
+        document.querySelector('.navbar-brand .username').textContent = currentUser.name;
+        document.querySelector('#navbarDropdown .username-short').textContent = currentUser.name.split(' ')[0];
+      }
+
+      async function loadAllData() {
+        try {
+            const [appointments, patients, doctors] = await Promise.all([
+                fetchAPI(`/appointments?unitId=${currentUser.id}`),
+                fetchAPI(`/patients`), // Assuming patients are not unit-specific for selection
+                fetchAPI(`/doctors?unitId=${currentUser.id}`)
+            ]);
+            allAppointments = (appointments || []).sort((a,b) => new Date(b.date) - new Date(a.date));
+            allPatients = patients || [];
+            allDoctors = doctors || [];
+
+            populateSelects();
+            applyFilters(); // This will render table and pagination
+        } catch (error) {
+            console.error("Falha ao carregar dados:", error);
+            document.getElementById('recordsTableBody').innerHTML = `<tr><td colspan="7" class="text-center text-danger">Falha ao carregar fichas.</td></tr>`;
         }
       }
+
+      // --- UI Rendering & Filtering ---
+
+      function applyFilters() {
+          const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+          const statusFilter = document.getElementById('statusFilter').value;
+          const dateFilterValue = document.getElementById('dateFilter').value;
+
+          filteredAppointments = allAppointments.filter(app => {
+              const patientName = app.patient?.name?.toLowerCase() || '';
+              const doctorName = app.doctor?.name?.toLowerCase() || '';
+              const appId = String(app.id);
+
+              const matchesSearch = !searchTerm ||
+                  patientName.includes(searchTerm) ||
+                  doctorName.includes(searchTerm) ||
+                  appId.includes(searchTerm);
+
+              const matchesStatus = !statusFilter || app.state === statusFilter;
+
+              let matchesDate = true;
+              if (dateFilterValue) {
+                  const filterDate = new Date(dateFilterValue);
+                  const appDate = new Date(app.date);
+                  matchesDate = appDate.getUTCFullYear() === filterDate.getUTCFullYear() &&
+                                appDate.getUTCMonth() === filterDate.getUTCMonth() &&
+                                appDate.getUTCDate() === filterDate.getUTCDate();
+              }
+
+              return matchesSearch && matchesStatus && matchesDate;
+          });
+
+          currentPage = 1; // Reset to first page
+          renderAppointmentsTable();
+          renderPaginationControls();
+      }
+
+      function renderAppointmentsTable() {
+        const tbody = document.getElementById('recordsTableBody');
+        tbody.innerHTML = '';
+
+        const startIndex = (currentPage - 1) * recordsPerPage;
+        const endIndex = startIndex + recordsPerPage;
+        const paginatedAppointments = filteredAppointments.slice(startIndex, endIndex);
+
+        if (paginatedAppointments.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" class="text-center">Nenhuma ficha encontrada.</td></tr>`;
+            return;
+        }
+
+        paginatedAppointments.forEach(app => {
+            const date = new Date(app.date);
+            const formattedDate = date.toLocaleDateString('pt-BR', {timeZone: 'UTC'});
+            const formattedTime = date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit', timeZone: 'UTC'});
+            const statusClass = (app.state || '').toLowerCase().replace('_', '-');
+            const statusText = (app.state || 'N/A').replace('_', ' ');
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>#${String(app.id).padStart(4, "0")}</td>
+              <td>${app.patient?.name || 'N/A'}</td>
+              <td>${app.doctor?.name || 'N/A'}</td>
+              <td>${formattedDate}</td>
+              <td>${formattedTime}</td>
+              <td><span class="status-badge status-${statusClass}">${statusText}</span></td>
+            `;
+            tbody.appendChild(row);
+        });
+      }
+
+      function renderPaginationControls() {
+        const paginationControls = document.getElementById('pagination-controls');
+        const paginationInfo = document.getElementById('pagination-info');
+        paginationControls.innerHTML = '';
+        paginationInfo.innerHTML = '';
+
+        const totalRecords = filteredAppointments.length;
+        const totalPages = Math.ceil(totalRecords / recordsPerPage);
+
+        const startRecord = (currentPage - 1) * recordsPerPage + 1;
+        const endRecord = Math.min(startRecord + recordsPerPage - 1, totalRecords);
+        paginationInfo.textContent = `Mostrando ${startRecord}-${endRecord} de ${totalRecords}`;
+
+        // Previous button
+        const prevLi = document.createElement('li');
+        prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+        prevLi.innerHTML = `<a class="page-link" href="#" data-page="prev">Anterior</a>`;
+        paginationControls.appendChild(prevLi);
+
+        // Page number buttons
+        for (let i = 1; i <= totalPages; i++) {
+             const pageLi = document.createElement('li');
+             pageLi.className = `page-item ${i === currentPage ? 'active' : ''}`;
+             pageLi.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+             paginationControls.appendChild(pageLi);
+        }
+
+        // Next button
+        const nextLi = document.createElement('li');
+        nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+        nextLi.innerHTML = `<a class="page-link" href="#" data-page="next">Próximo</a>`;
+        paginationControls.appendChild(nextLi);
+      }
+
+      function populateSelects() {
+        const patientSelect = document.getElementById('patientSelect');
+        const doctorSelect = document.getElementById('doctorSelect');
+        patientSelect.innerHTML = '<option value="">Selecione um paciente...</option>';
+        doctorSelect.innerHTML = '<option value="">Selecione um médico...</option>';
+
+        allPatients.forEach(p => {
+            patientSelect.innerHTML += `<option value="${p.id}">${p.name} (CPF: ${p.cpf})</option>`;
+        });
+        allDoctors.forEach(d => {
+            doctorSelect.innerHTML += `<option value="${d.id}">${d.name} (${d.specialization})</option>`;
+        });
+      }
+
+      // --- Event Listeners ---
+      function setupEventListeners() {
+        document.getElementById('logoutButton').addEventListener('click', () => {
+          localStorage.clear();
+          window.location.href = 'index.html';
+        });
+
+        // Filters
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+        document.getElementById('statusFilter').addEventListener('change', applyFilters);
+        document.getElementById('dateFilter').addEventListener('change', applyFilters);
+        document.getElementById('clearFiltersButton').addEventListener('click', () => {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('dateFilter').value = '';
+            applyFilters();
+        });
+
+        // Pagination
+        document.getElementById('pagination-controls').addEventListener('click', e => {
+            e.preventDefault();
+            if(e.target.tagName !== 'A') return;
+
+            const page = e.target.dataset.page;
+            const totalPages = Math.ceil(filteredAppointments.length / recordsPerPage);
+
+            if (page === 'prev' && currentPage > 1) currentPage--;
+            else if (page === 'next' && currentPage < totalPages) currentPage++;
+            else if (!isNaN(page)) currentPage = parseInt(page);
+
+            renderAppointmentsTable();
+            renderPaginationControls();
+        });
+
+        // Add Record Form
+        document.getElementById('addRecordForm').addEventListener('submit', handleCreateAppointment);
+      }
+
+      // --- API Actions ---
+      async function handleCreateAppointment(e) {
+          e.preventDefault();
+          const date = document.getElementById('dataConsulta').value;
+          const time = document.getElementById('horaConsulta').value;
+
+          const formData = {
+              date: new Date(`${date}T${time}:00`).toISOString(),
+              diagnosis: document.getElementById('observacoes').value,
+              state: "AGENDADO",
+              type: document.getElementById('tipoConsulta').value,
+              patientId: document.getElementById('patientSelect').value,
+              doctorId: document.getElementById('doctorSelect').value,
+          };
+
+          try {
+              await fetchAPI('/appointments', 'POST', formData);
+              showSuccess("Ficha criada com sucesso!");
+              bootstrap.Modal.getInstance(document.getElementById('addRecordModal')).hide();
+              e.target.reset();
+              loadAllData();
+          } catch(error) { /* Error handled by fetchAPI */ }
+      }
+
     </script>
   </body>
-</html>
+</html>''

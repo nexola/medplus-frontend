@@ -110,9 +110,27 @@
       .tab-content {
         padding: 20px 0;
       }
+
+      #loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+        z-index: 10050;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     </style>
   </head>
   <body>
+    <div id="loading-overlay" style="display: none;">
+      <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+    </div>
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div class="container-fluid">
@@ -291,7 +309,7 @@
             <div class="col-md-6">
               <div class="card h-100">
                 <div class="card-body">
-                  <h5 class="card-title">Consultas por Especialidade</h5>
+                  <h5 class="card-title">Médicos por Especialidade</h5>
                   <canvas id="specialtyChart" height="250"></canvas>
                 </div>
               </div>
@@ -934,15 +952,29 @@
     <!-- Bootstrap 5.3 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+      function showLoading() {
+        const el = document.getElementById('loading-overlay');
+        if (el) el.style.display = 'flex';
+      }
+
+      function hideLoading() {
+        const el = document.getElementById('loading-overlay');
+        if (el) el.style.display = 'none';
+      }
+
       const API_BASE = 'https://ubs-zxgf.onrender.com';
       // const API_BASE = "http://localhost:8080";
+
 
       let currentUser = null;
       let currentDoctors = [];
       let currentStaff = [];
       let currentAppointments = [];
+      let currentPatients = []
       let selectedDoctorId = null;
       let selectedStaffId = null;
+
+      showLoading();
 
       function updateUserInfo() {
         // Atualiza o nome do usuário em todos os lugares
@@ -1003,7 +1035,7 @@
       async function loadData() {
         try {
           await loadSpecializations();
-          const [doctorsRes, staffRes, appointmentsRes] = await Promise.all([
+          const [doctorsRes, staffRes, appointmentsRes, patientRes] = await Promise.all([
             fetch(`${API_BASE}/doctors?unitId=${currentUser.id}`, {
               headers: {
                 'Authorization': `Bearer ${localStorage.getItem('access_token')}`
@@ -1019,8 +1051,14 @@
               headers: {
                 'Authorization': `Bearer ${localStorage.getItem('access_token')}`
               }
+            }),
+            fetch(`${API_BASE}/patients?unitId=${currentUser.id}`, {
+              headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+              }
             })
           ]);
+          hideLoading();
 
           if (!doctorsRes.ok || !staffRes.ok || !appointmentsRes.ok) {
             throw new Error('Erro ao carregar dados');
@@ -1035,6 +1073,8 @@
           }
 
           currentAppointments = await appointmentsRes.json();
+
+          currentPatients = await patientRes.json();
 
           updateStats();
           renderTables();
@@ -1053,7 +1093,7 @@
           statsValues[2].textContent = currentAppointments.filter(a => a.state === 'AGENDADO').length;
 
           // Pacientes Únicos
-          statsValues[3].textContent = [...new Set(currentAppointments.map(a => a.patientId))].length;
+          statsValues[3].textContent = currentPatients.length;
         }
       }
 

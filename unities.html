@@ -95,9 +95,40 @@
         align-items: center;
         justify-content: center;
       }
+
+      /* Spinner Styles */
+      #loading-spinner {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.3s;
+      }
+
+      #loading-spinner .spinner-border {
+        width: 3rem;
+        height: 3rem;
+      }
+
+      .hidden {
+        display: none !important;
+      }
     </style>
   </head>
   <body>
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="hidden">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div class="container-fluid">
@@ -187,94 +218,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Unidade Centro</td>
-                      <td>centro@medplus.com</td>
-                      <td>Rua Principal, 123 - Centro</td>
-                      <td><span class="badge badge-colaboradores">15</span></td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary action-btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#editUnitModal"
-                        >
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-danger action-btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#deleteUnitModal"
-                        >
-                          <i class="bi bi-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Unidade Zona Sul</td>
-                      <td>zonasul@medplus.com</td>
-                      <td>Av. Beira Mar, 456 - Zona Sul</td>
-                      <td><span class="badge badge-colaboradores">8</span></td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary action-btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#editUnitModal"
-                        >
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-danger action-btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#deleteUnitModal"
-                        >
-                          <i class="bi bi-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Unidade Norte</td>
-                      <td>norte@medplus.com</td>
-                      <td>Rua das Flores, 789 - Norte</td>
-                      <td><span class="badge badge-colaboradores">12</span></td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary action-btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#editUnitModal"
-                        >
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-danger action-btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#deleteUnitModal"
-                        >
-                          <i class="bi bi-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Unidade Oeste</td>
-                      <td>oeste@medplus.com</td>
-                      <td>Av. Industrial, 321 - Oeste</td>
-                      <td><span class="badge badge-colaboradores">5</span></td>
-                      <td>
-                        <button
-                          class="btn btn-sm btn-outline-primary action-btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#editUnitModal"
-                        >
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-danger action-btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#deleteUnitModal"
-                        >
-                          <i class="bi bi-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
+                    <!-- Content loaded via JS -->
                   </tbody>
                 </table>
               </div>
@@ -437,7 +381,7 @@
             >
               Cancelar
             </button>
-            <button type="button" class="btn btn-danger">
+            <button type="button" class="btn btn-danger" id="confirmDeleteButton">
               Confirmar Exclusão
             </button>
           </div>
@@ -453,10 +397,28 @@
       let currentStaff = [];
       let selectedUnitId = null;
 
+      // --- Spinner Functions ---
+      function showSpinner() {
+          document.getElementById('loading-spinner')?.classList.remove('hidden');
+      }
+
+      function hideSpinner() {
+          document.getElementById('loading-spinner')?.classList.add('hidden');
+      }
+      // -------------------------
+
       document.addEventListener('DOMContentLoaded', async () => {
-        await checkAuth();
-        await loadData();
-        setupEventListeners();
+        showSpinner();
+        try {
+            await checkAuth();
+            await loadData();
+            setupEventListeners();
+        } catch (error) {
+            console.error("Error on page load:", error);
+            showError("Falha crítica ao carregar a página.");
+        } finally {
+            hideSpinner();
+        }
       });
 
       async function checkAuth() {
@@ -507,8 +469,14 @@
         const tbody = document.querySelector('table tbody');
         tbody.innerHTML = '';
 
+        if (currentUnits.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">Nenhuma unidade cadastrada.</td></tr>`;
+            return;
+        }
+
         currentUnits.forEach(unit => {
           const row = document.createElement('tr');
+          row.dataset.unitId = unit.id;
           row.innerHTML = `
             <td>${unit.name}</td>
             <td>${unit.email}</td>
@@ -517,13 +485,13 @@
             <td>
               <button
                 class="btn btn-sm btn-outline-primary action-btn edit-btn"
-                data-id="${unit.id}"
+                title="Editar Unidade"
               >
                 <i class="bi bi-pencil"></i>
               </button>
               <button
                 class="btn btn-sm btn-outline-danger action-btn delete-btn"
-                data-id="${unit.id}"
+                title="Excluir Unidade"
               >
                 <i class="bi bi-trash"></i>
               </button>
@@ -538,14 +506,14 @@
       function setupTableEvents() {
         document.querySelectorAll('.edit-btn').forEach(btn => {
           btn.addEventListener('click', (e) => {
-            selectedUnitId = e.currentTarget.dataset.id;
+            selectedUnitId = e.currentTarget.closest('tr').dataset.unitId;
             openEditModal(selectedUnitId);
           });
         });
 
         document.querySelectorAll('.delete-btn').forEach(btn => {
           btn.addEventListener('click', (e) => {
-            selectedUnitId = e.currentTarget.dataset.id;
+            selectedUnitId = e.currentTarget.closest('tr').dataset.unitId;
             openDeleteModal(selectedUnitId);
           });
         });
@@ -568,18 +536,19 @@
         if (!unit) return;
 
         const modal = document.getElementById('deleteUnitModal');
-        modal.querySelector('strong').textContent = unit.name;
+        modal.querySelector('strong').textContent = `"${unit.name}"`;
         new bootstrap.Modal(modal).show();
       }
 
       async function handleCreateUnit(e) {
         e.preventDefault();
+        showSpinner();
 
         const unitData = {
           name: document.getElementById('unitName').value,
           email: document.getElementById('unitEmail').value,
           password: document.getElementById('unitPassword').value,
-          phone: '11999999999', // Você deve adicionar um campo para phone no modal
+          phone: '11999999999', // Placeholder, consider adding a field in the modal
           address: document.getElementById('unitAddress').value
         };
 
@@ -598,23 +567,23 @@
             throw new Error(errorData.message || 'Erro ao criar unidade');
           }
 
-          await loadData();
-
-          // Fechar o modal corretamente
           const createModal = bootstrap.Modal.getInstance(document.getElementById('createUnitModal'));
           if (createModal) createModal.hide();
 
-          // Resetar o formulário
           document.getElementById('createUnitForm').reset();
-
           showSuccess('Unidade criada com sucesso!');
+          await loadData();
+
         } catch (error) {
           showError(error.message);
+        } finally {
+            hideSpinner();
         }
       }
 
       async function handleEditUnit(e) {
         e.preventDefault();
+        showSpinner();
 
         const unitData = {
           name: document.getElementById('editUnitName').value,
@@ -640,23 +609,25 @@
             throw new Error(errorData.message || 'Erro ao atualizar unidade');
           }
 
-          await loadData();
           const editModal = bootstrap.Modal.getInstance(document.getElementById('editUnitModal'));
           if (editModal) editModal.hide();
           showSuccess('Unidade atualizada com sucesso!');
+          await loadData();
+
         } catch (error) {
           showError(error.message);
+        } finally {
+            hideSpinner();
         }
       }
 
       async function handleDeleteUnit() {
+        showSpinner();
         try {
           const unit = currentUnits.find(u => u.id == selectedUnitId);
           if (!unit) return;
 
-          // Verificar número de colaboradores
           const staffCount = calculateStaffCount(selectedUnitId);
-          console.log(staffCount)
           if (staffCount > 0) {
             throw new Error('Não é possível excluir a unidade pois existem colaboradores vinculados');
           }
@@ -673,14 +644,17 @@
             throw new Error(errorData.message || 'Erro ao excluir unidade');
           }
 
-          await loadData();
           const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteUnitModal'));
           if (deleteModal) deleteModal.hide();
           showSuccess('Unidade excluída com sucesso!');
+          await loadData();
+
         } catch (error) {
           showError(error.message);
           const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteUnitModal'));
           if (deleteModal) deleteModal.hide();
+        } finally {
+            hideSpinner();
         }
       }
 
@@ -692,27 +666,31 @@
 
         document.getElementById('createUnitForm').addEventListener('submit', handleCreateUnit);
         document.getElementById('editUnitForm').addEventListener('submit', handleEditUnit);
-        document.querySelector('#deleteUnitModal .btn-danger').addEventListener('click', handleDeleteUnit);
+        document.getElementById('confirmDeleteButton').addEventListener('click', handleDeleteUnit);
       }
 
       function showError(message) {
+        const alertContainer = document.body;
         const alert = document.createElement('div');
         alert.className = 'alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3';
+        alert.style.zIndex = "1056"; // Higher than modal z-index
         alert.innerHTML = `
           ${message}
           <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         `;
-        document.body.appendChild(alert);
+        alertContainer.appendChild(alert);
       }
 
       function showSuccess(message) {
+        const alertContainer = document.body;
         const alert = document.createElement('div');
         alert.className = 'alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3';
+        alert.style.zIndex = "1056";
         alert.innerHTML = `
           ${message}
           <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         `;
-        document.body.appendChild(alert);
+        alertContainer.appendChild(alert);
       }
     </script>
   </body>

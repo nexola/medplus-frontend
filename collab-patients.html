@@ -24,7 +24,7 @@
       }
       body { background-color: #f8f9fa; color: #212529; }
       .navbar-brand { font-weight: 700; color: var(--med-primary); }
-      .navbar-brand span.med-plus-text { color: var(--med-dark); } /* Para o '+' do Med+ */
+      .navbar-brand span.med-plus-text { color: var(--med-dark); }
       .navbar-brand span.user-role-display { font-size: 0.9rem; color: #6c757d; margin-left: 5px; }
 
       .sidebar { background-color: white; min-height: calc(100vh - 56px); box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); }
@@ -41,10 +41,7 @@
       .search-box .form-control { padding-left: 40px; }
       .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #6c757d; }
       .filter-dropdown .dropdown-menu { min-width: 280px; padding: 1rem; }
-      .badge.bg-status-active { background-color: #d1e7dd; color: #0f5132; }
-      .badge.bg-status-inactive { background-color: #f8d7da; color: #842029; }
-      .badge.bg-status-pending { background-color: #fff3cd; color: #664d03; }
-       #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.7); z-index: 10000; display: flex; justify-content: center; align-items: center; }
+      #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.7); z-index: 10000; display: flex; justify-content: center; align-items: center; }
     </style>
   </head>
   <body>
@@ -99,53 +96,30 @@
               <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#newPatientModal">
                 <i class="bi bi-plus-lg"></i> Novo Paciente
               </button>
-              <div class="btn-group filter-dropdown">
-                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="bi bi-funnel"></i> Filtros
-                </button>
-                <div class="dropdown-menu dropdown-menu-end">
-                  <div class="mb-3 px-3">
-                    <label for="filterStatus" class="form-label">Status</label>
-                    <select id="filterStatus" class="form-select form-select-sm">
-                      <option value="">Todos</option>
-                      <option value="ACTIVE">Ativo</option>
-                      <option value="INACTIVE">Inativo</option>
-                    </select>
-                  </div>
-                  <div class="mb-3 px-3">
-                    <label for="filterDateRegistered" class="form-label">Data de Cadastro</label>
-                    <select id="filterDateRegistered" class="form-select form-select-sm">
-                      <option value="">Todas</option>
-                      <option value="7">Últimos 7 dias</option>
-                      <option value="30">Últimos 30 dias</option>
-                      <option value="90">Últimos 90 dias</option>
-                    </select>
-                  </div>
-                  <div class="d-grid px-3">
-                    <button id="applyFiltersButton" class="btn btn-sm btn-primary">Aplicar Filtros</button>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
-          <div class="row mb-4">
-            <div class="col-md-8">
-              <div class="search-box">
-                <i class="bi bi-search"></i>
-                <input type="text" class="form-control" id="searchInput" placeholder="Buscar pacientes por nome, CPF ou email..."/>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="d-flex justify-content-end align-items-center h-100">
-                <span class="text-muted me-2">Total:</span>
-                <span class="fw-bold" id="totalPatientsCount">0 pacientes</span>
-              </div>
-            </div>
+          <!-- Filter Section -->
+           <div class="card mb-4">
+             <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-funnel"></i> Filtros</h5>
+                 <div class="row g-3 align-items-end">
+                     <div class="col-md-6">
+                         <label for="searchInput" class="form-label">Pesquisar</label>
+                         <input type="text" class="form-control" id="searchInput" placeholder="Nome, CPF ou email...">
+                     </div>
+                      <div class="col-md-2 d-flex align-items-end">
+                          <button id="clearFiltersButton" class="btn btn-outline-secondary w-100">Limpar</button>
+                      </div>
+                 </div>
+             </div>
           </div>
 
           <div class="card">
             <div class="card-body">
+              <div class="d-flex justify-content-end mb-3">
+                 <span class="text-muted">Total: </span><b id="totalPatientsCount" class="ms-1"> 0 pacientes</b>
+              </div>
               <div class="table-responsive">
                 <table class="table table-hover align-middle">
                   <thead>
@@ -155,21 +129,23 @@
                       <th>CPF</th>
                       <th>Telefone</th>
                       <th>Email</th>
-                      <th>Status</th>
                       <th>Ações</th>
                     </tr>
                   </thead>
                   <tbody id="patientsTableBody">
-                    <!-- Linhas de pacientes serão inseridas aqui pelo JavaScript -->
-                    <tr><td colspan="7" class="text-center">Carregando pacientes...</td></tr>
+                    <tr><td colspan="6" class="text-center">Carregando pacientes...</td></tr>
                   </tbody>
                 </table>
               </div>
-              <nav id="paginationNav" aria-label="Page navigation" class="mt-4" style="display: none;">
-                <ul class="pagination justify-content-center">
-                  <!-- Paginação será inserida aqui -->
-                </ul>
-              </nav>
+            </div>
+            <!-- Pagination Footer -->
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <span id="pagination-info"></span>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination mb-0" id="pagination-controls">
+                        <!-- Pagination buttons will be inserted here by JS -->
+                    </ul>
+                </nav>
             </div>
           </div>
         </main>
@@ -184,42 +160,41 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <form id="newPatientForm"><div class="modal-body">
-              <div class="row">
-                <div class="col-md-12 mb-3">
-                  <label for="patientFullName" class="form-label">Nome Completo</label>
-                  <input type="text" class="form-control" id="patientFullName" required />
-                </div>
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label for="patientFullName" class="form-label">Nome Completo</label>
+                <input type="text" class="form-control" id="patientFullName" required />
               </div>
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="patientCpf" class="form-label">CPF</label>
-                  <input type="text" class="form-control" id="patientCpf" placeholder="000.000.000-00" required />
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="patientBirth" class="form-label">Data de Nascimento</label>
-                  <input type="date" class="form-control" id="patientBirth" required />
-                </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="patientCpf" class="form-label">CPF</label>
+                <input type="text" class="form-control" id="patientCpf" placeholder="000.000.000-00" required />
               </div>
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="patientEmail" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="patientEmail" required />
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="patientPhone" class="form-label">Telefone</label>
-                  <input type="tel" class="form-control" id="patientPhone" placeholder="(00) 00000-0000" />
-                </div>
+              <div class="col-md-6 mb-3">
+                <label for="patientBirth" class="form-label">Data de Nascimento</label>
+                <input type="date" class="form-control" id="patientBirth" required />
               </div>
-               <div class="mb-3">
-                  <label for="patientPassword" class="form-label">Senha (mínimo 6 caracteres)</label>
-                  <input type="password" class="form-control" id="patientPassword" required minlength="6" />
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="patientEmail" class="form-label">Email</label>
+                <input type="email" class="form-control" id="patientEmail" required />
               </div>
-              <div class="mb-3">
-                <label for="patientAddress" class="form-label">Endereço (Opcional)</label>
-                <input type="text" class="form-control" id="patientAddress" />
+              <div class="col-md-6 mb-3">
+                <label for="patientPhone" class="form-label">Telefone</label>
+                <input type="tel" class="form-control" id="patientPhone" placeholder="(00) 00000-0000" />
               </div>
-              <!-- Campos de Cidade, Estado, CEP removidos para simplificar, mas podem ser adicionados se necessário -->
-              <div id="newPatientError" class="text-danger mt-2" style="display: none;"></div>
+            </div>
+             <div class="mb-3">
+                <label for="patientPassword" class="form-label">Senha (mínimo 6 caracteres)</label>
+                <input type="password" class="form-control" id="patientPassword" required minlength="6" />
+             </div>
+            <div class="mb-3">
+              <label for="patientAddress" class="form-label">Endereço (Opcional)</label>
+              <input type="text" class="form-control" id="patientAddress" />
+            </div>
+            <div id="newPatientError" class="text-danger mt-2" style="display: none;"></div>
           </div><div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="submit" class="btn btn-primary">Cadastrar Paciente</button>
@@ -228,7 +203,6 @@
       </div>
     </div>
 
-    <!-- Modais de Editar, Desativar, Detalhes (ainda não implementados funcionalmente) -->
     <div class="modal fade" id="editPatientModal" tabindex="-1" aria-labelledby="editPatientModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -239,7 +213,6 @@
           <form id="editPatientForm">
             <div class="modal-body">
               <input type="hidden" id="editPatientId" />
-
               <div class="row">
                 <div class="col-md-12 mb-3">
                   <label for="editPatientFullName" class="form-label">Nome Completo</label>
@@ -270,13 +243,6 @@
                 <label for="editPatientAddress" class="form-label">Endereço (Opcional)</label>
                 <input type="text" class="form-control" id="editPatientAddress" />
               </div>
-              <div class="mb-3" style="display: none;">
-                <label for="editPatientStatus" class="form-label">Status do Paciente</label>
-                <select class="form-select" id="editPatientStatus">
-                    <option value="true">Ativo</option>
-                    <option value="false">Inativo</option>
-                </select>
-              </div>
               <div id="editPatientError" class="text-danger mt-2" style="display: none;"></div>
             </div>
             <div class="modal-footer">
@@ -287,18 +253,19 @@
         </div>
       </div>
     </div>
-    <div class="modal fade" id="viewPatientModal" tabindex="-1"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Detalhes do Paciente</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p>Funcionalidade de detalhes em desenvolvimento.</p></div></div></div></div>
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       const API_BASE = "https://ubs-zxgf.onrender.com";
-      // const API_BASE = "http://localhost:8080";
-      const DEFAULT_ZONE_ID = "America/Sao_Paulo"; // Ajuste para seu fuso
+      const DEFAULT_ZONE_ID = "America/Sao_Paulo";
 
       let currentUser = null;
-      let allPatients = []; // Guarda todos os pacientes carregados
-      let displayedPatients = []; // Pacientes atualmente na tabela (após filtros)
+      let allPatients = [];
+      let filteredPatients = [];
+
+      // Pagination state
+      let currentPage = 1;
+      const recordsPerPage = 10;
 
       function showLoading() { document.getElementById('loading-overlay').style.display = 'flex'; }
       function hideLoading() { document.getElementById('loading-overlay').style.display = 'none'; }
@@ -333,7 +300,7 @@
       function formatCPF(cpf) {
         if (!cpf) return 'N/A';
         const cleaned = cpf.replace(/\D/g, '');
-        if (cleaned.length !== 11) return cpf; // Retorna original se não tiver 11 dígitos
+        if (cleaned.length !== 11) return cpf;
         return cleaned.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
       }
 
@@ -342,44 +309,30 @@
           const cleaned = phone.replace(/\D/g, '');
           if (cleaned.length === 11) return cleaned.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
           if (cleaned.length === 10) return cleaned.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-          return phone; // Retorna original se não corresponder
+          return phone;
       }
-
 
       function getInitials(name) {
         if (!name) return '?';
-        const parts = name.split(' ');
-        if (parts.length > 1) return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
-        return name.substring(0, 2).toUpperCase();
+        const parts = name.trim().split(' ');
+        if (parts.length > 1 && parts[0].length > 0 && parts[parts.length - 1].length > 0) {
+            return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+        }
+        if (parts.length === 1 && parts[0].length > 0) {
+            return name.substring(0, 2).toUpperCase();
+        }
+        return '?';
       }
-
-      function calculateAge(birthDateStr) { // Espera "YYYY-MM-DD" ou Instant
-        if (!birthDateStr) return 'N/A';
-        try {
-            let dateOfBirth;
-            if (birthDateStr.includes('T') && birthDateStr.includes('Z')) { // É um Instant
-                dateOfBirth = new Date(birthDateStr);
-            } else { // Assume "YYYY-MM-DD"
-                const parts = birthDateStr.split('-');
-                if (parts.length !== 3) return 'Inválida';
-                dateOfBirth = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]));
-            }
-            const ageDifMs = Date.now() - dateOfBirth.getTime();
-            const ageDate = new Date(ageDifMs);
-            return Math.abs(ageDate.getUTCFullYear() - 1970);
-        } catch (e) { return 'Inválida'; }
-      }
-
 
       document.addEventListener("DOMContentLoaded", async () => {
         try {
             await checkAuthAndLoadUser();
             if (currentUser) {
-                await loadPatientsData();
                 setupPageEventListeners();
+                await loadPatientsData();
             }
         } catch (error) {
-            // Erros já são tratados e exibidos
+            console.error("Erro na inicialização da página:", error);
         }
       });
 
@@ -394,7 +347,7 @@
                     setTimeout(() => window.location.href = './index.html', 2500);
                     return reject(new Error("Não autorizado."));
                 }
-                if (!currentUser.healthUnitId) { // relatedEntityId é o healthUnitId para Staff
+                if (!currentUser.healthUnitId) {
                      localStorage.clear(); showError("Staff não associado a uma unidade de saúde.");
                      setTimeout(() => window.location.href = './index.html', 2500);
                      return reject(new Error("Unidade não associada."));
@@ -422,12 +375,11 @@
 
       async function loadPatientsData() {
         try {
-            allPatients = await fetchAPI('/patients'); // Backend deve filtrar por unidade do Staff
-            displayedPatients = [...allPatients];
-            renderPatientsTable();
+            allPatients = await fetchAPI('/patients');
+            applyAllFilters();
             updateTotalPatientsCount();
         } catch (error) {
-            document.getElementById('patientsTableBody').innerHTML = `<tr><td colspan="7" class="text-center text-danger">Falha ao carregar pacientes.</td></tr>`;
+            document.getElementById('patientsTableBody').innerHTML = `<tr><td colspan="6" class="text-center text-danger">Falha ao carregar pacientes.</td></tr>`;
         }
       }
 
@@ -435,16 +387,16 @@
         const tbody = document.getElementById('patientsTableBody');
         tbody.innerHTML = '';
 
-        if (displayedPatients.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="7" class="text-center">Nenhum paciente encontrado com os filtros atuais.</td></tr>`;
+        const startIndex = (currentPage - 1) * recordsPerPage;
+        const endIndex = startIndex + recordsPerPage;
+        const paginatedPatients = filteredPatients.slice(startIndex, endIndex);
+
+        if (paginatedPatients.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center">Nenhum paciente encontrado com os filtros atuais.</td></tr>`;
             return;
         }
 
-        displayedPatients.forEach(patient => {
-            // PatientResponseDTO do backend: id, name, email, cpf, birthDate (String YYYY-MM-DD), phone, active (boolean)
-            const patientStatus = patient.active === false ? 'Inativo' : 'Ativo'; // Se 'active' for boolean. Se for String, ajuste.
-            const statusClass = patient.active === false ? 'bg-status-inactive' : 'bg-status-active';
-
+        paginatedPatients.forEach(patient => {
             const row = `
                 <tr>
                     <td><div class="patient-avatar">${getInitials(patient.name)}</div></td>
@@ -452,7 +404,6 @@
                     <td>${formatCPF(patient.cpf)}</td>
                     <td>${formatPhone(patient.phone)}</td>
                     <td>${patient.email || 'N/A'}</td>
-                    <td><span class="badge ${statusClass}">${patientStatus}</span></td>
                     <td>
                         <button class="btn btn-sm btn-outline-secondary action-btn" data-bs-toggle="modal" data-bs-target="#editPatientModal" data-patient-id="${patient.id}" title="Editar"><i class="bi bi-pencil"></i></button>
                     </td>
@@ -462,45 +413,66 @@
         });
       }
 
+      function renderPaginationControls() {
+        const paginationControls = document.getElementById('pagination-controls');
+        const paginationInfo = document.getElementById('pagination-info');
+        paginationControls.innerHTML = '';
+        paginationInfo.innerHTML = '';
+
+        const totalRecords = filteredPatients.length;
+        const totalPages = Math.ceil(totalRecords / recordsPerPage);
+
+        const startRecord = (currentPage - 1) * recordsPerPage + 1;
+        const endRecord = Math.min(startRecord + recordsPerPage - 1, totalRecords);
+        paginationInfo.textContent = `Mostrando ${startRecord}-${endRecord} de ${totalRecords}`;
+
+        let li = document.createElement('li');
+        li.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+        li.innerHTML = `<a class="page-link" href="#" data-page="prev">Anterior</a>`;
+        paginationControls.appendChild(li);
+
+        for (let i = 1; i <= totalPages; i++) {
+             li = document.createElement('li');
+             li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+             li.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+             paginationControls.appendChild(li);
+        }
+
+        li = document.createElement('li');
+        li.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+        li.innerHTML = `<a class="page-link" href="#" data-page="next">Próximo</a>`;
+        paginationControls.appendChild(li);
+      }
+
+
       function updateTotalPatientsCount() {
         document.getElementById('totalPatientsCount').textContent = `${allPatients.length} pacientes`;
       }
 
       function applyAllFilters() {
         const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-        const statusFilter = document.getElementById('filterStatus').value; // "ACTIVE", "INACTIVE", ""
-        const dateRegisteredFilter = document.getElementById('filterDateRegistered').value; // "7", "30", "90", ""
 
-        displayedPatients = allPatients.filter(patient => {
+        filteredPatients = allPatients.filter(patient => {
+          console.log(patient.name)
+          console.log(patient.cpf)
+          console.log(patient.email)
             const matchesSearch = !searchTerm ||
-                (patient.name || "").toLowerCase().includes(searchTerm) ||
-                (patient.cpf || "").replace(/\D/g,'').includes(searchTerm.replace(/\D/g,'')) ||
-                (patient.email || "").toLowerCase().includes(searchTerm);
+                (patient.name).toLowerCase().includes(searchTerm) ||
+                (searchTerm.replace(/\D/g,'') && (patient.cpf).replace(/\D/g,'').includes(searchTerm.replace(/\D/g,''))) ||
+                (patient.email).toLowerCase().includes(searchTerm);
 
-            let matchesStatus = true;
-            if (statusFilter) {
-                 // Assuming backend 'active' is boolean. If it's a string like "ACTIVE", adjust.
-                matchesStatus = (statusFilter === "ACTIVE" && (patient.active !== false)) || (statusFilter === "INACTIVE" && patient.active === false);
-            }
-
-            let matchesDate = true;
-            if (dateRegisteredFilter && patient.createdAt) { // Assuming PatientResponseDTO has 'createdAt' (Instant string)
-                const days = parseInt(dateRegisteredFilter);
-                const registeredDate = new Date(patient.createdAt);
-                const today = new Date();
-                const diffTime = Math.abs(today - registeredDate);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                matchesDate = diffDays <= days;
-            }
-
-            return matchesSearch && matchesStatus && matchesDate;
+            console.log((patient.cpf).replace(/\D/g,'').includes(searchTerm.replace(/\D/g,'')))
+            return matchesSearch;
         });
+
+        currentPage = 1; // Reset page on new filter
         renderPatientsTable();
+        renderPaginationControls();
       }
 
       async function loadPatientDataForEdit(patientId) {
         try {
-            const patient = await fetchAPI(`/patients/${patientId}`); // Busca dados do paciente específico
+            const patient = await fetchAPI(`/patients/${patientId}`);
             if (!patient) {
                 showError("Paciente não encontrado para edição.");
                 return;
@@ -508,15 +480,12 @@
 
             document.getElementById('editPatientId').value = patient.id;
             document.getElementById('editPatientFullName').value = patient.name || '';
-            document.getElementById('editPatientCpf').value = formatCPF(patient.cpf || ''); // Formatado e readonly
+            document.getElementById('editPatientCpf').value = formatCPF(patient.cpf || '');
 
-            // PatientResponseDTO deve retornar birthDate como string "YYYY-MM-DD" ou Instant
-            // Se for Instant, o input type="date" precisa de "YYYY-MM-DD"
             let birthDateForInput = '';
-            if (patient.birthDate) { // Se PatientResponseDTO.birthDate é "YYYY-MM-DD"
+            if (patient.birthDate) {
                 birthDateForInput = patient.birthDate;
-            } else if (patient.birth_date) { // Se PatientResponseDTO.birth_date é Instant
-                // Convert Instant to "YYYY-MM-DD" for the input field
+            } else if (patient.birth_date) {
                 const dateObj = new Date(patient.birth_date);
                 const year = dateObj.getUTCFullYear();
                 const month = String(dateObj.getUTCMonth() + 1).padStart(2, '0');
@@ -524,13 +493,9 @@
                 birthDateForInput = `${year}-${month}-${day}`;
             }
             document.getElementById('editPatientBirth').value = birthDateForInput;
-
             document.getElementById('editPatientEmail').value = patient.email || '';
             document.getElementById('editPatientPhone').value = patient.phone ? formatPhone(patient.phone) : '';
             document.getElementById('editPatientAddress').value = patient.address || '';
-
-            const statusSelect = document.getElementById('editPatientStatus');
-            statusSelect.value = (patient.active === false) ? "false" : "true";
 
             const editModalEl = document.getElementById('editPatientModal');
             const editModal = bootstrap.Modal.getOrCreateInstance(editModalEl);
@@ -538,22 +503,19 @@
         } catch (error) {
             console.error(`Erro ao carregar paciente ${patientId} para edição:`, error);
         }
-    }
+      }
 
-    // Função para lidar com a submissão do formulário de edição
-    async function handleEditPatientSubmit(event) {
+      async function handleEditPatientSubmit(event) {
         event.preventDefault();
         const errorDiv = document.getElementById('editPatientError');
         errorDiv.style.display = 'none'; errorDiv.textContent = '';
 
         const patientId = document.getElementById('editPatientId').value;
-        const birthDateValue = document.getElementById('editPatientBirth').value; // "YYYY-MM-DD"
+        const birthDateValue = document.getElementById('editPatientBirth').value;
 
         let birthDateISO = null;
         if (birthDateValue) {
-            // Converte "YYYY-MM-DD" para um Instant no início do dia UTC
-            // O backend espera Instant para birth_date no PatientUpdateDTO
-            const dateObj = new Date(birthDateValue + "T00:00:00.000Z"); // Adiciona T00:00:00.000Z para indicar UTC
+            const dateObj = new Date(birthDateValue + "T00:00:00.000Z");
             if (!isNaN(dateObj.getTime())) {
                 birthDateISO = dateObj.toISOString();
             } else {
@@ -567,19 +529,14 @@
             return;
         }
 
-        // Montando o objeto para PatientUpdateDTO
         const patientUpdateData = {
             name: document.getElementById('editPatientFullName').value,
             email: document.getElementById('editPatientEmail').value,
-            birth_date: birthDateISO, // Envia como Instant (ISO String UTC)
+            birth_date: birthDateISO,
             address: document.getElementById('editPatientAddress').value || null,
-            phone: document.getElementById('editPatientPhone').value.replace(/\D/g, ''), // Envia apenas números
+            phone: document.getElementById('editPatientPhone').value.replace(/\D/g, ''),
             healthUnitId: currentUser.healthUnitId
         };
-
-        // Adicionando 'active' se UserUpdateDTO o suportar (verifique seu UserUpdateDTO)
-        // Se UserUpdateDTO tiver um campo boolean 'active':
-        // patientUpdateData.active = document.getElementById('editPatientStatus').value === "true";
 
         if (!patientUpdateData.name || !patientUpdateData.email) {
             errorDiv.textContent = "Nome e Email são obrigatórios.";
@@ -588,22 +545,10 @@
         }
 
         try {
-            // Se o campo 'active' for gerenciado pelo UserUpdateDTO e, por conseguinte, pelo PatientUpdateDTO
-            // E se você tiver o campo 'editPatientStatus' no seu modal:
-            const statusValue = document.getElementById('editPatientStatus').value;
-            if (statusValue === "true" || statusValue === "false") {
-                 // Supondo que UserUpdateDTO tem um campo 'active' e PatientUpdateDTO o herda.
-                 // Se não, este campo deve ser removido ou o backend ajustado.
-                 // Verifique a definição de UserUpdateDTO.
-                 // patientUpdateData.active = (statusValue === "true");
-                 // Por enquanto, vou comentar isso, pois não sabemos se UserUpdateDTO tem 'active'.
-            }
-
-
             const updatedPatient = await fetchAPI(`/patients/${patientId}`, 'PUT', patientUpdateData);
             showSuccess(`Paciente ${updatedPatient.name} atualizado com sucesso!`);
-            const editModalEl = document.getElementById('editPatientModal');
-            const modalInstance = bootstrap.Modal.getInstance(editModalEl);
+            const modalInstance = bootstrap.Modal.getInstance(document.getElementById('editPatientModal'));
+            modalInstance.hide();
 
             const index = allPatients.findIndex(p => p.id == patientId);
             if (index !== -1) {
@@ -616,39 +561,28 @@
             errorDiv.textContent = `Erro: ${error.message}`;
             errorDiv.style.display = 'block';
         }
-    }
-
-
+      }
 
       function setupPageEventListeners() {
         document.getElementById('logoutButton').addEventListener('click', (e) => {
           e.preventDefault(); localStorage.clear(); window.location.href = './index.html';
         });
 
-        const editPatientFormEl = document.getElementById('editPatientForm');
-        if (editPatientFormEl && !editPatientFormEl.dataset.listenerAttached) {
-            editPatientFormEl.addEventListener('submit', handleEditPatientSubmit);
-            editPatientFormEl.dataset.listenerAttached = 'true';
-        }
+        document.getElementById('editPatientForm').addEventListener('submit', handleEditPatientSubmit);
 
-        const newPatientFormEl = document.getElementById('newPatientForm');
-        newPatientFormEl.addEventListener('submit', async function(e) {
+        document.getElementById('newPatientForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const errorDiv = document.getElementById('newPatientError');
             errorDiv.style.display = 'none'; errorDiv.textContent = '';
 
-            const fullName = document.getElementById('patientFullName').value;
-
             const birthDateValue = document.getElementById('patientBirth').value;
-
             let birthDateISO = null;
             if (birthDateValue) {
-                const dateObj = new Date(birthDateValue + "T00:00:00Z"); // Adiciona T00:00:00Z para indicar UTC
-                birthDateISO = dateObj.toISOString();
+                birthDateISO = new Date(birthDateValue + "T00:00:00Z").toISOString();
             }
 
             const patientData = {
-                name: fullName,
+                name: document.getElementById('patientFullName').value,
                 cpf: document.getElementById('patientCpf').value.replace(/\D/g, ''),
                 birth_date: birthDateISO,
                 email: document.getElementById('patientEmail').value,
@@ -656,7 +590,7 @@
                 password: document.getElementById('patientPassword').value,
                 address: document.getElementById('patientAddress').value || null,
                 healthUnitId: currentUser.healthUnitId
-              };
+            };
 
             if (!patientData.name || !patientData.cpf || !patientData.birth_date || !patientData.email || !patientData.password) {
                 errorDiv.textContent = "Nome, CPF, Data de Nascimento, Email e Senha são obrigatórios.";
@@ -673,58 +607,50 @@
                 const createdPatient = await fetchAPI('/patients', 'POST', patientData);
                 showSuccess(`Paciente ${createdPatient.name} cadastrado com sucesso!`);
                 bootstrap.Modal.getInstance(document.getElementById('newPatientModal')).hide();
-                newPatientFormEl.reset();
-                await loadPatientsData(); // Recarrega a lista de pacientes
+                this.reset();
+                await loadPatientsData();
             } catch (error) {
                 errorDiv.textContent = `Erro: ${error.message}`;
                 errorDiv.style.display = 'block';
             }
         });
 
-        // Input masks for CPF and Phone in the modal
-        document.getElementById('patientCpf').addEventListener('input', function(e) {
-          this.value = formatCPF(this.value);
-        });
-        document.getElementById('patientPhone').addEventListener('input', function(e) {
-          this.value = formatPhone(this.value);
-        });
+        document.getElementById('patientCpf').addEventListener('input', function(e) { this.value = formatCPF(this.value); });
+        document.getElementById('patientPhone').addEventListener('input', function(e) { this.value = formatPhone(this.value); });
 
-        // Event listener para busca enquanto digita
         document.getElementById('searchInput').addEventListener('input', applyAllFilters);
-        // Event listener para o botão de aplicar filtros do dropdown
-        document.getElementById('applyFiltersButton').addEventListener('click', applyAllFilters);
-        // Também aplicar filtros quando os selects do dropdown mudam
-        document.getElementById('filterStatus').addEventListener('change', applyAllFilters);
-        document.getElementById('filterDateRegistered').addEventListener('change', applyAllFilters);
+        document.getElementById('clearFiltersButton').addEventListener('click', () => {
+            document.getElementById('searchInput').value = '';
+            applyAllFilters();
+        });
 
-        // DENTRO de setupPageEventListeners():
+        document.getElementById('patientsTableBody').addEventListener('click', function(event) {
+            const targetButton = event.target.closest('button.action-btn');
+            if (!targetButton) return;
 
-        const patientsTableBody = document.getElementById('patientsTableBody');
-        if (patientsTableBody) {
-            patientsTableBody.addEventListener('click', function(event) {
-                const targetButton = event.target.closest('button.action-btn'); // Encontra o botão mais próximo que foi clicado
-                if (!targetButton) return; // Sai se o clique não foi em um botão de ação
+            const patientId = targetButton.dataset.patientId;
+            if (targetButton.dataset.bsTarget === "#editPatientModal" && patientId) {
+                loadPatientDataForEdit(patientId);
+            }
+        });
 
-                const patientId = targetButton.dataset.patientId; // Pega o ID do paciente do atributo data-patient-id
-
-                if (targetButton.dataset.bsTarget === "#editPatientModal") {
-                    if (patientId) {
-                        loadPatientDataForEdit(patientId); // CHAMA A FUNÇÃO CORRETA
-                    } else {
-                        console.error("Botão de editar clicado, mas data-patient-id não encontrado.");
-                    }
-                } else if (targetButton.dataset.bsTarget === "#viewPatientModal") {
-                    if (patientId) {
-                        console.log(`Abrir detalhes para paciente ID: ${patientId} (funcionalidade de visualização não implementada).`);
-                        // Aqui você implementaria a lógica para buscar e exibir detalhes do paciente
-                        // new bootstrap.Modal(document.getElementById('viewPatientModal')).show(); // Abre o modal placeholder
-                    } else {
-                        console.error("Botão de ver detalhes clicado, mas data-patient-id não encontrado.");
-                    }
+        document.getElementById('pagination-controls').addEventListener('click', (event) => {
+            event.preventDefault();
+            const target = event.target;
+            if (target.tagName === 'A') {
+                const page = target.dataset.page;
+                const totalPages = Math.ceil(filteredPatients.length / recordsPerPage);
+                if (page === 'prev' && currentPage > 1) {
+                    currentPage--;
+                } else if (page === 'next' && currentPage < totalPages) {
+                    currentPage++;
+                } else if (!isNaN(page)) {
+                    currentPage = parseInt(page, 10);
                 }
-            });
-        }
-
+                renderPatientsTable();
+                renderPaginationControls();
+            }
+        });
       }
 
       function showError(message) {
@@ -740,9 +666,10 @@
         setTimeout(() => {
             const instance = bootstrap.Alert.getOrCreateInstance(alertDiv);
             if (instance) instance.close();
-            else if (alertDiv.parentElement) alertDiv.remove(); // Fallback se a instância não for encontrada
+            else if (alertDiv.parentElement) alertDiv.parentElement.removeChild(alertDiv);
         }, 5000);
       }
+
       function showSuccess(message) {
         const existingAlert = document.querySelector('.custom-alert-page');
         if(existingAlert) existingAlert.remove();
@@ -756,10 +683,9 @@
         setTimeout(() => {
             const instance = bootstrap.Alert.getOrCreateInstance(alertDiv);
             if (instance) instance.close();
-            else if (alertDiv.parentElement) alertDiv.remove();
+            else if (alertDiv.parentElement) alertDiv.parentElement.removeChild(alertDiv);
         }, 3000);
       }
-
     </script>
   </body>
 </html>

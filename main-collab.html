@@ -139,7 +139,7 @@
                 <div class="card-body">
                   <div class="table-responsive">
                     <table class="table table-hover">
-                      <thead><tr><th>Nome</th><th>CPF</th><th>Telefone</th><th>Data Cadastro</th><th>Ações</th></tr></thead>
+                      <thead><tr><th>Nome</th><th>CPF</th><th>Telefone</th></tr></thead>
                       <tbody id="pacientesRecentesTableBody"><tr><td colspan="5" class="text-center text-muted">Nenhum paciente encontrado.</td></tr></tbody>
                     </table>
                   </div>
@@ -419,9 +419,7 @@
           row.innerHTML = `
             <td>${patient.name || 'N/A'}</td>
             <td>${patient.cpf || 'N/A'}</td>
-            <td>${patient.phone || 'N/A'}</td>
-            <td>${lastModified ? formatInstantToLocaleDateTime(lastModified).date : formatBirthDate(patient.birthDate)}</td>
-            <td><button class="btn btn-sm btn-outline-primary action-btn" title="Ver Detalhes do Paciente" onclick="viewPatientDetails(${patient.id})"><i class="bi bi-eye"></i></button></td>`;
+            <td>${patient.phone || 'N/A'}</td>`;
         });
       }
 
